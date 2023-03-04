@@ -55,15 +55,15 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	
 	if (phase == 6)
 	{
-		for (int i = 0; i < 4; i++)
+		/*for (int i = 0; i < 4; i++)
 		{
 			ball.SetAnimation(1000, ball.IsAnimation());
 			if(i==4)ball.ToggleAnimation();
 			
-		}
-		
+		}*/
 		
 	}
+	
 	//CMovingBitmap
 }
 
@@ -97,6 +97,8 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 	ball.LoadBitmapByString({ "resources/ball-3.bmp", "resources/ball-2.bmp", "resources/ball-1.bmp", "resources/ball-ok.bmp" });
 	ball.SetTopLeft(150, 430);
+	ball.SetAnimation(1000, 1);
+	ball.ToggleAnimation();
 
 	for (int i = 0; i < 3; i++) {
 		door[i].LoadBitmapByString({ "resources/door_close.bmp", "resources/door_open.bmp" }, RGB(255, 255, 255));
