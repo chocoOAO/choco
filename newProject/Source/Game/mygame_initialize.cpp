@@ -28,8 +28,12 @@ void CGameStateInit::OnInit()
 	//
 	background.LoadBitmapByString({ "resources/background2.bmp" },0);
 	background.SetTopLeft(0, 0);
-	
-
+	start.LoadBitmapByString({ "resources/start1.bmp","resources/start2.bmp" }, 0);
+	start.SetTopLeft(1000, 600);
+	princess.LoadBitmapByString({ "resources/princess1.bmp","resources/princess2.bmp" },0,RGB(0,0,0));
+	princess.SetTopLeft(390,600);
+	princess.SetAnimation(1000, 0);
+	//OnBeginState();
 	Sleep(1000);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
 	//
 	// 此OnInit動作會接到CGameStaterRun::OnInit()，所以進度還沒到100%
@@ -38,19 +42,26 @@ void CGameStateInit::OnInit()
 
 void CGameStateInit::OnBeginState()
 {
+
 }
 
 void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	GotoGameState(GAME_STATE_RUN);
+	if (nChar == VK_RETURN)
+	{
+		GotoGameState(GAME_STATE_RUN);
+	}
+	 
 }
 
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
+	//GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
 }
 
 void CGameStateInit::OnShow()
 {
 	background.ShowBitmap();
+	start.ShowBitmap();
+	princess.ShowBitmap();
 }

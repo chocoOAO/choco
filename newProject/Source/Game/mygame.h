@@ -67,6 +67,8 @@ namespace game_framework {
 	private:
 		CMovingBitmap logo;								// csie的logo
 		CMovingBitmap background;
+		CMovingBitmap start;
+		CMovingBitmap princess;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -95,7 +97,11 @@ namespace game_framework {
 		CMovingBitmap background;
 		CMovingBitmap character;
 		CMovingBitmap characterleft;
+		CMovingBitmap select1;
+		CMovingBitmap select2;
+		CMovingBitmap totalSelect;
 		int phase = 1;
+		int sel = 0;
 		int sub_phase = 1;
 		int chieght = 0;
 	};
