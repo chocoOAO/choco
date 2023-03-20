@@ -29,17 +29,23 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 {
 	if (character.button == 1 && character.GetFlagMove() == true)
 	{
-		if (character.GetTop() > chieght+100 )
+		if (character.GetTop() > chieght-400 )
 		{
 			character.SetTopLeft(character.GetLeft(), character.GetTop() - 20);//按住持續W
 		}
 		else
 		{
-			chieght = 200;
+			chieght = 2000;
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);
 		}
 						
 	}
+	if (character.GetFlagMove() == false)
+	{
+		if (character.GetTop() != 733)
+			character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);
+	}
+	
 
 	if (character.button == 2 && character.GetFlagMove() == true)
 	{
@@ -96,7 +102,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 		character.SetFlagMove(true);
 		character.button = 1;
-		chieght = character.GetTop();
+		chieght = int(character.GetTop());
 		/*
 			for (int i=0; i < 15; i++)
 			{
