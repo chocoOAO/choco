@@ -33,7 +33,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 		{
 			character.SetTopLeft(character.GetLeft(), character.GetTop() - 20);//按住持續W
 		}
-		else
+		else if(character.GetTop() != 733)
 		{
 			chieght = 2000;
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);
@@ -45,6 +45,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 		if (character.GetTop() != 733)
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);
 	}
+
 	
 
 	if (character.button == 2 && character.GetFlagMove() == true)
@@ -154,7 +155,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		character.SetTopLeft(x, y);
 	}
 	
-	if (nChar == 0x27)//向右選關鍵
+	if (nChar == 0x27 && playing==false)//向右選關鍵
 	{
 		if (sel < 1)
 			sel += 1;
@@ -171,6 +172,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 		if (sel == 0)
 		{
+			playing = true;
 			background.SetFrameIndexOfBitmap(1);
 			for (int i = 0; i < 2; i++)
 			{
@@ -180,8 +182,6 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			select1.SetTopLeft(-600, -400);
 			select2.SetTopLeft(-600, -400);
 		}
-			
-
 	}
 }
 
@@ -245,3 +245,20 @@ void CGameStateRun::show_image_by_phase()
 	totalSelect.ShowBitmap();
 
 }
+
+/*
+void CGameStateRun::show_text_by_phase()
+{
+	CDC *pDC = CDDraw::GetBackCDC();
+	//CFont* fp;
+
+	CTextDraw::ChangeFontLog(pDC, 36, "微軟正黑體", RGB(255, 255, 255));
+	CTextDraw::Print(pDC, 79, 228, "IQ:200");
+
+	
+	CTextDraw::ChangeFontLog(pDC, fp, 24, "微軟正黑體", RGB(255, 255, 255));
+	CTextDraw::Print(pDC, 182, 431, "Press any key to start");
+	
+	CDDraw::ReleaseBackCDC();
+}
+*/

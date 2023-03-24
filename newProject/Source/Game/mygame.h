@@ -89,6 +89,9 @@ namespace game_framework {
 		void OnMouseMove(UINT nFlags, CPoint point);	// 處理滑鼠的動作 
 		void OnRButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 		void OnRButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
+
+		//自己加的
+		void show_text_by_phase(); //顯示文字
 	protected:
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
@@ -104,6 +107,7 @@ namespace game_framework {
 		int sel = 0;
 		int sub_phase = 1;
 		int chieght = 0;
+		bool playing = false;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
