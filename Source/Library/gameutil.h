@@ -1,3 +1,4 @@
+#pragma once
 /*
  * gamelib.h: 本檔案儲遊戲相關的class的interface
  * Copyright (C) 2002-2008 Woei-Kae Chen <wkc@csie.ntut.edu.tw>
@@ -86,7 +87,7 @@ namespace game_framework {
 		void  LoadBitmap(int, COLORREF = CLR_INVALID);		// 載入圖，指定圖的編號(resource)及透明色
 		void  LoadBitmap(char*, COLORREF = CLR_INVALID);	// 載入圖，指定圖的檔名及透明色
 		void  LoadBitmap(vector<char*>, COLORREF = CLR_INVALID);	// 載入圖，指定圖的檔名及透明色
-		void  LoadBitmapByString(vector<string>, int flag,COLORREF = CLR_INVALID);	// 載入圖，指定圖的檔名及透明色
+		void  LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);	// 載入圖，指定圖的檔名及透明色
 		void  LoadEmptyBitmap(int height, int weight);
 		
 		/* Unshow the bitmap. */
@@ -100,6 +101,7 @@ namespace game_framework {
 		/* Show the bitmap with or without factor. */
 		void  ShowBitmap();					// 將圖貼到螢幕
 		void  ShowBitmap(double factor);	// 將圖貼到螢幕 factor < 1時縮小，>1時放大。注意：需要VGA卡硬體的支援，否則會很慢
+		
 		/* Getter */
 		int   GetFrameIndexOfBitmap();
 		int   GetFrameSizeOfBitmap();
@@ -120,12 +122,6 @@ namespace game_framework {
 		/* Toggle function */
 		void  ToggleAnimation();
 
-
-		/*自己加的*/
-		void SetFlagMove(bool value);
-		bool GetFlagMove();
-		int button = 0;
-
 	protected:
 		//! 當前幀的索引值。
 		int frameIndex = 0;
@@ -141,7 +137,7 @@ namespace game_framework {
 		bool isBitmapLoaded = false;	// whether a bitmap has been loaded
 		//! 儲存物件動畫是否為單次動畫
 		bool isOnce = false;
-		CRect    location;			// location of the bitmap
+		vector<CRect>    locations;			// location of the bitmap
 		vector<unsigned> surfaceID;
 		clock_t last_time = clock();
 		//! 儲存物件讀取的圖片路徑
@@ -149,8 +145,6 @@ namespace game_framework {
 		//! 儲存物件過濾的圖片顏色
 		COLORREF filterColor = CLR_INVALID;
 
-		//自己加的
-		bool flag_move = false;
 	private:
 		void InitializeRectByBITMAP(BITMAP bitmap);
 		void ShowBitmapBySetting();

@@ -5,21 +5,13 @@
 #include "../Library/audio.h"
 #include "../Library/gameutil.h"
 #include "../Library/gamecore.h"
+#include "MyCMovingBitmap.h"
 #include "mygame.h"
 
 using namespace game_framework;
 
 
 
-void MyCMovingBitmap::SetFlagMove(bool value)
-{
-	flag_move = value;
-}
-
-bool MyCMovingBitmap::GetFlagMove()
-{
-	return flag_move;
-}
 
 /////////////////////////////////////////////////////////////////////////////
 // 這個class為遊戲的遊戲執行物件，主要的遊戲程式都在這裡
@@ -94,18 +86,18 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 		"resources/character2.bmp",
 		"resources/character1.bmp",
 		"resources/character3.bmp",
-		"resources/character1.bmp" }, 0, RGB(255, 255, 255));
+		"resources/character1.bmp" },  RGB(255, 255, 255));
 	character.SetTopLeft(180, 733);
 
 	character_condition = {false, false, false, false};
 
-	select1.LoadBitmapByString({ "resources/select1.bmp" }, 0, RGB(255, 255, 255));
+	select1.LoadBitmapByString({ "resources/select1.bmp" }, RGB(255, 255, 255));
 	select1.SetTopLeft(600, 400);
 
-	select2.LoadBitmapByString({ "resources/select2.bmp" }, 0, RGB(255, 255, 255));
+	select2.LoadBitmapByString({ "resources/select2.bmp" }, RGB(255, 255, 255));
 	select2.SetTopLeft(880, 400);
 
-	totalSelect.LoadBitmapByString({ "resources/select1_2.bmp", "resources/select2_2.bmp" }, 0, RGB(255, 255, 255));
+	totalSelect.LoadBitmapByString({ "resources/select1_2.bmp", "resources/select2_2.bmp" },  RGB(255, 255, 255));
 	totalSelect.SetTopLeft(600, 400);
 
 }
@@ -148,7 +140,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		"resources/character6.bmp",
 		"resources/character1.bmp",
 		"resources/character7.bmp",
-		"resources/character1.bmp" }, 1, RGB(255, 255, 255));
+		"resources/character1.bmp" },  RGB(255, 255, 255));
 		character.SetTopLeft(x, y);
 	}
 
@@ -165,7 +157,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		"resources/character2.bmp",
 		"resources/character1.bmp",
 		"resources/character3.bmp",
-		"resources/character1.bmp" }, 1, RGB(255, 255, 255));
+		"resources/character1.bmp" }, RGB(255, 255, 255));
 		character.SetTopLeft(x, y);
 	}
 	

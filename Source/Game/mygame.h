@@ -38,14 +38,8 @@
  *      3. Use ShowInitProgress(percent) to display loading progress.
 */
 #pragma once
+#include "MyCMovingBitmap.h"
 
-class MyCMovingBitmap : public game_framework::CMovingBitmap
-{
-public:
-    void SetFlagMove(bool value);
-    bool GetFlagMove();
-    int button = 0;
-};
 
 namespace game_framework
 {
