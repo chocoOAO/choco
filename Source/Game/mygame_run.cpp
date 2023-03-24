@@ -9,6 +9,18 @@
 
 using namespace game_framework;
 
+
+
+void MyCMovingBitmap::SetFlagMove(bool value)
+{
+	flag_move = value;
+}
+
+bool MyCMovingBitmap::GetFlagMove()
+{
+	return flag_move;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // 這個class為遊戲的遊戲執行物件，主要的遊戲程式都在這裡
 /////////////////////////////////////////////////////////////////////////////
@@ -27,7 +39,7 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
-	if (character.button == 1 && character.GetFlagMove() == true)
+	if (character_condition.at(0) && character.GetFlagMove() == true)
 	{
 		if (character.GetTop() > chieght-400 )
 		{
@@ -48,19 +60,19 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 
 	
 
-	if (character.button == 2 && character.GetFlagMove() == true)
+	if (character_condition.at(1) && character.GetFlagMove() == true)
 	{
 		character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);//按住持續S
 	}
 
-	if (character.button == 3 && character.GetFlagMove() == true)
+	if (character_condition.at(2) && character.GetFlagMove() == true)
 	{
 		character.SetTopLeft(character.GetLeft() - 3, character.GetTop());//按住持續A
 		background.SetTopLeft(background.GetLeft() + 20, background.GetTop());
 		character.SetAnimation(150, false);
 	}
 
-	if (character.button == 4 && character.GetFlagMove() == true)
+	if (character_condition.at(3) && character.GetFlagMove() == true)
 	{
 		character.SetTopLeft(character.GetLeft() + 3, character.GetTop());//按住持續D
 		background.SetTopLeft(background.GetLeft() - 20, background.GetTop());
@@ -85,6 +97,8 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 		"resources/character1.bmp" }, 0, RGB(255, 255, 255));
 	character.SetTopLeft(180, 733);
 
+	character_condition = {false, false, false, false};
+
 	select1.LoadBitmapByString({ "resources/select1.bmp" }, 0, RGB(255, 255, 255));
 	select1.SetTopLeft(600, 400);
 
@@ -102,7 +116,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == 0x57)//W
 	{
 		character.SetFlagMove(true);
-		character.button = 1;
+		character_condition.at(0) = TRUE;
 		chieght = int(character.GetTop());
 		/*
 			for (int i=0; i < 15; i++)
