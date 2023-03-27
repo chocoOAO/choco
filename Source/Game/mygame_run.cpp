@@ -126,12 +126,15 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == 0x53)//S
 	{
 		character.SetFlagMove(true);
+		character_condition.at(1) = TRUE;
 		character.button = 2;
 	}
 	if (nChar == 0x41)//A
 	{
 		character.SetFlagMove(true);
+		character_condition.at(2) = TRUE;
 		character.button = 3;
+		/*
 		int x = character.GetLeft();
 		int y = character.GetTop();
 		character.LoadBitmapByString({ "resources/character1.bmp" }, 1);
@@ -141,14 +144,16 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		"resources/character1.bmp",
 		"resources/character7.bmp",
 		"resources/character1.bmp" },  RGB(255, 255, 255));
-		character.SetTopLeft(x, y);
+		character.SetTopLeft(x, y);*/
 	}
 
 		
 	if (nChar == 0x44)//D
 	{
 		character.SetFlagMove(true);
+		character_condition.at(3) = TRUE;
 		character.button = 4;
+		/*
 		int x = character.GetLeft();
 		int y = character.GetTop();
 		character.LoadBitmapByString({ "resources/character1.bmp" }, 1);
@@ -158,7 +163,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		"resources/character1.bmp",
 		"resources/character3.bmp",
 		"resources/character1.bmp" }, RGB(255, 255, 255));
-		character.SetTopLeft(x, y);
+		character.SetTopLeft(x, y);*/
 	}
 	
 	if (nChar == 0x27 && playing==false)//向右選關鍵
@@ -196,20 +201,24 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == 0x57)//W
 	{
 		character.SetFlagMove(false);
+		character_condition.at(0) = false;
 	}
 	if (nChar == 0x53)//S
 	{
 		character.SetFlagMove(false);
+		character_condition.at(1) = false;
 	}
 	if (nChar == 0x41)//A
 	{
 		character.SetFlagMove(false);
+		character_condition.at(2) = false;
 		character.SetAnimation(200, true);
 	}
 	if (nChar == 0x44)//D
 	{
 		character.SetFlagMove(false);
 		character.SetAnimation(200, true);
+		character_condition.at(3) = false;
 		character.SetFrameIndexOfBitmap(0);
 
 	}
