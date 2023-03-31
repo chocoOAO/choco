@@ -54,6 +54,10 @@
     <ClCompile Include="Source\Game\mygame_run.cpp">
       <Filter>MyGame</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\MyCMovingBitmap.cpp" />
+    <ClCompile Include="Source\Game\character.cpp">
+      <Filter>MyGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Library\audio.h">
@@ -87,6 +91,10 @@
       <Filter>MyGame</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game\config.h">
+      <Filter>MyGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\MyCMovingBitmap.h" />
+    <ClInclude Include="Source\Game\character.h">
       <Filter>MyGame</Filter>
     </ClInclude>
   </ItemGroup>
