@@ -7,6 +7,7 @@
 #include "../Library/gamecore.h"
 #include "MyCMovingBitmap.h"
 #include "mygame.h"
+#include "character.h"
 
 using namespace game_framework;
 
@@ -31,46 +32,7 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
-	if (character_condition.at(0) && character.GetFlagMove() == true)
-	{
-		if (character.GetTop() > chieght-400 )
-		{
-			character.SetTopLeft(character.GetLeft(), character.GetTop() - 20);//按住持續W
-		}
-		else if(character.GetTop() != 733)
-		{
-			chieght = 2000;
-			character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);
-		}
-						
-	}
-	if (character.GetFlagMove() == false)
-	{
-		if (character.GetTop() != 733)
-			character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);
-	}
-
-	
-
-	if (character_condition.at(1) && character.GetFlagMove() == true)
-	{
-		character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);//按住持續S
-	}
-
-	if (character_condition.at(2) && character.GetFlagMove() == true)
-	{
-		character.SetTopLeft(character.GetLeft() - 3, character.GetTop());//按住持續A
-		background.SetTopLeft(background.GetLeft() + 20, background.GetTop());
-		character.SetAnimation(150, false);
-	}
-
-	if (character_condition.at(3) && character.GetFlagMove() == true)
-	{
-		character.SetTopLeft(character.GetLeft() + 3, character.GetTop());//按住持續D
-		background.SetTopLeft(background.GetLeft() - 20, background.GetTop());
-		character.SetAnimation(150, false);
-
-	}
+	character.characterMove(background);
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -80,17 +42,8 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 		"resources/level1.bmp"
 		}, 0);
 	background.SetTopLeft(0, 0);
-
-	character.LoadBitmapByString({
-		"resources/character1.bmp",
-		"resources/character2.bmp",
-		"resources/character1.bmp",
-		"resources/character3.bmp",
-		"resources/character1.bmp" },  RGB(255, 255, 255));
-	character.SetTopLeft(180, 733);
-
-	character_condition = {false, false, false, false};
-
+	character.characterInit();
+	
 	select1.LoadBitmapByString({ "resources/select1.bmp" }, RGB(255, 255, 255));
 	select1.SetTopLeft(600, 400);
 
@@ -104,63 +57,8 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	
-	if (nChar == 0x57)//W
-	{
-		character.SetFlagMove(true);
-		character_condition.at(0) = TRUE;
-		chieght = int(character.GetTop());
-		/*
-			for (int i=0; i < 15; i++)
-			{
-				character.SetTopLeft(character.GetLeft(), character.GetTop() - 30);//按住持續W
-			
-			}*/
+	character.characterKeyDown(nChar);
 		
-		//chieght = 300;
-		//character.SetTopLeft(character.GetLeft(), character.GetTop() + 15);
-		
-			   	
-		
-	}
-	if (nChar == 0x53)//S
-	{
-		character.SetFlagMove(true);
-		character.button = 2;
-	}
-	if (nChar == 0x41)//A
-	{
-		character.SetFlagMove(true);
-		character.button = 3;
-		int x = character.GetLeft();
-		int y = character.GetTop();
-		character.LoadBitmapByString({ "resources/character1.bmp" }, 1);
-		character.LoadBitmapByString({
-		"resources/character1.bmp",
-		"resources/character6.bmp",
-		"resources/character1.bmp",
-		"resources/character7.bmp",
-		"resources/character1.bmp" },  RGB(255, 255, 255));
-		character.SetTopLeft(x, y);
-	}
-
-		
-	if (nChar == 0x44)//D
-	{
-		character.SetFlagMove(true);
-		character.button = 4;
-		int x = character.GetLeft();
-		int y = character.GetTop();
-		character.LoadBitmapByString({ "resources/character1.bmp" }, 1);
-		character.LoadBitmapByString({
-		"resources/character1.bmp",
-		"resources/character2.bmp",
-		"resources/character1.bmp",
-		"resources/character3.bmp",
-		"resources/character1.bmp" }, RGB(255, 255, 255));
-		character.SetTopLeft(x, y);
-	}
-	
 	if (nChar == 0x27 && playing==false)//向右選關鍵
 	{
 		if (sel < 1)
@@ -193,26 +91,8 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	if (nChar == 0x57)//W
-	{
-		character.SetFlagMove(false);
-	}
-	if (nChar == 0x53)//S
-	{
-		character.SetFlagMove(false);
-	}
-	if (nChar == 0x41)//A
-	{
-		character.SetFlagMove(false);
-		character.SetAnimation(200, true);
-	}
-	if (nChar == 0x44)//D
-	{
-		character.SetFlagMove(false);
-		character.SetAnimation(200, true);
-		character.SetFrameIndexOfBitmap(0);
+	character.characterKeyUp(nChar);
 
-	}
 }
 
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
@@ -245,7 +125,7 @@ void CGameStateRun::show_image_by_phase()
 {
 	//background.SetFrameIndexOfBitmap((phase - 1) * 2 + (sub_phase - 1));
 	background.ShowBitmap();
-	character.ShowBitmap();
+	character.characterShowBitmap();
 	select1.ShowBitmap();
 	select2.ShowBitmap();
 	totalSelect.ShowBitmap();

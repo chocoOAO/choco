@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 
-
 class MyCMovingBitmap : public game_framework::CMovingBitmap
 {
     bool flag_move;
