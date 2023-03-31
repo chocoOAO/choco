@@ -39,7 +39,7 @@
 */
 #pragma once
 #include "MyCMovingBitmap.h"
-
+#include "character.h"
 
 namespace game_framework
 {
@@ -106,9 +106,9 @@ namespace game_framework
         void OnShow(); // 顯示這個狀態的遊戲畫面
     private:
         void show_image_by_phase();
-        std::vector<bool> character_condition;
+        //std::vector<bool> character_condition;
         MyCMovingBitmap background;
-        MyCMovingBitmap character;
+		characterTool character;
         MyCMovingBitmap characterleft;
         MyCMovingBitmap select1;
         MyCMovingBitmap select2;

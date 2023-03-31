@@ -6,7 +6,7 @@ class characterTool
 {
 public:
 	void characterInit();
-	void characterMove(MyCMovingBitmap background);
+	void characterMove(MyCMovingBitmap *background);
 	void characterKeyDown(UINT nChar);
 	void characterKeyUp(UINT nChar);
 	void characterShowBitmap();

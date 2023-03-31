@@ -29,7 +29,7 @@ bool characterTool::GetFlagMove() const
 	return character.GetFlagMove();
 }
 
-void characterTool::characterMove(MyCMovingBitmap background)
+void characterTool::characterMove(MyCMovingBitmap *background)
 {
 	if (character_condition.at(0) && character.GetFlagMove() == true)
 	{
@@ -49,9 +49,7 @@ void characterTool::characterMove(MyCMovingBitmap background)
 		if (character.GetTop() != 733)
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);
 	}
-
-
-
+	   
 	if (character_condition.at(1) && character.GetFlagMove() == true)
 	{
 		character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);//按住持續S
@@ -59,15 +57,15 @@ void characterTool::characterMove(MyCMovingBitmap background)
 
 	if (character_condition.at(2) && character.GetFlagMove() == true)
 	{
-		character.SetTopLeft(character.GetLeft() - 3, character.GetTop());//按住持續A
-		background.SetTopLeft(background.GetLeft() + 20, background.GetTop());
+		character.SetTopLeft(character.GetLeft() - 1, character.GetTop());//按住持續A
+		background->SetTopLeft(background->GetLeft() + 20, background->GetTop());
 		character.SetAnimation(150, false);
 	}
 
 	if (character_condition.at(3) && character.GetFlagMove() == true)
 	{
-		character.SetTopLeft(character.GetLeft() + 3, character.GetTop());//按住持續D
-		background.SetTopLeft(background.GetLeft() - 20, background.GetTop());
+		character.SetTopLeft(character.GetLeft() + 1, character.GetTop());//按住持續D
+		background->SetTopLeft(background->GetLeft() - 20, background->GetTop());
 		character.SetAnimation(150, false);
 
 	}
