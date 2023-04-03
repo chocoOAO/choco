@@ -32,63 +32,21 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
-	character.characterMove(&background);
+	character.characterMove(background.getAdress());
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
-	background.LoadBitmapByString({
-		"resources/background3.bmp",
-		"resources/level1.bmp"
-		}, 0);
-	background.SetTopLeft(0, 0);
-
 	character.characterInit();
-
-	select1.LoadBitmapByString({ "resources/select1.bmp" }, RGB(255, 255, 255));
-	select1.SetTopLeft(600, 400);
-
-	select2.LoadBitmapByString({ "resources/select2.bmp" }, RGB(255, 255, 255));
-	select2.SetTopLeft(880, 400);
-
-	totalSelect.LoadBitmapByString({ "resources/select1_2.bmp", "resources/select2_2.bmp" },  RGB(255, 255, 255));
-	totalSelect.SetTopLeft(600, 400);
-
+	background.backgroundInit();
+	background.selectInit();
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	
 	character.characterKeyDown(nChar);
-	
-	if (nChar == 0x27 && playing==false)//向右選關鍵
-	{
-		if (sel < 1)
-			sel += 1;
-		else
-			sel = 0;
-		totalSelect.SetFrameIndexOfBitmap(sel);
-		if (sel == 0)
-			totalSelect.SetTopLeft(600, 400);
-		if (sel == 1)
-			totalSelect.SetTopLeft(880, 400);
-
-	}
-	if (nChar == VK_RETURN)//向右選關鍵
-	{
-		if (sel == 0)
-		{
-			playing = true;
-			background.SetFrameIndexOfBitmap(1);
-			for (int i = 0; i < 2; i++)
-			{
-				totalSelect.SetFrameIndexOfBitmap(i);
-				totalSelect.SetTopLeft(-600, -400);
-			}
-			select1.SetTopLeft(-600, -400);
-			select2.SetTopLeft(-600, -400);
-		}
-	}
+	background.backgroundKeyDown(nChar);
 }
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -125,11 +83,9 @@ void CGameStateRun::OnShow()
 void CGameStateRun::show_image_by_phase() 
 {
 	//background.SetFrameIndexOfBitmap((phase - 1) * 2 + (sub_phase - 1));
-	background.ShowBitmap();
+	background.backroundShowBitmap();
 	character.characterShowBitmap();
-	select1.ShowBitmap();
-	select2.ShowBitmap();
-	totalSelect.ShowBitmap();
+	background.selectShowBitmap();
 
 }
 

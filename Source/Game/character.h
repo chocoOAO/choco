@@ -1,5 +1,5 @@
 #pragma once
-#include "MyCMovingBitmap.h"
+
 
 
 class characterTool

@@ -35,25 +35,25 @@ void characterTool::characterMove(MyCMovingBitmap *background)
 	{
 		if (character.GetTop() > chieght - 400)
 		{
-			character.SetTopLeft(character.GetLeft(), character.GetTop() - 20);//按住持續W
+			character.SetTopLeft(character.GetLeft(), character.GetTop() - 30);//按住持續W
 		}
 		else if (character.GetTop() != 733)
 		{
 			chieght = 2000;
-			character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);
+			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 		}
 
 	}
 	if (character.GetFlagMove() == false)
 	{
 		if (character.GetTop() != 733)
-			character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);
+			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 	}
-	   
-	if (character_condition.at(1) && character.GetFlagMove() == true)
+	
+	/*if (character_condition.at(1) && character.GetFlagMove() == true)
 	{
 		character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);//按住持續S
-	}
+	}*/
 
 	if (character_condition.at(2) && character.GetFlagMove() == true)
 	{
