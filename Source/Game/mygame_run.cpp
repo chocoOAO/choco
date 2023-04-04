@@ -33,6 +33,7 @@ void CGameStateRun::OnBeginState()
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
 	character.characterMove(background.getAdress());
+	background.Move();
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -40,6 +41,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	character.characterInit();
 	background.backgroundInit();
 	background.selectInit();
+	background.elementInit();
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -47,11 +49,13 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	
 	character.characterKeyDown(nChar);
 	background.backgroundKeyDown(nChar);
+	background.KeyDown(nChar);
 }
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	character.characterKeyUp(nChar);
+	background.KeyUp(nChar);
 }
 
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
@@ -84,8 +88,13 @@ void CGameStateRun::show_image_by_phase()
 {
 	//background.SetFrameIndexOfBitmap((phase - 1) * 2 + (sub_phase - 1));
 	background.backroundShowBitmap();
-	character.characterShowBitmap();
 	background.selectShowBitmap();
+	if (background.getPlaying())
+	{
+		character.characterShowBitmap();
+	}
+	background.touching(character.getCharacterAdress());
+
 
 }
 

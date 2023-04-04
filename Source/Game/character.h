@@ -12,6 +12,7 @@ public:
 	void characterShowBitmap();
 	void SetFlagMove(bool value);
 	bool GetFlagMove() const;
+	MyCMovingBitmap *getCharacterAdress();
 
 
 

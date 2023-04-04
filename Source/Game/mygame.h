@@ -111,11 +111,6 @@ namespace game_framework
         backgroundTool background;
 		characterTool character;
         MyCMovingBitmap characterleft;
-        
-        int phase = 1;
-        int sub_phase = 1;
-        int chieght = 0;
-        vector<bool> keyFlags;
     };
 
     /////////////////////////////////////////////////////////////////////////////

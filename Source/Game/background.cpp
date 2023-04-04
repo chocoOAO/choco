@@ -28,6 +28,12 @@ void backgroundTool::selectInit()
 	totalSelect.SetTopLeft(600, 400);
 }
 
+void backgroundTool::elementInit()
+{
+	element.LoadBitmapByString({ "resources/blackBlock.bmp" }, RGB(255, 255, 255));
+	element.SetTopLeft(200, 539);
+}
+
 void backgroundTool::backgroundKeyDown(UINT nChar)
 {
 	if (nChar == 0x27 && playing == false)//向右選關鍵
@@ -60,11 +66,6 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 	}
 }
 
-MyCMovingBitmap *backgroundTool::getAdress()
-{
-	return &background;
-}
-
 void backgroundTool::backroundShowBitmap()
 {
 	background.ShowBitmap();
@@ -77,3 +78,99 @@ void backgroundTool::selectShowBitmap()
 	totalSelect.ShowBitmap();
 }
 
+void backgroundTool::elementShowBitmap()
+{
+	element.ShowBitmap();
+}
+
+MyCMovingBitmap *backgroundTool::getAdress()
+{
+	return &background;
+}
+
+void backgroundTool::touching(MyCMovingBitmap *character)//&&character->GetLeft() > element.GetLeft()
+{
+	if (character->GetTop() - 5 <= element.GetTop()+element.GetHeight() &&
+		(character->GetLeft() < element.GetLeft() + character->GetWidth())
+		|| elementTrue == true  )//我不打==true會怪怪的:>
+	{
+		elementShowBitmap();
+		elementTrue = true;
+	}
+}
+
+bool backgroundTool::getPlaying()
+{
+	return playing;
+}
+
+
+
+void backgroundTool::Move()
+{
+
+	if (buttonA)
+	{
+		
+		background.SetTopLeft(background.GetLeft() + 20, background.GetTop());
+		if (elementTrue == true)
+		{
+			element.SetTopLeft(element.GetLeft() + 20, element.GetTop());
+
+		}
+	}
+
+	if (buttonD)
+	{
+		background.SetTopLeft(background.GetLeft() - 20, background.GetTop());
+		if (elementTrue == true)
+		{
+			element.SetTopLeft(element.GetLeft() - 20, element.GetTop());
+
+		}
+	}
+}
+
+void backgroundTool::KeyDown(UINT nChar)
+{
+	
+	if (nChar == 0x57)//W
+	{		
+		
+		
+	}
+	if (nChar == 0x53)//S
+	{
+		
+	}
+	if (nChar == 0x41)//A
+	{
+		buttonA = true;
+	}
+	
+	if (nChar == 0x44)//D
+	{
+		buttonD = true;
+	}
+}
+
+
+void backgroundTool::KeyUp(UINT nChar)
+{
+	if (nChar == 0x57)//W
+	{
+		
+	}
+	if (nChar == 0x53)//S
+	{
+		
+	}
+	if (nChar == 0x41)//A
+	{
+		buttonA = false;
+	}
+	if (nChar == 0x44)//D
+	{
+		buttonD = false;
+	}
+}

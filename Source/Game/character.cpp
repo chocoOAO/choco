@@ -19,16 +19,6 @@ void characterTool::characterInit()
 	character_condition = { false, false, false, false };
 }
 
-void characterTool::SetFlagMove(bool value)
-{
-	character.SetFlagMove(value);
-}
-
-bool characterTool::GetFlagMove() const
-{
-	return character.GetFlagMove();
-}
-
 void characterTool::characterMove(MyCMovingBitmap *background)
 {
 	if (character_condition.at(0) && character.GetFlagMove() == true)
@@ -58,14 +48,12 @@ void characterTool::characterMove(MyCMovingBitmap *background)
 	if (character_condition.at(2) && character.GetFlagMove() == true)
 	{
 		character.SetTopLeft(character.GetLeft() - 1, character.GetTop());//按住持續A
-		background->SetTopLeft(background->GetLeft() + 20, background->GetTop());
 		character.SetAnimation(150, false);
 	}
 
 	if (character_condition.at(3) && character.GetFlagMove() == true)
 	{
 		character.SetTopLeft(character.GetLeft() + 1, character.GetTop());//按住持續D
-		background->SetTopLeft(background->GetLeft() - 20, background->GetTop());
 		character.SetAnimation(150, false);
 
 	}
@@ -166,4 +154,18 @@ void characterTool::characterShowBitmap()
 
 }
 
+void characterTool::SetFlagMove(bool value)
+{
+	character.SetFlagMove(value);
+}
+
+bool characterTool::GetFlagMove() const
+{
+	return character.GetFlagMove();
+}
+
+MyCMovingBitmap *characterTool::getCharacterAdress()
+{
+	return &character;
+}
 
