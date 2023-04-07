@@ -14,8 +14,9 @@ public:
 	void elementShowBitmap();
 	void touching(MyCMovingBitmap *character);
 	bool getPlaying();
-	MyCMovingBitmap *getAdress();
-	
+	MyCMovingBitmap *getBackgroundAdress();
+	MyCMovingBitmap *getElementAdress();
+
 
 	void Move();
 	void KeyDown(UINT nChar);

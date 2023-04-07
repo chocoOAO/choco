@@ -30,8 +30,8 @@ void backgroundTool::selectInit()
 
 void backgroundTool::elementInit()
 {
-	element.LoadBitmapByString({ "resources/blackBlock.bmp" }, RGB(255, 255, 255));
-	element.SetTopLeft(200, 539);
+	element.LoadBitmapByString({ "resources/whiteBlock.bmp","resources/blackBlock.bmp" }, RGB(255, 255, 255));
+	element.SetTopLeft(477, 539);
 }
 
 void backgroundTool::backgroundKeyDown(UINT nChar)
@@ -83,20 +83,27 @@ void backgroundTool::elementShowBitmap()
 	element.ShowBitmap();
 }
 
-MyCMovingBitmap *backgroundTool::getAdress()
+MyCMovingBitmap *backgroundTool::getBackgroundAdress()
 {
 	return &background;
 }
 
-void backgroundTool::touching(MyCMovingBitmap *character)//&&character->GetLeft() > element.GetLeft()
+MyCMovingBitmap *backgroundTool::getElementAdress()
 {
-	if (character->GetTop() - 5 <= element.GetTop()+element.GetHeight() &&
-		(character->GetLeft() < element.GetLeft() + character->GetWidth())
-		|| elementTrue == true  )//我不打==true會怪怪的:>
+	return &element;
+}
+
+
+void backgroundTool::touching(MyCMovingBitmap *character)//
+{
+	if (background.touchUp(character, &element))
 	{
-		elementShowBitmap();
-		elementTrue = true;
+		element.SetFrameIndexOfBitmap(1);
 	}
+	//if (background.IsOverlap(*character, element))
+	//	element.SetFrameIndexOfBitmap(1);
+	elementShowBitmap();
+	
 }
 
 bool backgroundTool::getPlaying()
@@ -112,22 +119,16 @@ void backgroundTool::Move()
 	if (buttonA)
 	{
 		
-		background.SetTopLeft(background.GetLeft() + 20, background.GetTop());
-		if (elementTrue == true)
-		{
-			element.SetTopLeft(element.GetLeft() + 20, element.GetTop());
-
-		}
+		background.SetTopLeft(background.GetLeft() + 30, background.GetTop());
+		element.SetTopLeft(element.GetLeft() + 30, element.GetTop());
+		
 	}
 
 	if (buttonD)
 	{
-		background.SetTopLeft(background.GetLeft() - 20, background.GetTop());
-		if (elementTrue == true)
-		{
-			element.SetTopLeft(element.GetLeft() - 20, element.GetTop());
-
-		}
+		background.SetTopLeft(background.GetLeft() - 30, background.GetTop());
+		element.SetTopLeft(element.GetLeft() - 30, element.GetTop());
+		
 	}
 }
 

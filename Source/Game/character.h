@@ -13,6 +13,7 @@ public:
 	void SetFlagMove(bool value);
 	bool GetFlagMove() const;
 	MyCMovingBitmap *getCharacterAdress();
+	void touchingElement(MyCMovingBitmap *element);
 
 
 
@@ -21,6 +22,9 @@ protected:
 	MyCMovingBitmap characterleft;
 	std::vector<bool> character_condition;
 	int chieght = 0;
+	bool headHitfloor=false;
+	bool fitHitblock = false;
+
 };
 
 

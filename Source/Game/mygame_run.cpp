@@ -32,7 +32,8 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
-	character.characterMove(background.getAdress());
+	character.touchingElement(background.getElementAdress());
+	character.characterMove(background.getBackgroundAdress());
 	background.Move();
 }
 
@@ -92,9 +93,9 @@ void CGameStateRun::show_image_by_phase()
 	if (background.getPlaying())
 	{
 		character.characterShowBitmap();
+		background.touching(character.getCharacterAdress());
 	}
-	background.touching(character.getCharacterAdress());
-
+	
 
 }
 

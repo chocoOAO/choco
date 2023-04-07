@@ -15,7 +15,7 @@ void characterTool::characterInit()
 			"resources/character1.bmp",
 			"resources/character3.bmp",
 			"resources/character1.bmp" }, RGB(255, 255, 255));
-	character.SetTopLeft(180, 733);
+	character.SetTopLeft(0, 733);
 	character_condition = { false, false, false, false };
 }
 
@@ -23,20 +23,31 @@ void characterTool::characterMove(MyCMovingBitmap *background)
 {
 	if (character_condition.at(0) && character.GetFlagMove() == true)
 	{
-		if (character.GetTop() > chieght - 400)
+		if (headHitfloor == true && character.GetTop() != 733)//如果頭撞到方塊強制掉下去
 		{
-			character.SetTopLeft(character.GetLeft(), character.GetTop() - 30);//按住持續W
+			chieght = 2000;
+			headHitfloor = false;
+			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 		}
-		else if (character.GetTop() != 733)
+		/*else if (fitHitblock == true)
+		{
+			//character.SetTopLeft(0, 0);
+			character.SetFlagMove(false);
+		}*/
+		else if (character.GetTop() > chieght - 470)//按住持續W
+		{
+			character.SetTopLeft(character.GetLeft(), character.GetTop() - 30);
+		}
+		else if (character.GetTop() < 733 && !fitHitblock)//掉到地板
 		{
 			chieght = 2000;
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 		}
 
 	}
-	if (character.GetFlagMove() == false)
+	if (character.GetFlagMove() == false && fitHitblock==false)
 	{
-		if (character.GetTop() != 733)
+		if (character.GetTop() < 733)
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 	}
 	
@@ -47,13 +58,13 @@ void characterTool::characterMove(MyCMovingBitmap *background)
 
 	if (character_condition.at(2) && character.GetFlagMove() == true)
 	{
-		character.SetTopLeft(character.GetLeft() - 1, character.GetTop());//按住持續A
+		character.SetTopLeft(character.GetLeft() - 6, character.GetTop());//按住持續A
 		character.SetAnimation(150, false);
 	}
 
 	if (character_condition.at(3) && character.GetFlagMove() == true)
 	{
-		character.SetTopLeft(character.GetLeft() + 1, character.GetTop());//按住持續D
+		character.SetTopLeft(character.GetLeft() + 6, character.GetTop());//按住持續D
 		character.SetAnimation(150, false);
 
 	}
@@ -65,18 +76,7 @@ void characterTool::characterKeyDown(UINT nChar)
 	{
 		character.SetFlagMove(true);
 		character_condition.at(0) = TRUE;
-		chieght = int(character.GetTop());
-		/*
-			for (int i=0; i < 15; i++)
-			{
-				character.SetTopLeft(character.GetLeft(), character.GetTop() - 30);//按住持續W
-
-			}*/
-
-			//chieght = 300;
-			//character.SetTopLeft(character.GetLeft(), character.GetTop() + 15);
-
-
+chieght = int(character.GetTop());
 
 	}
 	if (nChar == 0x53)//S
@@ -169,3 +169,14 @@ MyCMovingBitmap *characterTool::getCharacterAdress()
 	return &character;
 }
 
+void characterTool::touchingElement(MyCMovingBitmap *element)
+{
+	headHitfloor = character.touchUp(&character, element);
+	if (headHitfloor==false)
+	{
+		
+	}
+	fitHitblock = character.touchDown(&character, element);
+
+	
+}

@@ -8,5 +8,7 @@ class MyCMovingBitmap : public game_framework::CMovingBitmap
 public:
     void SetFlagMove(bool value);
     bool GetFlagMove() const;
+	bool touchUp(MyCMovingBitmap *character, MyCMovingBitmap *element);
+	bool touchDown(MyCMovingBitmap *character, MyCMovingBitmap *element);
     int button = 0;
 };

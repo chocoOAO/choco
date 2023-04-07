@@ -16,3 +16,25 @@ bool MyCMovingBitmap::GetFlagMove() const
 {
     return flag_move;
 }
+
+bool MyCMovingBitmap::touchUp(MyCMovingBitmap *character, MyCMovingBitmap *element)
+{
+	if ((character->GetTop() - 5 <= element->GetTop() + element->GetHeight()) && (character->GetTop()  > element->GetTop() + element->GetHeight() - 10) &&
+		(character->GetLeft() < element->GetLeft() + character->GetWidth()) && character->GetLeft() + 150 > element->GetLeft()
+		)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool MyCMovingBitmap::touchDown(MyCMovingBitmap *character, MyCMovingBitmap *element)
+{
+	if ((character->GetTop() +character->GetHeight()+20  >=  element->GetTop()) && (character->GetTop() + character->GetHeight() -100 < element->GetTop()) &&
+		(character->GetLeft() < element->GetLeft() + character->GetWidth()) && (character->GetLeft() + 150 > element->GetLeft())
+		)
+	{
+		return true;
+	}
+	return false;
+}
