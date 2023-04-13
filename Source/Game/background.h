@@ -1,4 +1,7 @@
 #pragma once
+#ifndef BACKGROUND_H
+#define BACKGROUND_H
+
 #include "MyCMovingBitmap.h"
 #include "character.h"
 
@@ -17,6 +20,7 @@ public:
 	bool getPlaying();
 	MyCMovingBitmap *getBackgroundAdress();
 	MyCMovingBitmap *getElementAdress();
+	MyCMovingBitmap *getElementGoAdress();
 
 
 	void Move(characterTool *run_character);
@@ -40,3 +44,4 @@ protected:
 };
 
 
+#endif

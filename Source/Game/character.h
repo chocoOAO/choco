@@ -1,7 +1,9 @@
 #pragma once
+#ifndef CHARACTER_H
+#define CHARACTER_H
 
 
-
+class backgroundTool;
 class characterTool
 {
 public:
@@ -15,7 +17,7 @@ public:
 	bool GetFaceHitblock() const;
 	bool GetBackHitblock() const;
 	MyCMovingBitmap *getCharacterAdress();
-	void touchingElement(MyCMovingBitmap *element);
+	void touchingElement(backgroundTool *element);
 
 
 
@@ -31,4 +33,4 @@ protected:
 
 };
 
-
+#endif

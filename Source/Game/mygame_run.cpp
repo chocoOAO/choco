@@ -32,7 +32,7 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
-	character.touchingElement(background.getElementAdress());
+	character.touchingElement(&background);
 	character.characterMove(background.getBackgroundAdress());
 	background.Move(&character);
 

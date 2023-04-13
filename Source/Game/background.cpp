@@ -34,8 +34,8 @@ void backgroundTool::elementInit()
 	element.LoadBitmapByString({ "resources/whiteBlock.bmp","resources/blackBlock.bmp" }, RGB(255, 255, 255));
 	element.SetTopLeft(477, 539);
 	elementGo.LoadBitmapByString({ "resources/nothing.bmp","resources/go.bmp","resources/godie.bmp" }, RGB(255, 255, 255));
-	elementGo.SetTopLeft(-1000, -1000);
-	//elementGo.SetTopLeft(697, 359);
+	//elementGo.SetTopLeft(-1000, -1000);
+	elementGo.SetTopLeft(697, 359);
 }
 
 void backgroundTool::backgroundKeyDown(UINT nChar)
@@ -96,6 +96,11 @@ MyCMovingBitmap *backgroundTool::getBackgroundAdress()
 MyCMovingBitmap *backgroundTool::getElementAdress()
 {
 	return &element;
+}
+
+MyCMovingBitmap *backgroundTool::getElementGoAdress()
+{
+	return &elementGo;
 }
 
 

@@ -5,7 +5,9 @@
 #include <ddraw.h>
 #include "MyCMovingBitmap.h"
 #include "character.h"
+#include "background.h"
 using namespace game_framework;
+
 
 void characterTool::characterInit()
 {
@@ -184,10 +186,15 @@ MyCMovingBitmap *characterTool::getCharacterAdress()
 	return &character;
 }
 
-void characterTool::touchingElement(MyCMovingBitmap *element)
+void characterTool::touchingElement(backgroundTool *backgroundElement)
 {
-	headHitfloor = character.touchUp(&character, element);
-	fitHitblock = character.touchDown(&character, element);
-	faceHitblock = character.touchLeft(&character, element);
-	backHitblock = character.touchRight(&character, element);
+	headHitfloor = character.touchUp(&character, backgroundElement->getElementAdress()) ||
+		character.touchUp(&character, backgroundElement->getElementGoAdress());
+	fitHitblock = character.touchDown(&character, backgroundElement->getElementAdress()) ||
+		character.touchDown(&character, backgroundElement->getElementGoAdress());
+	faceHitblock = character.touchLeft(&character, backgroundElement->getElementAdress()) ||
+		character.touchLeft(&character, backgroundElement->getElementGoAdress());
+	backHitblock = character.touchRight(&character, backgroundElement->getElementAdress()) ||
+		character.touchRight(&character, backgroundElement->getElementGoAdress());
+
 }
