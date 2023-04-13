@@ -5,6 +5,7 @@
 #include <ddraw.h>
 #include "MyCMovingBitmap.h"
 #include "background.h"
+#include "character.h"
 using namespace game_framework;
 
 void backgroundTool::backgroundInit()
@@ -32,6 +33,9 @@ void backgroundTool::elementInit()
 {
 	element.LoadBitmapByString({ "resources/whiteBlock.bmp","resources/blackBlock.bmp" }, RGB(255, 255, 255));
 	element.SetTopLeft(477, 539);
+	elementGo.LoadBitmapByString({ "resources/nothing.bmp","resources/go.bmp","resources/godie.bmp" }, RGB(255, 255, 255));
+	elementGo.SetTopLeft(-1000, -1000);
+	//elementGo.SetTopLeft(697, 359);
 }
 
 void backgroundTool::backgroundKeyDown(UINT nChar)
@@ -81,6 +85,7 @@ void backgroundTool::selectShowBitmap()
 void backgroundTool::elementShowBitmap()
 {
 	element.ShowBitmap();
+	elementGo.ShowBitmap();
 }
 
 MyCMovingBitmap *backgroundTool::getBackgroundAdress()
@@ -99,9 +104,8 @@ void backgroundTool::touching(MyCMovingBitmap *character)//
 	if (background.touchUp(character, &element))
 	{
 		element.SetFrameIndexOfBitmap(1);
+		elementGo.SetFrameIndexOfBitmap(1);
 	}
-	//if (background.IsOverlap(*character, element))
-	//	element.SetFrameIndexOfBitmap(1);
 	elementShowBitmap();
 	
 }
@@ -113,21 +117,41 @@ bool backgroundTool::getPlaying()
 
 
 
-void backgroundTool::Move()
+void backgroundTool::Move(characterTool *run_character)
 {
 
-	if (buttonA)
+	if (buttonA && run_character->GetBackHitblock() == false)
 	{
+		if (buttonW == false) //沒有跳躍的時候地圖正常跑
+		{
+			background.SetTopLeft(background.GetLeft() + 30, background.GetTop());
+			element.SetTopLeft(element.GetLeft() + 30, element.GetTop());
+			elementGo.SetTopLeft(elementGo.GetLeft() + 30, elementGo.GetTop());
+		}
+		else //有跳躍的時候地圖要跑比較慢，因為有強制墬落
+		{
+			background.SetTopLeft(background.GetLeft() + 20, background.GetTop());
+			element.SetTopLeft(element.GetLeft() + 20, element.GetTop());
+			elementGo.SetTopLeft(elementGo.GetLeft() + 20, elementGo.GetTop());
+		}
 		
-		background.SetTopLeft(background.GetLeft() + 30, background.GetTop());
-		element.SetTopLeft(element.GetLeft() + 30, element.GetTop());
-		
+
 	}
 
-	if (buttonD)
+	if (buttonD && run_character->GetFaceHitblock()  == false)
 	{
-		background.SetTopLeft(background.GetLeft() - 30, background.GetTop());
-		element.SetTopLeft(element.GetLeft() - 30, element.GetTop());
+		if (buttonW == false) //沒有跳躍的時候地圖正常跑
+		{
+			background.SetTopLeft(background.GetLeft() - 30, background.GetTop());
+			element.SetTopLeft(element.GetLeft() - 30, element.GetTop());
+			elementGo.SetTopLeft(elementGo.GetLeft() - 30, elementGo.GetTop());
+		}
+		else //有跳躍的時候地圖要跑比較慢，因為有強制墬落
+		{
+			background.SetTopLeft(background.GetLeft() - 20, background.GetTop());
+			element.SetTopLeft(element.GetLeft() - 20, element.GetTop());
+			elementGo.SetTopLeft(elementGo.GetLeft() - 20, elementGo.GetTop());
+		}
 		
 	}
 }
@@ -137,8 +161,7 @@ void backgroundTool::KeyDown(UINT nChar)
 	
 	if (nChar == 0x57)//W
 	{		
-		
-		
+		buttonW = true;		
 	}
 	if (nChar == 0x53)//S
 	{
@@ -160,7 +183,7 @@ void backgroundTool::KeyUp(UINT nChar)
 {
 	if (nChar == 0x57)//W
 	{
-		
+		buttonW = false;
 	}
 	if (nChar == 0x53)//S
 	{

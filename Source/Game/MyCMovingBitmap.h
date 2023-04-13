@@ -10,5 +10,7 @@ public:
     bool GetFlagMove() const;
 	bool touchUp(MyCMovingBitmap *character, MyCMovingBitmap *element);
 	bool touchDown(MyCMovingBitmap *character, MyCMovingBitmap *element);
-    int button = 0;
+	bool touchLeft(MyCMovingBitmap *character, MyCMovingBitmap *element);
+	bool touchRight(MyCMovingBitmap *character, MyCMovingBitmap *element);
+	int button = 0;
 };

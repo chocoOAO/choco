@@ -12,6 +12,8 @@ public:
 	void characterShowBitmap();
 	void SetFlagMove(bool value);
 	bool GetFlagMove() const;
+	bool GetFaceHitblock() const;
+	bool GetBackHitblock() const;
 	MyCMovingBitmap *getCharacterAdress();
 	void touchingElement(MyCMovingBitmap *element);
 
@@ -24,6 +26,8 @@ protected:
 	int chieght = 0;
 	bool headHitfloor=false;
 	bool fitHitblock = false;
+	bool faceHitblock = false;
+	bool backHitblock = false;
 
 };
 

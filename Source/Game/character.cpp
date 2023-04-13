@@ -34,7 +34,7 @@ void characterTool::characterMove(MyCMovingBitmap *background)
 			//character.SetTopLeft(0, 0);
 			character.SetFlagMove(false);
 		}*/
-		else if (character.GetTop() > chieght - 470)//按住持續W
+		else if (character.GetTop() > chieght - 400)//按住持續W
 		{
 			character.SetTopLeft(character.GetLeft(), character.GetTop() - 30);
 		}
@@ -56,15 +56,20 @@ void characterTool::characterMove(MyCMovingBitmap *background)
 		character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);//按住持續S
 	}*/
 
-	if (character_condition.at(2) && character.GetFlagMove() == true)
+	if (character_condition.at(2) && character.GetFlagMove() == true && (backHitblock == false))
 	{
-		character.SetTopLeft(character.GetLeft() - 6, character.GetTop());//按住持續A
+		character.SetTopLeft(character.GetLeft() - 2, character.GetTop());//按住持續A
 		character.SetAnimation(150, false);
 	}
-
-	if (character_condition.at(3) && character.GetFlagMove() == true)
+	/*
+	if (faceHitblock == true)
 	{
-		character.SetTopLeft(character.GetLeft() + 6, character.GetTop());//按住持續D
+		character.SetTopLeft(0, 30);
+	}*/
+
+	if (character_condition.at(3) && character.GetFlagMove() == true && (faceHitblock == false))
+	{
+		character.SetTopLeft(character.GetLeft() + 2, character.GetTop());//按住持續D
 		character.SetAnimation(150, false);
 
 	}
@@ -76,7 +81,7 @@ void characterTool::characterKeyDown(UINT nChar)
 	{
 		character.SetFlagMove(true);
 		character_condition.at(0) = TRUE;
-chieght = int(character.GetTop());
+		chieght = int(character.GetTop());
 
 	}
 	if (nChar == 0x53)//S
@@ -164,6 +169,16 @@ bool characterTool::GetFlagMove() const
 	return character.GetFlagMove();
 }
 
+bool characterTool::GetFaceHitblock() const
+{
+	return  faceHitblock;
+}
+
+bool characterTool::GetBackHitblock() const
+{
+	return backHitblock;
+}
+
 MyCMovingBitmap *characterTool::getCharacterAdress()
 {
 	return &character;
@@ -172,11 +187,7 @@ MyCMovingBitmap *characterTool::getCharacterAdress()
 void characterTool::touchingElement(MyCMovingBitmap *element)
 {
 	headHitfloor = character.touchUp(&character, element);
-	if (headHitfloor==false)
-	{
-		
-	}
 	fitHitblock = character.touchDown(&character, element);
-
-	
+	faceHitblock = character.touchLeft(&character, element);
+	backHitblock = character.touchRight(&character, element);
 }
