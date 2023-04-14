@@ -13,6 +13,7 @@ public:
 	void characterKeyUp(UINT nChar);
 	void characterShowBitmap();
 	void SetFlagMove(bool value);
+	//void jump(std::vector<bool> vector);
 	bool GetFlagMove() const;
 	bool GetFaceHitblock() const;
 	bool GetBackHitblock() const;
@@ -27,7 +28,7 @@ protected:
 	std::vector<bool> character_condition;
 	int chieght = 0;
 	bool headHitfloor=false;
-	bool fitHitblock = false;
+	bool feetHitblock = false;
 	bool faceHitblock = false;
 	bool backHitblock = false;
 

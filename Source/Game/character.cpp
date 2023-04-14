@@ -25,29 +25,29 @@ void characterTool::characterMove(MyCMovingBitmap *background)
 {
 	if (character_condition.at(0) && character.GetFlagMove() == true)
 	{
-		if (headHitfloor == true && character.GetTop() != 733)//如果頭撞到方塊強制掉下去
+		if (headHitfloor == true && character.GetTop() != 733)//如果頭撞到方塊強制掉落
 		{
-			chieght = 2000;
-			headHitfloor = false;
+			chieght = 2000; // Let "(character.GetTop() > chieght - 400)" be false
+			headHitfloor = false; // reset headHitfloor
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 		}
-		/*else if (fitHitblock == true)
+		/*else if (feetHitblock == true)
 		{
 			//character.SetTopLeft(0, 0);
 			character.SetFlagMove(false);
 		}*/
-		else if (character.GetTop() > chieght - 400)//按住持續W
+		else if (character.GetTop() > chieght - 400)//持續按住W
 		{
 			character.SetTopLeft(character.GetLeft(), character.GetTop() - 30);
 		}
-		else if (character.GetTop() < 733 && !fitHitblock)//掉到地板
+		else if (character.GetTop() < 733 && !feetHitblock)//掉到地板
 		{
 			chieght = 2000;
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 		}
 
 	}
-	if (character.GetFlagMove() == false && fitHitblock==false)
+	if (character.GetFlagMove() == false && !feetHitblock)
 	{
 		if (character.GetTop() < 733)
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
@@ -166,6 +166,15 @@ void characterTool::SetFlagMove(bool value)
 	character.SetFlagMove(value);
 }
 
+/*
+void characterTool::jump(std::vector<bool> character_condition)
+{
+	int time = 0;
+	
+	
+}
+*/
+
 bool characterTool::GetFlagMove() const
 {
 	return character.GetFlagMove();
@@ -190,7 +199,7 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 {
 	headHitfloor = character.touchUp(&character, backgroundElement->getElementAdress()) ||
 		character.touchUp(&character, backgroundElement->getElementGoAdress());
-	fitHitblock = character.touchDown(&character, backgroundElement->getElementAdress()) ||
+	feetHitblock = character.touchDown(&character, backgroundElement->getElementAdress()) ||
 		character.touchDown(&character, backgroundElement->getElementGoAdress());
 	faceHitblock = character.touchLeft(&character, backgroundElement->getElementAdress()) ||
 		character.touchLeft(&character, backgroundElement->getElementGoAdress());
