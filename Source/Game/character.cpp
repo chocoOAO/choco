@@ -1,14 +1,13 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "../Core/Resource.h"
 #include "../Library/gameutil.h"
-//#include "../Library/audio.h"
-//#include "../Library/gamecore.h"
 #include <mmsystem.h>
 #include <ddraw.h>
 #include "MyCMovingBitmap.h"
-#include "mygame.h"
 #include "character.h"
+#include "background.h"
 using namespace game_framework;
+
 
 void characterTool::characterInit()
 {
@@ -18,59 +17,61 @@ void characterTool::characterInit()
 			"resources/character1.bmp",
 			"resources/character3.bmp",
 			"resources/character1.bmp" }, RGB(255, 255, 255));
-	character.SetTopLeft(180, 733);
+	character.SetTopLeft(0, 733);
 	character_condition = { false, false, false, false };
 }
 
-void characterTool::SetFlagMove(bool value)
-{
-	character.SetFlagMove(value);
-}
-
-bool characterTool::GetFlagMove() const
-{
-	return character.GetFlagMove();
-}
-
-void characterTool::characterMove(MyCMovingBitmap background)
+void characterTool::characterMove(MyCMovingBitmap *background)
 {
 	if (character_condition.at(0) && character.GetFlagMove() == true)
 	{
-		if (character.GetTop() > chieght - 400)
-		{
-			character.SetTopLeft(character.GetLeft(), character.GetTop() - 20);//«ö¦í«ùÄòW
-		}
-		else if (character.GetTop() != 733)
+		if (headHitfloor == true && character.GetTop() != 733)//å¦‚æœé ­æ’åˆ°æ–¹å¡Šå¼·åˆ¶æ‰ä¸‹å»
 		{
 			chieght = 2000;
-			character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);
+			headHitfloor = false;
+			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
+		}
+		/*else if (fitHitblock == true)
+		{
+			//character.SetTopLeft(0, 0);
+			character.SetFlagMove(false);
+		}*/
+		else if (character.GetTop() > chieght - 400)//æŒ‰ä½æŒçºŒW
+		{
+			character.SetTopLeft(character.GetLeft(), character.GetTop() - 30);
+		}
+		else if (character.GetTop() < 733 && !fitHitblock)//æ‰åˆ°åœ°æ¿
+		{
+			chieght = 2000;
+			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 		}
 
 	}
-	if (character.GetFlagMove() == false)
+	if (character.GetFlagMove() == false && fitHitblock==false)
 	{
-		if (character.GetTop() != 733)
-			character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);
+		if (character.GetTop() < 733)
+			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 	}
-
-
-
-	if (character_condition.at(1) && character.GetFlagMove() == true)
+	
+	/*if (character_condition.at(1) && character.GetFlagMove() == true)
 	{
-		character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);//«ö¦í«ùÄòS
-	}
+		character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);//æŒ‰ä½æŒçºŒS
+	}*/
 
-	if (character_condition.at(2) && character.GetFlagMove() == true)
+	if (character_condition.at(2) && character.GetFlagMove() == true && (backHitblock == false))
 	{
-		character.SetTopLeft(character.GetLeft() - 3, character.GetTop());//«ö¦í«ùÄòA
-		background.SetTopLeft(background.GetLeft() + 20, background.GetTop());
+		character.SetTopLeft(character.GetLeft() - 2, character.GetTop());//æŒ‰ä½æŒçºŒA
 		character.SetAnimation(150, false);
 	}
-
-	if (character_condition.at(3) && character.GetFlagMove() == true)
+	/*
+	if (faceHitblock == true)
 	{
-		character.SetTopLeft(character.GetLeft() + 3, character.GetTop());//«ö¦í«ùÄòD
-		background.SetTopLeft(background.GetLeft() - 20, background.GetTop());
+		character.SetTopLeft(0, 30);
+	}*/
+
+	if (character_condition.at(3) && character.GetFlagMove() == true && (faceHitblock == false))
+	{
+		character.SetTopLeft(character.GetLeft() + 2, character.GetTop());//æŒ‰ä½æŒçºŒD
 		character.SetAnimation(150, false);
 
 	}
@@ -83,17 +84,6 @@ void characterTool::characterKeyDown(UINT nChar)
 		character.SetFlagMove(true);
 		character_condition.at(0) = TRUE;
 		chieght = int(character.GetTop());
-		/*
-			for (int i=0; i < 15; i++)
-			{
-				character.SetTopLeft(character.GetLeft(), character.GetTop() - 30);//«ö¦í«ùÄòW
-
-			}*/
-
-			//chieght = 300;
-			//character.SetTopLeft(character.GetLeft(), character.GetTop() + 15);
-
-
 
 	}
 	if (nChar == 0x53)//S
@@ -165,10 +155,46 @@ void characterTool::characterKeyUp(UINT nChar)
 
 	}
 }
-	void characterTool::characterShowBitmap()
-	{
-		character.ShowBitmap();
+void characterTool::characterShowBitmap()
+{
+	character.ShowBitmap();
 
-	}
+}
 
+void characterTool::SetFlagMove(bool value)
+{
+	character.SetFlagMove(value);
+}
 
+bool characterTool::GetFlagMove() const
+{
+	return character.GetFlagMove();
+}
+
+bool characterTool::GetFaceHitblock() const
+{
+	return  faceHitblock;
+}
+
+bool characterTool::GetBackHitblock() const
+{
+	return backHitblock;
+}
+
+MyCMovingBitmap *characterTool::getCharacterAdress()
+{
+	return &character;
+}
+
+void characterTool::touchingElement(backgroundTool *backgroundElement)
+{
+	headHitfloor = character.touchUp(&character, backgroundElement->getElementAdress()) ||
+		character.touchUp(&character, backgroundElement->getElementGoAdress());
+	fitHitblock = character.touchDown(&character, backgroundElement->getElementAdress()) ||
+		character.touchDown(&character, backgroundElement->getElementGoAdress());
+	faceHitblock = character.touchLeft(&character, backgroundElement->getElementAdress()) ||
+		character.touchLeft(&character, backgroundElement->getElementGoAdress());
+	backHitblock = character.touchRight(&character, backgroundElement->getElementAdress()) ||
+		character.touchRight(&character, backgroundElement->getElementGoAdress());
+
+}

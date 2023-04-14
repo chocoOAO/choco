@@ -40,8 +40,7 @@
 #pragma once
 #include "MyCMovingBitmap.h"
 #include "character.h"
-
-
+#include "background.h"
 
 namespace game_framework
 {
@@ -109,19 +108,9 @@ namespace game_framework
     private:
         void show_image_by_phase();
         //std::vector<bool> character_condition;
+        backgroundTool background;
 		characterTool character;
-		MyCMovingBitmap background;
-		//MyCMovingBitmap character;
         MyCMovingBitmap characterleft;
-        MyCMovingBitmap select1;
-        MyCMovingBitmap select2;
-        MyCMovingBitmap totalSelect;
-        int phase = 1;
-        int sel = 0;
-        int sub_phase = 1;
-        int chieght = 0;
-        bool playing = false;
-        vector<bool> keyFlags;
     };
 
     /////////////////////////////////////////////////////////////////////////////
