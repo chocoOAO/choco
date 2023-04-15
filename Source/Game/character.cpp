@@ -27,8 +27,8 @@ void characterTool::characterMove(MyCMovingBitmap *background)
 	{
 		if (headHitfloor == true && character.GetTop() != 733)//如果頭撞到方塊強制掉下去
 		{
-			chieght = 2000;
-			headHitfloor = false;
+			chieght = 2000; // Let "(character.GetTop() > chieght - 400)" be false
+			headHitfloor = false; // reset headHitfloor
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 		}
 		/*else if (fitHitblock == true)
@@ -40,14 +40,14 @@ void characterTool::characterMove(MyCMovingBitmap *background)
 		{
 			character.SetTopLeft(character.GetLeft(), character.GetTop() - 30);
 		}
-		else if (character.GetTop() < 733 && !fitHitblock)//掉到地板
+		else if (character.GetTop() < 733 && !feetHitblock)//掉到地板
 		{
 			chieght = 2000;
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 		}
 
 	}
-	if (character.GetFlagMove() == false && fitHitblock==false)
+	if (character.GetFlagMove() == false && feetHitblock==false)
 	{
 		if (character.GetTop() < 733)
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
@@ -181,20 +181,60 @@ bool characterTool::GetBackHitblock() const
 	return backHitblock;
 }
 
-MyCMovingBitmap *characterTool::getCharacterAdress()
+MyCMovingBitmap *characterTool::getCharacterAddress()
 {
 	return &character;
 }
 
 void characterTool::touchingElement(backgroundTool *backgroundElement)
 {
-	headHitfloor = character.touchUp(&character, backgroundElement->getElementAdress()) ||
-		character.touchUp(&character, backgroundElement->getElementGoAdress());
-	fitHitblock = character.touchDown(&character, backgroundElement->getElementAdress()) ||
-		character.touchDown(&character, backgroundElement->getElementGoAdress());
-	faceHitblock = character.touchLeft(&character, backgroundElement->getElementAdress()) ||
-		character.touchLeft(&character, backgroundElement->getElementGoAdress());
-	backHitblock = character.touchRight(&character, backgroundElement->getElementAdress()) ||
-		character.touchRight(&character, backgroundElement->getElementGoAdress());
+	headHitfloor = character.touchUp(&character, backgroundElement->getElementAddress()) ||
+		character.touchUp(&character, backgroundElement->getElementGoAddress()) ||
+		character.touchUp(&character, backgroundElement->getElementEmptyBlockAddress());
+	feetHitblock = character.touchDown(&character, backgroundElement->getElementAddress()) ||
+		character.touchDown(&character, backgroundElement->getElementGoAddress());
+	faceHitblock = character.touchLeft(&character, backgroundElement->getElementAddress()) ||
+		character.touchLeft(&character, backgroundElement->getElementGoAddress());
+	backHitblock = character.touchRight(&character, backgroundElement->getElementAddress()) ||
+		character.touchRight(&character, backgroundElement->getElementGoAddress());
 
+	if ((backgroundElement->getElementEmptyBlockAddress())->GetFrameIndexOfBitmap() == 1)
+	{
+		feetHitblock = character.touchDown(&character, backgroundElement->getElementEmptyBlockAddress());
+		faceHitblock = character.touchLeft(&character, backgroundElement->getElementEmptyBlockAddress());
+		backHitblock = character.touchRight(&character, backgroundElement->getElementEmptyBlockAddress());
+	}
+
+	if (character.touchUp(&character, backgroundElement->getElementGoAddress()))
+	{
+		backgroundElement->backgroundInit();
+		backgroundElement->elementInit();
+		characterInit();
+	}
+
+	if (character.IsOverlap(*(backgroundElement->getElementCloudAddress()), character))
+	{
+		backgroundElement->backgroundInit();
+		backgroundElement->elementInit();
+		characterInit();
+	}
+
+	
 }
+
+void characterTool::drop(backgroundTool *background)
+{
+	MyCMovingBitmap tmp = *(background->getBackgroundAddress());
+	if (character.GetLeft() > tmp.GetLeft() + 1480 && character.GetLeft() < tmp.GetLeft() +1820 &&
+		character.GetTop() >= 733)
+	{
+		character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
+	}
+	if (character.GetTop() > 960)
+	{
+		background->backgroundInit();
+		background->elementInit();
+		characterInit();
+	}
+}
+

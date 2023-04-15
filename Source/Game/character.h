@@ -2,7 +2,8 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
-
+class CTextDraw;
+class CDDraw;
 class backgroundTool;
 class characterTool
 {
@@ -16,9 +17,9 @@ public:
 	bool GetFlagMove() const;
 	bool GetFaceHitblock() const;
 	bool GetBackHitblock() const;
-	MyCMovingBitmap *getCharacterAdress();
+	MyCMovingBitmap *getCharacterAddress();
 	void touchingElement(backgroundTool *element);
-
+	void drop(backgroundTool *background);
 
 
 protected:
@@ -27,7 +28,7 @@ protected:
 	std::vector<bool> character_condition;
 	int chieght = 0;
 	bool headHitfloor=false;
-	bool fitHitblock = false;
+	bool feetHitblock = false;
 	bool faceHitblock = false;
 	bool backHitblock = false;
 

@@ -8,6 +8,8 @@
 #include "MyCMovingBitmap.h"
 #include "mygame.h"
 #include "character.h"
+#include <iostream>
+#include <string>
 
 using namespace game_framework;
 
@@ -33,7 +35,8 @@ void CGameStateRun::OnBeginState()
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
 	character.touchingElement(&background);
-	character.characterMove(background.getBackgroundAdress());
+	character.characterMove(background.getBackgroundAddress());
+	character.drop(&background);
 	background.Move(&character);
 
 }
@@ -83,7 +86,7 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動
 void CGameStateRun::OnShow()
 {
 	show_image_by_phase();
-
+	show_text_by_phase();
 }
 
 void CGameStateRun::show_image_by_phase() 
@@ -94,25 +97,26 @@ void CGameStateRun::show_image_by_phase()
 	if (background.getPlaying())
 	{
 		character.characterShowBitmap();
-		background.touching(character.getCharacterAdress());
+		background.touching(&character);
 	}
 	
 
 }
 
-/*
+
 void CGameStateRun::show_text_by_phase()
 {
 	CDC *pDC = CDDraw::GetBackCDC();
 	//CFont* fp;
-
-	CTextDraw::ChangeFontLog(pDC, 36, "微軟正黑體", RGB(255, 255, 255));
-	CTextDraw::Print(pDC, 79, 228, "IQ:200");
-
-	
-	CTextDraw::ChangeFontLog(pDC, fp, 24, "微軟正黑體", RGB(255, 255, 255));
-	CTextDraw::Print(pDC, 182, 431, "Press any key to start");
-	
+	MyCMovingBitmap tmp = *(background.getBackgroundAddress());
+	MyCMovingBitmap tmp3 = *(character.getCharacterAddress());
+	string tmp2 = std::to_string(tmp.GetLeft());
+	string tmp4 = std::to_string(tmp3.GetTop());
+	CTextDraw::ChangeFontLog(pDC, 36, "微軟正黑體", RGB(0, 0, 0));
+	CTextDraw::Print(pDC, 50, 50, tmp2);
+	CTextDraw::ChangeFontLog(pDC, 36, "微軟正黑體", RGB(0, 0, 0));
+	CTextDraw::Print(pDC, 50, 100, tmp4);
+	//CTextDraw::Print(pDC, 50, 50, "IQ:200");
+		
 	CDDraw::ReleaseBackCDC();
 }
-*/

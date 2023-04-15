@@ -33,9 +33,19 @@ void backgroundTool::elementInit()
 {
 	element.LoadBitmapByString({ "resources/whiteBlock.bmp","resources/blackBlock.bmp" }, RGB(255, 255, 255));
 	element.SetTopLeft(477, 539);
+	element.SetFrameIndexOfBitmap(0);
 	elementGo.LoadBitmapByString({ "resources/nothing.bmp","resources/go.bmp","resources/godie.bmp" }, RGB(255, 255, 255));
+	elementGo.SetFrameIndexOfBitmap(0);
+	elementGo.SetTopLeft(0,0);
 	//elementGo.SetTopLeft(-1000, -1000);
-	elementGo.SetTopLeft(697, 359);
+	//elementGo.SetTopLeft(697, 359);
+	elementCloud.LoadBitmapByString({ "resources/cloud.bmp","resources/clouddie.bmp" }, RGB(255, 255, 255));
+	elementCloud.SetFrameIndexOfBitmap(0);
+	elementCloud.SetTopLeft(1600, -20);
+
+	elementEmptyBlock.LoadBitmapByString({ "resources/emptyBlock.bmp","resources/blackBlock.bmp" }, RGB(255, 255, 255));
+	elementEmptyBlock.SetFrameIndexOfBitmap(0);
+	elementEmptyBlock.SetTopLeft(1500, 539);
 }
 
 void backgroundTool::backgroundKeyDown(UINT nChar)
@@ -86,31 +96,59 @@ void backgroundTool::elementShowBitmap()
 {
 	element.ShowBitmap();
 	elementGo.ShowBitmap();
+	elementCloud.ShowBitmap();
+	elementEmptyBlock.ShowBitmap();
 }
 
-MyCMovingBitmap *backgroundTool::getBackgroundAdress()
+MyCMovingBitmap *backgroundTool::getBackgroundAddress()
 {
 	return &background;
 }
 
-MyCMovingBitmap *backgroundTool::getElementAdress()
+MyCMovingBitmap *backgroundTool::getElementAddress()
 {
 	return &element;
 }
 
-MyCMovingBitmap *backgroundTool::getElementGoAdress()
+MyCMovingBitmap *backgroundTool::getElementGoAddress()
 {
 	return &elementGo;
 }
 
-
-void backgroundTool::touching(MyCMovingBitmap *character)//
+MyCMovingBitmap *backgroundTool::getElementCloudAddress()
 {
-	if (background.touchUp(character, &element))
+	return &elementCloud;
+}
+
+MyCMovingBitmap *backgroundTool::getElementEmptyBlockAddress()
+{
+	return &elementEmptyBlock;
+}
+
+void backgroundTool::touching(characterTool *character)
+{
+	if (element.touchUp(character->getCharacterAddress(), &element))
 	{
 		element.SetFrameIndexOfBitmap(1);
 		elementGo.SetFrameIndexOfBitmap(1);
+		elementGo.SetTopLeft(background.GetLeft() + 697, background.GetTop() + 359);//300
 	}
+
+	if (elementGo.touchUp(character->getCharacterAddress(), &elementGo))
+	{
+		elementGo.SetFrameIndexOfBitmap(2);
+	}
+
+	if (elementEmptyBlock.touchUp(character->getCharacterAddress(), &elementEmptyBlock))
+	{
+		elementEmptyBlock.SetFrameIndexOfBitmap(1);
+	}
+
+	if (background.IsOverlap(*(character->getCharacterAddress()), elementCloud))
+	{
+		elementCloud.SetFrameIndexOfBitmap(1);
+	}
+
 	elementShowBitmap();
 	
 }
@@ -132,12 +170,17 @@ void backgroundTool::Move(characterTool *run_character)
 			background.SetTopLeft(background.GetLeft() + 30, background.GetTop());
 			element.SetTopLeft(element.GetLeft() + 30, element.GetTop());
 			elementGo.SetTopLeft(elementGo.GetLeft() + 30, elementGo.GetTop());
+			elementCloud.SetTopLeft(elementCloud.GetLeft() + 30, elementCloud.GetTop());
+			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() + 30, elementEmptyBlock.GetTop());
 		}
 		else //有跳躍的時候地圖要跑比較慢，因為有強制墬落
 		{
 			background.SetTopLeft(background.GetLeft() + 20, background.GetTop());
 			element.SetTopLeft(element.GetLeft() + 20, element.GetTop());
 			elementGo.SetTopLeft(elementGo.GetLeft() + 20, elementGo.GetTop());
+			elementCloud.SetTopLeft(elementCloud.GetLeft() + 20, elementCloud.GetTop());
+			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() + 20, elementEmptyBlock.GetTop());
+
 		}
 		
 
@@ -150,12 +193,19 @@ void backgroundTool::Move(characterTool *run_character)
 			background.SetTopLeft(background.GetLeft() - 30, background.GetTop());
 			element.SetTopLeft(element.GetLeft() - 30, element.GetTop());
 			elementGo.SetTopLeft(elementGo.GetLeft() - 30, elementGo.GetTop());
+			elementCloud.SetTopLeft(elementCloud.GetLeft() - 30, elementCloud.GetTop());
+			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() - 30, elementEmptyBlock.GetTop());
+
+
 		}
 		else //有跳躍的時候地圖要跑比較慢，因為有強制墬落
 		{
 			background.SetTopLeft(background.GetLeft() - 20, background.GetTop());
 			element.SetTopLeft(element.GetLeft() - 20, element.GetTop());
 			elementGo.SetTopLeft(elementGo.GetLeft() - 20, elementGo.GetTop());
+			elementCloud.SetTopLeft(elementCloud.GetLeft() - 20, elementCloud.GetTop());
+			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() - 20, elementEmptyBlock.GetTop());
+
 		}
 		
 	}
