@@ -51,9 +51,18 @@ void backgroundTool::elementInit()
 	elementGrass.SetFrameIndexOfBitmap(0);
 	elementGrass.SetTopLeft(2375, 800);
 
-	elementLongBlock.LoadBitmapByString({ "resources/longBlock.bmp","resources/grassdie.bmp" }, RGB(255, 255, 255));
+	elementLongBlock.LoadBitmapByString({ "resources/longBlock.bmp" }, RGB(255, 255, 255));
 	elementLongBlock.SetFrameIndexOfBitmap(0);
-	elementLongBlock.SetTopLeft(2500, 650);
+	elementLongBlock.SetTopLeft(2527, 538);
+
+	elementShortBlock.LoadBitmapByString({ "resources/shortBlock.bmp" }, RGB(255, 255, 255));
+	elementShortBlock.SetTopLeft(2686, 220);
+
+	elementPipe1.LoadBitmapByString({ "resources/pipe.bmp" }, RGB(255, 255, 255));
+	elementPipe1.SetTopLeft(3790, 538);
+
+	elementPipe2.LoadBitmapByString({ "resources/pipe.bmp" }, RGB(255, 255, 255));
+	elementPipe2.SetTopLeft(4900, 538);
 }
 
 void backgroundTool::backgroundKeyDown(UINT nChar)
@@ -108,6 +117,9 @@ void backgroundTool::elementShowBitmap()
 	elementEmptyBlock.ShowBitmap();
 	elementGrass.ShowBitmap();
 	elementLongBlock.ShowBitmap();
+	elementShortBlock.ShowBitmap();
+	elementPipe1.ShowBitmap();
+	elementPipe2.ShowBitmap();
 }
 
 MyCMovingBitmap *backgroundTool::getBackgroundAddress()
@@ -138,6 +150,26 @@ MyCMovingBitmap *backgroundTool::getElementEmptyBlockAddress()
 MyCMovingBitmap *backgroundTool::getElementGrassAddress()
 {
 	return &elementGrass;
+}
+
+MyCMovingBitmap *backgroundTool::getElementLongBlockAddress()
+{
+	return &elementLongBlock;
+}
+
+MyCMovingBitmap *backgroundTool::getElementShortBlockAddress()
+{
+	return &elementShortBlock;
+}
+
+MyCMovingBitmap *backgroundTool::getElementPipe1Address()
+{
+	return &elementPipe1;
+}
+
+MyCMovingBitmap *backgroundTool::getElementPipe2Address()
+{
+	return &elementPipe2;
 }
 
 void backgroundTool::touching(characterTool *character)
@@ -193,6 +225,10 @@ void backgroundTool::Move(characterTool *run_character)
 			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() + 30, elementEmptyBlock.GetTop());
 			elementGrass.SetTopLeft(elementGrass.GetLeft() + 30, elementGrass.GetTop());
 			elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() + 30, elementLongBlock.GetTop());
+			elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() + 30, elementShortBlock.GetTop());
+			elementPipe1.SetTopLeft(elementPipe1.GetLeft() + 30, elementPipe1.GetTop());
+			elementPipe2.SetTopLeft(elementPipe2.GetLeft() + 30, elementPipe2.GetTop());
+
 
 		}
 		else //有跳躍的時候地圖要跑比較慢，因為有強制墬落
@@ -204,6 +240,10 @@ void backgroundTool::Move(characterTool *run_character)
 			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() + 20, elementEmptyBlock.GetTop());
 			elementGrass.SetTopLeft(elementGrass.GetLeft() + 20, elementGrass.GetTop());
 			elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() + 20, elementLongBlock.GetTop());
+			elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() + 20, elementShortBlock.GetTop());
+			elementPipe1.SetTopLeft(elementPipe1.GetLeft() + 20, elementPipe1.GetTop());
+			elementPipe2.SetTopLeft(elementPipe2.GetLeft() + 20, elementPipe2.GetTop());
+
 
 		}
 		
@@ -221,6 +261,9 @@ void backgroundTool::Move(characterTool *run_character)
 			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() - 30, elementEmptyBlock.GetTop());
 			elementGrass.SetTopLeft(elementGrass.GetLeft() - 30, elementGrass.GetTop());
 			elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() - 30, elementLongBlock.GetTop());
+			elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() - 30, elementShortBlock.GetTop());
+			elementPipe1.SetTopLeft(elementPipe1.GetLeft() - 30, elementPipe1.GetTop());
+			elementPipe2.SetTopLeft(elementPipe2.GetLeft() - 30, elementPipe2.GetTop());
 
 
 		}
@@ -233,6 +276,9 @@ void backgroundTool::Move(characterTool *run_character)
 			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() - 20, elementEmptyBlock.GetTop());
 			elementGrass.SetTopLeft(elementGrass.GetLeft() - 20, elementGrass.GetTop());
 			elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() - 20, elementLongBlock.GetTop());
+			elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() - 20, elementShortBlock.GetTop());
+			elementPipe1.SetTopLeft(elementPipe1.GetLeft() - 20, elementPipe1.GetTop());
+			elementPipe2.SetTopLeft(elementPipe2.GetLeft() - 20, elementPipe2.GetTop());
 
 		}
 		

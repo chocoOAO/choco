@@ -24,7 +24,10 @@ public:
 	MyCMovingBitmap *getElementCloudAddress();
 	MyCMovingBitmap *getElementEmptyBlockAddress();
 	MyCMovingBitmap *getElementGrassAddress();
-
+	MyCMovingBitmap *getElementLongBlockAddress();
+	MyCMovingBitmap *getElementShortBlockAddress();
+	MyCMovingBitmap *getElementPipe1Address();
+	MyCMovingBitmap *getElementPipe2Address();
 
 
 	void Move(characterTool *run_character);
@@ -38,6 +41,9 @@ protected:
 	MyCMovingBitmap elementEmptyBlock;
 	MyCMovingBitmap elementGrass;
 	MyCMovingBitmap elementLongBlock;
+	MyCMovingBitmap elementShortBlock;
+	MyCMovingBitmap elementPipe1;
+	MyCMovingBitmap elementPipe2;
 	MyCMovingBitmap background;
 	MyCMovingBitmap select1;
 	MyCMovingBitmap select2;
