@@ -6,11 +6,20 @@
 #include "MyCMovingBitmap.h"
 #include "character.h"
 #include "background.h"
+#include <vector>
 using namespace game_framework;
 
 
 void characterTool::characterInit()
 {
+	std::vector<string> tmpCharacter = {
+			"resources/character1.bmp",
+			"resources/character2.bmp",
+			"resources/character1.bmp",
+			"resources/character3.bmp",
+			"resources/character1.bmp" };
+	//cleanBitMap(&character, tmpCharacter);
+	
 	character.LoadBitmapByString({
 			"resources/character1.bmp",
 			"resources/character2.bmp",
@@ -95,10 +104,14 @@ void characterTool::characterKeyDown(UINT nChar)
 	{
 		character.SetFlagMove(true);
 		character_condition.at(2) = TRUE;
-		/*
+		/*cleanBitMap(&character, {
+		"resources/character1.bmp",
+		"resources/character6.bmp",
+		"resources/character1.bmp",
+		"resources/character7.bmp",
+		"resources/character1.bmp" });
 		int x = character.GetLeft();
-		int y = character.GetTop();
-		character.LoadBitmapByString({ "resources/character1.bmp" }, 1);
+		int y = character.GetTop();		
 		character.LoadBitmapByString({
 		"resources/character1.bmp",
 		"resources/character6.bmp",
@@ -113,10 +126,14 @@ void characterTool::characterKeyDown(UINT nChar)
 	{
 		character.SetFlagMove(true);
 		character_condition.at(3) = TRUE;
-		/*
+		/*cleanBitMap(&character, {
+		"resources/character1.bmp",
+		"resources/character2.bmp",
+		"resources/character1.bmp",
+		"resources/character3.bmp",
+		"resources/character1.bmp" });
 		int x = character.GetLeft();
 		int y = character.GetTop();
-		character.LoadBitmapByString({ "resources/character1.bmp" }, 1);
 		character.LoadBitmapByString({
 		"resources/character1.bmp",
 		"resources/character2.bmp",
@@ -219,6 +236,12 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 		characterInit();
 	}
 
+	if (character.IsOverlap(*(backgroundElement->getElementGrassAddress()), character))
+	{
+		backgroundElement->backgroundInit();
+		backgroundElement->elementInit();
+		characterInit();
+	}
 	
 }
 
@@ -238,3 +261,13 @@ void characterTool::drop(backgroundTool *background)
 	}
 }
 
+/*
+void characterTool::cleanBitMap(MyCMovingBitmap *item,vector<string> load)
+{
+	MyCMovingBitmap tmp;
+	tmp.LoadBitmapByString(load,  RGB(255, 255, 255));
+	tmp.SetTopLeft(item->GetLeft(),item->GetTop());
+	*item = tmp;
+
+}
+*/

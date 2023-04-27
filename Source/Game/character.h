@@ -20,7 +20,7 @@ public:
 	MyCMovingBitmap *getCharacterAddress();
 	void touchingElement(backgroundTool *element);
 	void drop(backgroundTool *background);
-
+	//void cleanBitMap(MyCMovingBitmap *item,vector<string> load);
 
 protected:
 	MyCMovingBitmap character;

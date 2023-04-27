@@ -23,6 +23,7 @@ public:
 	MyCMovingBitmap *getElementGoAddress();
 	MyCMovingBitmap *getElementCloudAddress();
 	MyCMovingBitmap *getElementEmptyBlockAddress();
+	MyCMovingBitmap *getElementGrassAddress();
 
 
 
@@ -35,6 +36,8 @@ protected:
 	MyCMovingBitmap elementGo;
 	MyCMovingBitmap elementCloud;
 	MyCMovingBitmap elementEmptyBlock;
+	MyCMovingBitmap elementGrass;
+	MyCMovingBitmap elementLongBlock;
 	MyCMovingBitmap background;
 	MyCMovingBitmap select1;
 	MyCMovingBitmap select2;

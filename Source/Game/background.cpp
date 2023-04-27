@@ -46,6 +46,14 @@ void backgroundTool::elementInit()
 	elementEmptyBlock.LoadBitmapByString({ "resources/emptyBlock.bmp","resources/blackBlock.bmp" }, RGB(255, 255, 255));
 	elementEmptyBlock.SetFrameIndexOfBitmap(0);
 	elementEmptyBlock.SetTopLeft(1500, 539);
+
+	elementGrass.LoadBitmapByString({ "resources/grass.bmp","resources/grassdie.bmp" }, RGB(255, 255, 255));
+	elementGrass.SetFrameIndexOfBitmap(0);
+	elementGrass.SetTopLeft(2375, 800);
+
+	elementLongBlock.LoadBitmapByString({ "resources/longBlock.bmp","resources/grassdie.bmp" }, RGB(255, 255, 255));
+	elementLongBlock.SetFrameIndexOfBitmap(0);
+	elementLongBlock.SetTopLeft(2500, 650);
 }
 
 void backgroundTool::backgroundKeyDown(UINT nChar)
@@ -98,6 +106,8 @@ void backgroundTool::elementShowBitmap()
 	elementGo.ShowBitmap();
 	elementCloud.ShowBitmap();
 	elementEmptyBlock.ShowBitmap();
+	elementGrass.ShowBitmap();
+	elementLongBlock.ShowBitmap();
 }
 
 MyCMovingBitmap *backgroundTool::getBackgroundAddress()
@@ -125,6 +135,11 @@ MyCMovingBitmap *backgroundTool::getElementEmptyBlockAddress()
 	return &elementEmptyBlock;
 }
 
+MyCMovingBitmap *backgroundTool::getElementGrassAddress()
+{
+	return &elementGrass;
+}
+
 void backgroundTool::touching(characterTool *character)
 {
 	if (element.touchUp(character->getCharacterAddress(), &element))
@@ -149,6 +164,11 @@ void backgroundTool::touching(characterTool *character)
 		elementCloud.SetFrameIndexOfBitmap(1);
 	}
 
+	if (background.IsOverlap(*(character->getCharacterAddress()), elementGrass))
+	{
+		elementGrass.SetFrameIndexOfBitmap(1);
+	}
+
 	elementShowBitmap();
 	
 }
@@ -157,7 +177,6 @@ bool backgroundTool::getPlaying()
 {
 	return playing;
 }
-
 
 
 void backgroundTool::Move(characterTool *run_character)
@@ -172,6 +191,9 @@ void backgroundTool::Move(characterTool *run_character)
 			elementGo.SetTopLeft(elementGo.GetLeft() + 30, elementGo.GetTop());
 			elementCloud.SetTopLeft(elementCloud.GetLeft() + 30, elementCloud.GetTop());
 			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() + 30, elementEmptyBlock.GetTop());
+			elementGrass.SetTopLeft(elementGrass.GetLeft() + 30, elementGrass.GetTop());
+			elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() + 30, elementLongBlock.GetTop());
+
 		}
 		else //有跳躍的時候地圖要跑比較慢，因為有強制墬落
 		{
@@ -180,6 +202,8 @@ void backgroundTool::Move(characterTool *run_character)
 			elementGo.SetTopLeft(elementGo.GetLeft() + 20, elementGo.GetTop());
 			elementCloud.SetTopLeft(elementCloud.GetLeft() + 20, elementCloud.GetTop());
 			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() + 20, elementEmptyBlock.GetTop());
+			elementGrass.SetTopLeft(elementGrass.GetLeft() + 20, elementGrass.GetTop());
+			elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() + 20, elementLongBlock.GetTop());
 
 		}
 		
@@ -195,6 +219,8 @@ void backgroundTool::Move(characterTool *run_character)
 			elementGo.SetTopLeft(elementGo.GetLeft() - 30, elementGo.GetTop());
 			elementCloud.SetTopLeft(elementCloud.GetLeft() - 30, elementCloud.GetTop());
 			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() - 30, elementEmptyBlock.GetTop());
+			elementGrass.SetTopLeft(elementGrass.GetLeft() - 30, elementGrass.GetTop());
+			elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() - 30, elementLongBlock.GetTop());
 
 
 		}
@@ -205,6 +231,8 @@ void backgroundTool::Move(characterTool *run_character)
 			elementGo.SetTopLeft(elementGo.GetLeft() - 20, elementGo.GetTop());
 			elementCloud.SetTopLeft(elementCloud.GetLeft() - 20, elementCloud.GetTop());
 			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() - 20, elementEmptyBlock.GetTop());
+			elementGrass.SetTopLeft(elementGrass.GetLeft() - 20, elementGrass.GetTop());
+			elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() - 20, elementLongBlock.GetTop());
 
 		}
 		
