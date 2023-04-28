@@ -16,11 +16,18 @@ public:
 	void backroundShowBitmap();
 	void selectShowBitmap();
 	void elementShowBitmap();
-	void touching(MyCMovingBitmap *character);
+	void touching(characterTool *characterAddress);
 	bool getPlaying();
-	MyCMovingBitmap *getBackgroundAdress();
-	MyCMovingBitmap *getElementAdress();
-	MyCMovingBitmap *getElementGoAdress();
+	MyCMovingBitmap *getBackgroundAddress();
+	MyCMovingBitmap *getElementAddress();
+	MyCMovingBitmap *getElementGoAddress();
+	MyCMovingBitmap *getElementCloudAddress();
+	MyCMovingBitmap *getElementEmptyBlockAddress();
+	MyCMovingBitmap *getElementGrassAddress();
+	MyCMovingBitmap *getElementLongBlockAddress();
+	MyCMovingBitmap *getElementShortBlockAddress();
+	MyCMovingBitmap *getElementPipe1Address();
+	MyCMovingBitmap *getElementPipe2Address();
 
 
 	void Move(characterTool *run_character);
@@ -30,6 +37,13 @@ public:
 protected:
 	MyCMovingBitmap element;
 	MyCMovingBitmap elementGo;
+	MyCMovingBitmap elementCloud;
+	MyCMovingBitmap elementEmptyBlock;
+	MyCMovingBitmap elementGrass;
+	MyCMovingBitmap elementLongBlock;
+	MyCMovingBitmap elementShortBlock;
+	MyCMovingBitmap elementPipe1;
+	MyCMovingBitmap elementPipe2;
 	MyCMovingBitmap background;
 	MyCMovingBitmap select1;
 	MyCMovingBitmap select2;
