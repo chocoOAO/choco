@@ -69,6 +69,9 @@ void backgroundTool::elementInit()
 
 	elementPrick1.LoadBitmapByString({ "resources/prick1.bmp" }, RGB(255, 255, 255));
 	elementPrick1.SetTopLeft(2528, 195);
+
+	elementPrick2.LoadBitmapByString({ "resources/prick2.bmp" }, RGB(255, 255, 255));
+	elementPrick2.SetTopLeft(2828, 195);
 }
 
 void backgroundTool::backgroundKeyDown(UINT nChar)
