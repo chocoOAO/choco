@@ -23,9 +23,9 @@ void characterTool::characterInit()
 
 void characterTool::characterMove(MyCMovingBitmap *background)
 {
-	if (character_condition.at(0) && character.GetFlagMove() == true)
+	if (character_condition.at(0)== true && character.GetFlagMove() == true)
 	{
-		if (headHitfloor == true && character.GetTop() != 733)//如果頭撞到方塊強制掉落
+		if (character.GetTop() != 733 && headHitfloor == true) // 如果頭撞到方塊強制掉落
 		{
 			chieght = 2000; // Let "(character.GetTop() > chieght - 400)" be false
 			headHitfloor = false; // reset headHitfloor
@@ -36,32 +36,41 @@ void characterTool::characterMove(MyCMovingBitmap *background)
 			//character.SetTopLeft(0, 0);
 			character.SetFlagMove(false);
 		}*/
-		else if (character.GetTop() > chieght - 400)//持續按住W
+		
+		else if (character.GetTop() > chieght - 400) // "cheight - 400" 高度限制
 		{
 			character.SetTopLeft(character.GetLeft(), character.GetTop() - 30);
 		}
-		else if (character.GetTop() < 733 && !feetHitblock)//掉到地板
+		
+		else if (character.GetTop() < 733 && feetHitblock == false) // 腳沒踩到地板
 		{
 			chieght = 2000;
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 		}
-
+		
 	}
-	if (character.GetFlagMove() == false && !feetHitblock)
+
+	
+	if (character.GetFlagMove() == false && character.GetTop() < 733 && feetHitblock == false)
+		// 腳沒踩到地板 且 腳沒踩到方塊
 	{
-		if (character.GetTop() < 733)
-			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
+		character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 	}
 	
 	/*if (character_condition.at(1) && character.GetFlagMove() == true)
 	{
-		character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);//按住持續S
+		character.SetTopLeft(character.GetLeft(), character.GetTop() + 20); //持續按住S
 	}*/
 
-	if (character_condition.at(2) && character.GetFlagMove() == true && (backHitblock == false))
+	if (character_condition.at(2) == true && character.GetFlagMove() == true && backHitblock == false)
+		// 按A 且 背沒碰到方塊
 	{
-		character.SetTopLeft(character.GetLeft() - 2, character.GetTop());//按住持續A
-		character.SetAnimation(150, false);
+		if (character_condition.at(0) == false && (feetHitblock == true || (character.GetTop() == 733)))
+			// W放開必須 等到墜落到 "地面上" 或 "方塊上" 才能左右移動
+		{
+			character.SetTopLeft(character.GetLeft() - 2, character.GetTop()); //持續按住A
+			character.SetAnimation(150, false);
+		}
 	}
 	/*
 	if (faceHitblock == true)
@@ -69,11 +78,16 @@ void characterTool::characterMove(MyCMovingBitmap *background)
 		character.SetTopLeft(0, 30);
 	}*/
 
-	if (character_condition.at(3) && character.GetFlagMove() == true && (faceHitblock == false))
+	if (character_condition.at(3) == true && character.GetFlagMove() == true && faceHitblock == false)
+		// 按D 且 臉沒碰到方塊
 	{
-		character.SetTopLeft(character.GetLeft() + 2, character.GetTop());//按住持續D
-		character.SetAnimation(150, false);
-
+		if (character_condition.at(0) == false && (feetHitblock == true || (character.GetTop() == 733)))
+			// W放開必須 等到墜落到 "地面上" 或 "方塊上" 才能左右移動
+		{
+			character.SetTopLeft(character.GetLeft() + 2, character.GetTop());//持續按住D
+			character.SetAnimation(150, false);
+		}
+		
 	}
 }
 
@@ -82,19 +96,19 @@ void characterTool::characterKeyDown(UINT nChar)
 	if (nChar == 0x57)//W
 	{
 		character.SetFlagMove(true);
-		character_condition.at(0) = TRUE;
+		character_condition.at(0) = true;
 		chieght = int(character.GetTop());
 
 	}
 	if (nChar == 0x53)//S
 	{
 		character.SetFlagMove(true);
-		character_condition.at(1) = TRUE;
+		character_condition.at(1) = true;
 	}
 	if (nChar == 0x41)//A
 	{
 		character.SetFlagMove(true);
-		character_condition.at(2) = TRUE;
+		character_condition.at(2) = true;
 		/*
 		int x = character.GetLeft();
 		int y = character.GetTop();
@@ -112,7 +126,7 @@ void characterTool::characterKeyDown(UINT nChar)
 	if (nChar == 0x44)//D
 	{
 		character.SetFlagMove(true);
-		character_condition.at(3) = TRUE;
+		character_condition.at(3) = true;
 		/*
 		int x = character.GetLeft();
 		int y = character.GetTop();
@@ -165,15 +179,6 @@ void characterTool::SetFlagMove(bool value)
 {
 	character.SetFlagMove(value);
 }
-
-/*
-void characterTool::jump(std::vector<bool> character_condition)
-{
-	int time = 0;
-	
-	
-}
-*/
 
 bool characterTool::GetFlagMove() const
 {

@@ -26,8 +26,8 @@ protected:
 	MyCMovingBitmap character;
 	MyCMovingBitmap characterleft;
 	std::vector<bool> character_condition;
-	int chieght = 0;
-	bool headHitfloor=false;
+	int chieght = 0; // restore the height before character jump
+	bool headHitfloor = false;
 	bool feetHitblock = false;
 	bool faceHitblock = false;
 	bool backHitblock = false;
