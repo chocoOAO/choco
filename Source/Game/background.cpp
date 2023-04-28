@@ -34,11 +34,11 @@ void backgroundTool::elementInit()
 	element.LoadBitmapByString({ "resources/whiteBlock.bmp","resources/blackBlock.bmp" }, RGB(255, 255, 255));
 	element.SetTopLeft(477, 539);
 	element.SetFrameIndexOfBitmap(0);
+
 	elementGo.LoadBitmapByString({ "resources/nothing.bmp","resources/go.bmp","resources/godie.bmp" }, RGB(255, 255, 255));
 	elementGo.SetFrameIndexOfBitmap(0);
 	elementGo.SetTopLeft(0,0);
-	//elementGo.SetTopLeft(-1000, -1000);
-	//elementGo.SetTopLeft(697, 359);
+	
 	elementCloud.LoadBitmapByString({ "resources/cloud.bmp","resources/clouddie.bmp" }, RGB(255, 255, 255));
 	elementCloud.SetFrameIndexOfBitmap(0);
 	elementCloud.SetTopLeft(1600, -20);
@@ -63,6 +63,12 @@ void backgroundTool::elementInit()
 
 	elementPipe2.LoadBitmapByString({ "resources/pipe.bmp" }, RGB(255, 255, 255));
 	elementPipe2.SetTopLeft(4900, 538);
+
+	elementKey.LoadBitmapByString({ "resources/key.bmp" }, RGB(255, 255, 255));
+	elementKey.SetTopLeft(2858, 410);
+
+	elementPrick1.LoadBitmapByString({ "resources/prick1.bmp" }, RGB(255, 255, 255));
+	elementPrick1.SetTopLeft(2528, 195);
 }
 
 void backgroundTool::backgroundKeyDown(UINT nChar)
@@ -120,6 +126,8 @@ void backgroundTool::elementShowBitmap()
 	elementShortBlock.ShowBitmap();
 	elementPipe1.ShowBitmap();
 	elementPipe2.ShowBitmap();
+	elementKey.ShowBitmap();
+	elementPrick1.ShowBitmap();
 }
 
 MyCMovingBitmap *backgroundTool::getBackgroundAddress()
@@ -228,7 +236,8 @@ void backgroundTool::Move(characterTool *run_character)
 			elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() + 30, elementShortBlock.GetTop());
 			elementPipe1.SetTopLeft(elementPipe1.GetLeft() + 30, elementPipe1.GetTop());
 			elementPipe2.SetTopLeft(elementPipe2.GetLeft() + 30, elementPipe2.GetTop());
-
+			elementKey.SetTopLeft(elementKey.GetLeft() + 30, elementKey.GetTop());
+			elementPrick1.SetTopLeft(elementPrick1.GetLeft() + 30, elementPrick1.GetTop());
 
 		}
 		else //有跳躍的時候地圖要跑比較慢，因為有強制墬落
@@ -243,6 +252,8 @@ void backgroundTool::Move(characterTool *run_character)
 			elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() + 20, elementShortBlock.GetTop());
 			elementPipe1.SetTopLeft(elementPipe1.GetLeft() + 20, elementPipe1.GetTop());
 			elementPipe2.SetTopLeft(elementPipe2.GetLeft() + 20, elementPipe2.GetTop());
+			elementKey.SetTopLeft(elementKey.GetLeft() + 20, elementKey.GetTop());
+			elementPrick1.SetTopLeft(elementPrick1.GetLeft() + 20, elementPrick1.GetTop());
 
 
 		}
@@ -264,6 +275,8 @@ void backgroundTool::Move(characterTool *run_character)
 			elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() - 30, elementShortBlock.GetTop());
 			elementPipe1.SetTopLeft(elementPipe1.GetLeft() - 30, elementPipe1.GetTop());
 			elementPipe2.SetTopLeft(elementPipe2.GetLeft() - 30, elementPipe2.GetTop());
+			elementKey.SetTopLeft(elementKey.GetLeft() - 30, elementKey.GetTop());
+			elementPrick1.SetTopLeft(elementPrick1.GetLeft() - 30, elementPrick1.GetTop());
 
 
 		}
@@ -279,6 +292,9 @@ void backgroundTool::Move(characterTool *run_character)
 			elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() - 20, elementShortBlock.GetTop());
 			elementPipe1.SetTopLeft(elementPipe1.GetLeft() - 20, elementPipe1.GetTop());
 			elementPipe2.SetTopLeft(elementPipe2.GetLeft() - 20, elementPipe2.GetTop());
+			elementKey.SetTopLeft(elementKey.GetLeft() - 20, elementKey.GetTop());
+			elementPrick1.SetTopLeft(elementPrick1.GetLeft() - 20, elementPrick1.GetTop());
+			
 
 		}
 		

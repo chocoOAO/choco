@@ -35,8 +35,8 @@ void CGameStateRun::OnBeginState()
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
 	character.touchingElement(&background);
-	character.characterMove(background.getBackgroundAddress());
 	character.drop(&background);
+	character.characterMove(background.getBackgroundAddress());	
 	background.Move(&character);
 
 }

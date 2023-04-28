@@ -44,6 +44,8 @@ protected:
 	MyCMovingBitmap elementShortBlock;
 	MyCMovingBitmap elementPipe1;
 	MyCMovingBitmap elementPipe2;
+	MyCMovingBitmap elementPrick1;
+	MyCMovingBitmap elementKey;
 	MyCMovingBitmap background;
 	MyCMovingBitmap select1;
 	MyCMovingBitmap select2;

@@ -231,9 +231,27 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 
 	if ((backgroundElement->getElementEmptyBlockAddress())->GetFrameIndexOfBitmap() == 1)
 	{
-		feetHitblock = character.touchDown(&character, backgroundElement->getElementEmptyBlockAddress());
-		faceHitblock = character.touchLeft(&character, backgroundElement->getElementEmptyBlockAddress());
-		backHitblock = character.touchRight(&character, backgroundElement->getElementEmptyBlockAddress());
+		feetHitblock = character.touchDown(&character, backgroundElement->getElementEmptyBlockAddress())||//隱形方塊碰到才讓他判斷
+			character.touchDown(&character, backgroundElement->getElementAddress()) ||
+			character.touchDown(&character, backgroundElement->getElementGoAddress()) ||
+			character.touchDown(&character, backgroundElement->getElementLongBlockAddress()) ||
+			character.touchDown(&character, backgroundElement->getElementShortBlockAddress()) ||
+			character.touchDown(&character, backgroundElement->getElementPipe1Address()) ||
+			character.touchDown(&character, backgroundElement->getElementPipe2Address());
+		faceHitblock = character.touchLeft(&character, backgroundElement->getElementEmptyBlockAddress())||
+			character.touchLeft(&character, backgroundElement->getElementAddress()) ||
+			character.touchLeft(&character, backgroundElement->getElementGoAddress()) ||
+			character.touchLeft(&character, backgroundElement->getElementLongBlockAddress()) ||
+			character.touchLeft(&character, backgroundElement->getElementShortBlockAddress()) ||
+			character.touchLeft(&character, backgroundElement->getElementPipe1Address()) ||
+			character.touchLeft(&character, backgroundElement->getElementPipe2Address());
+		backHitblock = character.touchRight(&character, backgroundElement->getElementEmptyBlockAddress())||
+			character.touchRight(&character, backgroundElement->getElementAddress()) ||
+			character.touchRight(&character, backgroundElement->getElementGoAddress()) ||
+			character.touchRight(&character, backgroundElement->getElementLongBlockAddress()) ||
+			character.touchRight(&character, backgroundElement->getElementShortBlockAddress()) ||
+			character.touchRight(&character, backgroundElement->getElementPipe1Address()) ||
+			character.touchRight(&character, backgroundElement->getElementPipe2Address());
 	}
 
 	if (character.touchUp(&character, backgroundElement->getElementGoAddress()))
