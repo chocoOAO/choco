@@ -10,11 +10,8 @@ class backgroundTool
 {
 public:
 	void backgroundInit();
-	void selectInit();
 	void elementInit();
-	void backgroundKeyDown(UINT nChar);
 	void backroundShowBitmap();
-	void selectShowBitmap();
 	void elementShowBitmap();
 	void touching(characterTool *characterAddress);
 	bool getPlaying();
@@ -45,12 +42,9 @@ protected:
 	MyCMovingBitmap elementPipe1;
 	MyCMovingBitmap elementPipe2;
 	MyCMovingBitmap background;
-	MyCMovingBitmap select1;
-	MyCMovingBitmap select2;
-	MyCMovingBitmap totalSelect;
+	
 	bool playing = false;
 	bool elementTrue = false;
-	int sel = 0;
 	bool buttonW = false;
 	bool buttonA = false;
 	bool buttonD = false;

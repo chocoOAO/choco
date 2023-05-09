@@ -8,13 +8,11 @@
 #include "MyCMovingBitmap.h"
 #include "mygame.h"
 #include "character.h"
+#include "catalogue.h"
 #include <iostream>
 #include <string>
 
 using namespace game_framework;
-
-
-
 
 /////////////////////////////////////////////////////////////////////////////
 // 這個class為遊戲的遊戲執行物件，主要的遊戲程式都在這裡
@@ -45,7 +43,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
 	character.characterInit();
 	background.backgroundInit();
-	background.selectInit();
+	menu.selectInit();
 	background.elementInit();
 }
 
@@ -53,7 +51,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	
 	character.characterKeyDown(nChar);
-	background.backgroundKeyDown(nChar);
+	menu.backgroundKeyDown(nChar);
 	background.KeyDown(nChar);
 }
 
@@ -93,7 +91,7 @@ void CGameStateRun::show_image_by_phase()
 {
 	//background.SetFrameIndexOfBitmap((phase - 1) * 2 + (sub_phase - 1));
 	background.backroundShowBitmap();
-	background.selectShowBitmap();
+	menu.selectShowBitmap();
 	if (background.getPlaying())
 	{
 		character.characterShowBitmap();

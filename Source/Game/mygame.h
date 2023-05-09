@@ -41,6 +41,8 @@
 #include "MyCMovingBitmap.h"
 #include "character.h"
 #include "background.h"
+#include "catalogue.h"
+
 
 namespace game_framework
 {
@@ -111,6 +113,7 @@ namespace game_framework
         backgroundTool background;
 		characterTool character;
         MyCMovingBitmap characterleft;
+        catalogue menu;
     };
 
     /////////////////////////////////////////////////////////////////////////////
