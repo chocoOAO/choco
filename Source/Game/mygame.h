@@ -111,6 +111,7 @@ namespace game_framework
         backgroundTool background;
 		characterTool character;
         MyCMovingBitmap characterleft;
+
     };
 
     /////////////////////////////////////////////////////////////////////////////

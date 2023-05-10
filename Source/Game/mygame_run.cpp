@@ -96,8 +96,9 @@ void CGameStateRun::show_image_by_phase()
 	background.selectShowBitmap();
 	if (background.getPlaying())
 	{
-		character.characterShowBitmap();
+		
 		background.touching(&character);
+		character.characterShowBitmap();
 	}
 	
 

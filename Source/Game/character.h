@@ -18,10 +18,10 @@ public:
 	bool GetFaceHitblock() const;
 	bool GetBackHitblock() const;
 	MyCMovingBitmap *getCharacterAddress();
+	bool GetIsDroppingAddress();
 	void touchingElement(backgroundTool *element);
 	void drop(backgroundTool *background);
 	//void cleanBitMap(MyCMovingBitmap *item,vector<string> load);
-
 protected:
 	MyCMovingBitmap character;
 	MyCMovingBitmap characterleft;
@@ -31,6 +31,9 @@ protected:
 	bool feetHitblock = false;
 	bool faceHitblock = false;
 	bool backHitblock = false;
+	bool isDropping = false;
+	bool isJumping = false;
+	bool dontRead = false;
 
 };
 

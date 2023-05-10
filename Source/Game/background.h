@@ -18,6 +18,8 @@ public:
 	void elementShowBitmap();
 	void touching(characterTool *characterAddress);
 	bool getPlaying();
+
+	MyCMovingBitmap *getFloor1_2Address();
 	MyCMovingBitmap *getBackgroundAddress();
 	MyCMovingBitmap *getElementAddress();
 	MyCMovingBitmap *getElementGoAddress();
@@ -28,6 +30,18 @@ public:
 	MyCMovingBitmap *getElementShortBlockAddress();
 	MyCMovingBitmap *getElementPipe1Address();
 	MyCMovingBitmap *getElementPipe2Address();
+	MyCMovingBitmap *getElementPrick1Address();
+	MyCMovingBitmap *getElementPrick2Address();
+	MyCMovingBitmap *getElementEmptyBlock2Address();
+	MyCMovingBitmap *getElementBlockUAddress();
+	MyCMovingBitmap *getElementBlockDAddress();
+	MyCMovingBitmap *getElementBlockIAddress();
+	MyCMovingBitmap *getElementBlockEAddress();
+	MyCMovingBitmap *getElementBlockD2Address();
+	MyCMovingBitmap *getElementPoRightAddress();
+	MyCMovingBitmap *getElementPoLeftAddress();
+	MyCMovingBitmap *getElementPoUpAddress();
+	MyCMovingBitmap *getElementDropFloorAddress();
 
 
 	void Move(characterTool *run_character);
@@ -47,6 +61,18 @@ protected:
 	MyCMovingBitmap elementKey;
 	MyCMovingBitmap elementPrick1;
 	MyCMovingBitmap elementPrick2;
+	MyCMovingBitmap elementEmptyBlock2;
+	MyCMovingBitmap elementBlockU;
+	MyCMovingBitmap elementBlockD;
+	MyCMovingBitmap elementBlockI;
+	MyCMovingBitmap elementBlockE;
+	MyCMovingBitmap elementBlockD2;
+	MyCMovingBitmap elementPoRight;
+	MyCMovingBitmap elementPoLeft;
+	MyCMovingBitmap elementPoUp;
+	MyCMovingBitmap elementDropFloor;
+
+	MyCMovingBitmap floor1_2;
 
 	MyCMovingBitmap background;
 	MyCMovingBitmap select1;
@@ -54,6 +80,8 @@ protected:
 	MyCMovingBitmap totalSelect;
 	bool playing = false;
 	bool elementTrue = false;
+	bool elementPo = false;
+	bool elementPo1_2 = false;
 	int sel = 0;
 	bool buttonW = false;
 	bool buttonA = false;
