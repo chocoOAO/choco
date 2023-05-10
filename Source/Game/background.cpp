@@ -119,6 +119,10 @@ void backgroundTool::elementInit()
 	elementDropFloor.SetFrameIndexOfBitmap(0);
 	elementDropFloor.SetTopLeft(5454, 863);
 
+	elementLady.LoadBitmapByString({ "resources/lady.bmp" }, RGB(255, 255, 255));
+	elementLady.SetFrameIndexOfBitmap(0);
+	elementLady.SetTopLeft(6054, 730);
+
 	elementPo = false;
 	elementPo1_2 = false;
 }
@@ -192,6 +196,7 @@ void backgroundTool::elementShowBitmap()
 	elementPoRight.ShowBitmap();
 	elementPoLeft.ShowBitmap();
 	elementDropFloor.ShowBitmap();
+	elementLady.ShowBitmap();
 }
 
 MyCMovingBitmap *backgroundTool::getFloor1_2Address()
@@ -457,6 +462,8 @@ void backgroundTool::Move(characterTool *run_character)
 			elementBlockE.SetTopLeft(elementBlockE.GetLeft() + 20, elementBlockE.GetTop());
 			elementBlockD2.SetTopLeft(elementBlockD2.GetLeft() + 20, elementBlockD2.GetTop());
 			elementDropFloor.SetTopLeft(elementDropFloor.GetLeft() + 20, elementDropFloor.GetTop());
+			elementLady.SetTopLeft(elementLady.GetLeft() + 20, elementLady.GetTop());
+
 
 			if (elementPo == true)
 			{
@@ -492,6 +499,8 @@ void backgroundTool::Move(characterTool *run_character)
 			elementBlockE.SetTopLeft(elementBlockE.GetLeft() + 20, elementBlockE.GetTop());
 			elementBlockD2.SetTopLeft(elementBlockD2.GetLeft() + 20, elementBlockD2.GetTop());
 			elementDropFloor.SetTopLeft(elementDropFloor.GetLeft() + 20, elementDropFloor.GetTop());
+			elementLady.SetTopLeft(elementLady.GetLeft() + 20, elementLady.GetTop());
+
 
 			if (elementPo == true)
 			{
@@ -533,16 +542,18 @@ void backgroundTool::Move(characterTool *run_character)
 			elementBlockE.SetTopLeft(elementBlockE.GetLeft() - 20, elementBlockE.GetTop());
 			elementBlockD2.SetTopLeft(elementBlockD2.GetLeft() - 20, elementBlockD2.GetTop());
 			elementDropFloor.SetTopLeft(elementDropFloor.GetLeft() - 20, elementDropFloor.GetTop());
+			elementLady.SetTopLeft(elementLady.GetLeft() - 20, elementLady.GetTop());
+
 
 			if(elementPo == true)
 			{
-				elementPoRight.SetTopLeft(elementPoRight.GetLeft() - 30, elementPoRight.GetTop());
-				elementPoLeft.SetTopLeft(elementPoLeft.GetLeft() - 30, elementPoLeft.GetTop());
+				elementPoRight.SetTopLeft(elementPoRight.GetLeft() - 20, elementPoRight.GetTop());
+				elementPoLeft.SetTopLeft(elementPoLeft.GetLeft() - 20, elementPoLeft.GetTop());
 			}
 
 			if (elementPo1_2 == true)
 			{
-				elementPoUp.SetTopLeft(elementPoUp.GetLeft() - 30, elementPoUp.GetTop());
+				elementPoUp.SetTopLeft(elementPoUp.GetLeft() - 20, elementPoUp.GetTop());
 			}
 		}
 		else //有跳躍的時候地圖要跑比較慢，因為有強制墬落
@@ -568,6 +579,8 @@ void backgroundTool::Move(characterTool *run_character)
 			elementBlockE.SetTopLeft(elementBlockE.GetLeft() - 20, elementBlockE.GetTop());
 			elementBlockD2.SetTopLeft(elementBlockD2.GetLeft() - 20, elementBlockD2.GetTop());
 			elementDropFloor.SetTopLeft(elementDropFloor.GetLeft() - 20, elementDropFloor.GetTop());
+			elementLady.SetTopLeft(elementLady.GetLeft() - 20, elementLady.GetTop());
+
 
 			if (elementPo == true)
 			{
