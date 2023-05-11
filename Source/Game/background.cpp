@@ -6,6 +6,7 @@
 #include "MyCMovingBitmap.h"
 #include "background.h"
 #include "character.h"
+
 using namespace game_framework;
 
 void backgroundTool::backgroundInit()
@@ -21,18 +22,6 @@ void backgroundTool::backgroundInit()
 		});
 	floor1_2.SetTopLeft(1971, 860);
 	
-}
-
-void backgroundTool::selectInit()
-{
-	select1.LoadBitmapByString({ "resources/select1.bmp" }, RGB(255, 255, 255));
-	select1.SetTopLeft(600, 400);
-
-	select2.LoadBitmapByString({ "resources/select2.bmp" }, RGB(255, 255, 255));
-	select2.SetTopLeft(880, 400);
-
-	totalSelect.LoadBitmapByString({ "resources/select1_2.bmp", "resources/select2_2.bmp" }, RGB(255, 255, 255));
-	totalSelect.SetTopLeft(600, 400);
 }
 
 void backgroundTool::elementInit()
@@ -127,49 +116,10 @@ void backgroundTool::elementInit()
 	elementPo1_2 = false;
 }
 
-void backgroundTool::backgroundKeyDown(UINT nChar)
-{
-	if (nChar == 0x27 && playing == false)//向右選關鍵
-	{
-		if (sel < 1)
-			sel += 1;
-		else
-			sel = 0;
-		totalSelect.SetFrameIndexOfBitmap(sel);
-		if (sel == 0)
-			totalSelect.SetTopLeft(600, 400);
-		if (sel == 1)
-			totalSelect.SetTopLeft(880, 400);
-
-	}
-	if (nChar == VK_RETURN)//向右選關鍵
-	{
-		if (sel == 0)
-		{
-			playing = true;
-			background.SetFrameIndexOfBitmap(1);
-			for (int i = 0; i < 2; i++)
-			{
-				totalSelect.SetFrameIndexOfBitmap(i);
-				totalSelect.SetTopLeft(-600, -400);
-			}
-			select1.SetTopLeft(-600, -400);
-			select2.SetTopLeft(-600, -400);
-		}
-	}
-}
-
 void backgroundTool::backroundShowBitmap()
 {
 	background.ShowBitmap();
 	floor1_2.ShowBitmap();
-}
-
-void backgroundTool::selectShowBitmap()
-{
-	select1.ShowBitmap();
-	select2.ShowBitmap();
-	totalSelect.ShowBitmap();
 }
 
 void backgroundTool::elementShowBitmap()
@@ -432,7 +382,6 @@ bool backgroundTool::getPlaying()
 {
 	return playing;
 }
-
 
 void backgroundTool::Move(characterTool *run_character)
 {
