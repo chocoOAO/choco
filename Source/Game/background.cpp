@@ -37,7 +37,54 @@ void backgroundTool::selectInit()
 
 void backgroundTool::elementInit()
 {
-	element.LoadBitmapByString({ "resources/whiteBlock.bmp","resources/blackBlock.bmp" }, RGB(255, 255, 255));
+	//vector<MyCMovingBitmap *>().swap(stage);
+	stage1LoadBitMap =
+	{
+		{ "resources/whiteBlock.bmp","resources/blackBlock.bmp" }, { "resources/nothing.bmp","resources/go.bmp","resources/godie.bmp" },
+		{ "resources/cloud.bmp","resources/clouddie.bmp" }, { "resources/emptyBlock.bmp","resources/blackBlock.bmp" },
+		{ "resources/grass.bmp","resources/grassdie.bmp" }, { "resources/longBlock.bmp" },
+		{ "resources/shortBlock.bmp" }, { "resources/pipe.bmp" },
+		{ "resources/pipe.bmp" }, { "resources/key.bmp" },
+		{ "resources/prick1.bmp" }, { "resources/prick2.bmp" },
+		{ "resources/emptyBlock.bmp","resources/blackBlock.bmp" }, { "resources/emptyBlock.bmp","resources/blackBlockU.bmp" },
+		{ "resources/emptyBlock.bmp","resources/blackBlockD.bmp" }, { "resources/emptyBlock.bmp","resources/blackBlockI.bmp" },
+		{ "resources/emptyBlock.bmp","resources/blackBlockE.bmp" } ,{ "resources/emptyBlock.bmp","resources/blackBlock!.bmp" },
+		{ "resources/PoRight.bmp"}, { "resources/PoLeft.bmp" },
+		{ "resources/PoUp.bmp" }, { "resources/dropFloor.bmp" },
+		{ "resources/lady.bmp" }								
+	};//2x11+1
+	stage1SetTopLeft =
+	{
+		{427, 539}, {0, 0}, {1600, -20}, {1500, 539}, {2375, 800}, {2527, 538}, {2686, 220}, {3790, 538}, {4900, 538}, {2858, 410},
+		{-1000, -1000}, {-1000, -1000}, {4120, 175}, {4109, 539}, {4268, 539}, {4427, 539}, {4586, 539}, {4745,539}, {-1000, -1000}, {-1000, -1000},
+		{-1000, -1000}, {5454, 863}, {6054, 730}
+	};//2x10+3
+	
+	
+	for (int i = 0; i < 23; i++)
+	{
+		if (playing == false)
+		{
+			MyCMovingBitmap *x = new MyCMovingBitmap;
+			x->LoadBitmapByString(stage1LoadBitMap[i], RGB(255, 255, 255));
+			x->SetTopLeft(stage1SetTopLeft[i][0], stage1SetTopLeft[i][1]);
+			x->SetFrameIndexOfBitmap(0);
+			stage.push_back(x);
+		}
+		else
+		{
+			for (int i = 0; i < int(stage.size()); i++)
+			{
+				stage[i]->SetTopLeft(stage1SetTopLeft[i][0], stage1SetTopLeft[i][1]);
+				stage[i]->SetFrameIndexOfBitmap(0);
+			}
+			elementPo = false;
+		}
+		
+	}
+	
+	/*
+	stage[0]->LoadBitmapByString({ "resources/whiteBlock.bmp","resources/blackBlock.bmp" }, RGB(255, 255, 255));
 	element.SetTopLeft(427, 539);
 	element.SetFrameIndexOfBitmap(0);
 
@@ -125,11 +172,12 @@ void backgroundTool::elementInit()
 
 	elementPo = false;
 	elementPo1_2 = false;
+	*/
 }
 
 void backgroundTool::backgroundKeyDown(UINT nChar)
 {
-	if (nChar == 0x27 && playing == false)//向右選關鍵
+	if ((nChar == VK_RIGHT || nChar == VK_LEFT) && playing == false)//向右選關鍵
 	{
 		if (sel < 1)
 			sel += 1;
@@ -142,12 +190,12 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 			totalSelect.SetTopLeft(880, 400);
 
 	}
-	if (nChar == VK_RETURN)//向右選關鍵
+	if (nChar == VK_RETURN) // VK_RETURN = Enter
 	{
 		if (sel == 0)
 		{
 			playing = true;
-			background.SetFrameIndexOfBitmap(1);
+			background.SetFrameIndexOfBitmap(1); // background
 			for (int i = 0; i < 2; i++)
 			{
 				totalSelect.SetFrameIndexOfBitmap(i);
@@ -174,6 +222,16 @@ void backgroundTool::selectShowBitmap()
 
 void backgroundTool::elementShowBitmap()
 {
+	for (int i = 0; i < 23; i++)
+	{
+		//MyCMovingBitmap a;
+		//a = *(stage[0]);
+		//a.ShowBitmap();
+		//stage[0]->ShowBitmap();
+		stage[i]->ShowBitmap();
+
+	}
+	/*
 	element.ShowBitmap();
 	elementGo.ShowBitmap();
 	elementCloud.ShowBitmap();
@@ -197,17 +255,19 @@ void backgroundTool::elementShowBitmap()
 	elementPoLeft.ShowBitmap();
 	elementDropFloor.ShowBitmap();
 	elementLady.ShowBitmap();
+	*/
 }
 
 MyCMovingBitmap *backgroundTool::getFloor1_2Address()
 {
 	return &floor1_2;
 }
+
 MyCMovingBitmap *backgroundTool::getBackgroundAddress()
 {
 	return &background;
 }
-
+/*
 MyCMovingBitmap *backgroundTool::getElementAddress()
 {
 	return &element;
@@ -313,115 +373,122 @@ MyCMovingBitmap *backgroundTool::getElementDropFloorAddress()
 	return &elementDropFloor;
 }
 
+*/
+std::vector<MyCMovingBitmap *> *backgroundTool::getStageAddress()
+{
+	return &stage;
+}
+
 
 void backgroundTool::touching(characterTool *character)
 {
-	if (element.touchUp(character->getCharacterAddress(), &element))
-	{
-		element.SetFrameIndexOfBitmap(1);
-		elementGo.SetFrameIndexOfBitmap(1);
-		elementGo.SetTopLeft(background.GetLeft() + 617, background.GetTop() + 359);//300
-	}
-
-	if (elementGo.touchUp(character->getCharacterAddress(), &elementGo))
-	{
-		elementGo.SetFrameIndexOfBitmap(2);
-	}
 	
-	if (elementEmptyBlock.touchUp(character->getCharacterAddress(), &elementEmptyBlock) && character->GetIsDroppingAddress() == false)
+	if (stage[element]->touchUp(character->getCharacterAddress(), stage[element]))
 	{
-		elementEmptyBlock.SetFrameIndexOfBitmap(1);
+		stage[element]->SetFrameIndexOfBitmap(1);
+		stage[elementGo]->SetFrameIndexOfBitmap(1);
+		stage[elementGo]->SetTopLeft(background.GetLeft() + 617, background.GetTop() + 359);//300
 	}
 
-	if (elementEmptyBlock2.touchUp(character->getCharacterAddress(), &elementEmptyBlock2) && character->GetIsDroppingAddress() == false)
+	if (stage[elementGo]->touchUp(character->getCharacterAddress(), stage[elementGo]))
 	{
-		elementEmptyBlock2.SetFrameIndexOfBitmap(1);
+		stage[elementGo]->SetFrameIndexOfBitmap(2);
 	}
 
-	if (elementBlockU.touchUp(character->getCharacterAddress(), &elementBlockU) && character->GetIsDroppingAddress() == false)
+	if (stage[elementEmptyBlock]->touchUp(character->getCharacterAddress(), stage[elementEmptyBlock]) && character->GetIsDroppingAddress() == false)
 	{
-		elementBlockU.SetFrameIndexOfBitmap(1);
+		stage[elementEmptyBlock]->SetFrameIndexOfBitmap(1);
 	}
 
-	if (elementBlockD.touchUp(character->getCharacterAddress(), &elementBlockD) && character->GetIsDroppingAddress() == false)
+	if (stage[elementEmptyBlock2]->touchUp(character->getCharacterAddress(), stage[elementEmptyBlock2]) && character->GetIsDroppingAddress() == false)
 	{
-		elementBlockD.SetFrameIndexOfBitmap(1);
+		stage[elementEmptyBlock2]->SetFrameIndexOfBitmap(1);
 	}
 
-	if (elementBlockI.touchUp(character->getCharacterAddress(), &elementBlockI) && character->GetIsDroppingAddress() == false)
+	if (stage[elementBlockU]->touchUp(character->getCharacterAddress(), stage[elementBlockU]) && character->GetIsDroppingAddress() == false)
 	{
-		elementBlockI.SetFrameIndexOfBitmap(1);
+		stage[elementBlockU]->SetFrameIndexOfBitmap(1);
 	}
 
-	if (elementBlockE.touchUp(character->getCharacterAddress(), &elementBlockE) && character->GetIsDroppingAddress() == false)
+	if (stage[elementBlockD]->touchUp(character->getCharacterAddress(), stage[elementBlockD]) && character->GetIsDroppingAddress() == false)
 	{
-		elementBlockE.SetFrameIndexOfBitmap(1);
+		stage[elementBlockD]->SetFrameIndexOfBitmap(1);
 	}
 
-	if (elementBlockD.touchUp(character->getCharacterAddress(), &elementBlockD2) && character->GetIsDroppingAddress() == false)
+	if (stage[elementBlockI]->touchUp(character->getCharacterAddress(), stage[elementBlockI]) && character->GetIsDroppingAddress() == false)
 	{
-		elementBlockD2.SetFrameIndexOfBitmap(1);
+		stage[elementBlockI]->SetFrameIndexOfBitmap(1);
 	}
 
-	if (elementDropFloor.touchDown(character->getCharacterAddress(), &elementDropFloor) || elementDropFloor.GetTop() > 863)
+	if (stage[elementBlockE]->touchUp(character->getCharacterAddress(), stage[elementBlockE]) && character->GetIsDroppingAddress() == false)
 	{
-		elementDropFloor.SetTopLeft(elementDropFloor.GetLeft(), elementDropFloor.GetTop() + 30);
+		stage[elementBlockE]->SetFrameIndexOfBitmap(1);
 	}
 
-	if (background.IsOverlap(*(character->getCharacterAddress()), elementCloud))
+	if (stage[elementBlockD]->touchUp(character->getCharacterAddress(), stage[elementBlockD2]) && character->GetIsDroppingAddress() == false)
 	{
-		elementCloud.SetFrameIndexOfBitmap(1);
+		stage[elementBlockD2]->SetFrameIndexOfBitmap(1);
 	}
 
-	if (background.IsOverlap(*(character->getCharacterAddress()), elementGrass))
+	if (stage[elementDropFloor]->touchDown(character->getCharacterAddress(), stage[elementDropFloor]) || stage[elementDropFloor]->GetTop() > 863)
 	{
-		elementGrass.SetFrameIndexOfBitmap(1);
+		stage[elementDropFloor]->SetTopLeft(stage[elementDropFloor]->GetLeft(), stage[elementDropFloor]->GetTop() + 30);
 	}
 
-	if (elementBlockU.GetFrameIndexOfBitmap() == 1 && elementBlockD.GetFrameIndexOfBitmap() == 1 &&
-		elementBlockI.GetFrameIndexOfBitmap() == 1 && elementBlockE.GetFrameIndexOfBitmap() == 1 &&
-		elementBlockD2.GetFrameIndexOfBitmap() == 1)
+	if (background.IsOverlap(*(character->getCharacterAddress()), *stage[elementCloud]))
+	{
+		stage[elementCloud]->SetFrameIndexOfBitmap(1);
+	}
+
+	if (background.IsOverlap(*(character->getCharacterAddress()), *stage[elementGrass]))
+	{
+		stage[elementGrass]->SetFrameIndexOfBitmap(1);
+	}
+
+	if (stage[elementBlockU]->GetFrameIndexOfBitmap() == 1 && stage[elementBlockD]->GetFrameIndexOfBitmap() == 1 &&
+		stage[elementBlockI]->GetFrameIndexOfBitmap() == 1 && stage[elementBlockE]->GetFrameIndexOfBitmap() == 1 &&
+		stage[elementBlockD2]->GetFrameIndexOfBitmap() == 1)
 	{
 		if (elementPo == false)
 		{
-			elementPoRight.SetTopLeft(background.GetLeft() + 3850, background.GetTop() + 760);
-			elementPoLeft.SetTopLeft(background.GetLeft() + 5000, background.GetTop() + 650);
+			stage[elementPoRight]->SetTopLeft(background.GetLeft() + 3850, background.GetTop() + 760);
+			stage[elementPoLeft]->SetTopLeft(background.GetLeft() + 5000, background.GetTop() + 650);
 			elementPo = true;
 		}
 		else
 		{
-			elementPoLeft.SetTopLeft(elementPoLeft.GetLeft() - 2, elementPoLeft.GetTop());
-			elementPoRight.SetTopLeft(elementPoRight.GetLeft() + 2, elementPoRight.GetTop());
+			stage[elementPoLeft]->SetTopLeft(stage[elementPoLeft]->GetLeft() - 2, stage[elementPoLeft]->GetTop());
+			stage[elementPoRight]->SetTopLeft(stage[elementPoRight]->GetLeft() + 2, stage[elementPoRight]->GetTop());
 
 		}
-		
+
 	}
 
-	if (elementPipe2.touchDown(character->getCharacterAddress(), &elementPipe2)) 
+	if (stage[elementPipe2]->touchDown(character->getCharacterAddress(), stage[elementPipe2]))
 	{
 		if (elementPo1_2 == false)
 		{
-			elementPoUp.SetTopLeft(background.GetLeft() + 5000, background.GetTop() + 600);
+			stage[elementPoUp]->SetTopLeft(background.GetLeft() + 5000, background.GetTop() + 600);
 			elementPo1_2 = true;
 		}
-		
+
 	}
 
 	if (elementPo1_2 == true)
 	{
-		elementPoUp.SetTopLeft(elementPoUp.GetLeft(), elementPoUp.GetTop() - 10);
-		if (elementPoUp.GetTop() < -200)
+		stage[elementPoUp]->SetTopLeft(stage[elementPoUp]->GetLeft(), stage[elementPoUp]->GetTop() - 10);
+		if (stage[elementPoUp]->GetTop() < -200)
 		{
 			elementPo1_2 = false;
 		}
 	}
-	
 
-	if (background.IsOverlap(*(character->getCharacterAddress()), elementKey))
+
+	if (background.IsOverlap(*(character->getCharacterAddress()), *stage[elementKey]))
 	{
-		elementKey.SetTopLeft(-1000, -1000);
-		elementPrick1.SetTopLeft(background.GetLeft() + 2528, background.GetTop() + 195);
-		elementPrick2.SetTopLeft(background.GetLeft() + 3268, background.GetTop() + 195);
+		stage[elementKey]->SetTopLeft(-1000, -1000);
+		stage[elementPrick1]->SetTopLeft(background.GetLeft() + 2528, background.GetTop() + 195);
+		stage[elementPrick2]->SetTopLeft(background.GetLeft() + 3268, background.GetTop() + 195);
 	}
 
 	elementShowBitmap();
@@ -443,6 +510,29 @@ void backgroundTool::Move(characterTool *run_character)
 		{
 			floor1_2.SetTopLeft(floor1_2.GetLeft() + 20, floor1_2.GetTop());
 			background.SetTopLeft(background.GetLeft() + 20, background.GetTop());
+			for (int i = 0; i < 23; i++)
+			{
+				if (i == elementPoLeft || i == elementPoRight || i == elementPoUp)
+				{
+					
+					continue;
+				}
+				else
+				{
+					stage[i]->SetTopLeft(stage[i]->GetLeft() + 20, stage[i]->GetTop());
+				}
+			}
+
+			if (elementPo == true)
+			{
+				stage[elementPoRight]->SetTopLeft(stage[elementPoRight]->GetLeft() + 20, stage[elementPoRight]->GetTop());
+				stage[elementPoLeft]->SetTopLeft(stage[elementPoLeft]->GetLeft() + 20, stage[elementPoLeft]->GetTop());
+			}
+			if (elementPo1_2 == true)
+			{
+				stage[elementPoUp]->SetTopLeft(stage[elementPoUp]->GetLeft() + 20, stage[elementPoUp]->GetTop());
+			}
+			/*
 			element.SetTopLeft(element.GetLeft() + 20, element.GetTop());
 			elementGo.SetTopLeft(elementGo.GetLeft() + 20, elementGo.GetTop());
 			elementCloud.SetTopLeft(elementCloud.GetLeft() + 20, elementCloud.GetTop());
@@ -463,24 +553,37 @@ void backgroundTool::Move(characterTool *run_character)
 			elementBlockD2.SetTopLeft(elementBlockD2.GetLeft() + 20, elementBlockD2.GetTop());
 			elementDropFloor.SetTopLeft(elementDropFloor.GetLeft() + 20, elementDropFloor.GetTop());
 			elementLady.SetTopLeft(elementLady.GetLeft() + 20, elementLady.GetTop());
+			*/
 
-
-			if (elementPo == true)
-			{
-				elementPoRight.SetTopLeft(elementPoRight.GetLeft() + 20, elementPoRight.GetTop());
-				elementPoLeft.SetTopLeft(elementPoLeft.GetLeft() + 20, elementPoLeft.GetTop());
-			}
-			if (elementPo1_2 == true)
-			{
-				elementPoUp.SetTopLeft(elementPoUp.GetLeft() + 20, elementPoUp.GetTop());
-			}
+			
 
 		}
 		else //有跳躍的時候地圖要跑比較慢，因為有強制墬落
 		{
-			floor1_2.SetTopLeft(floor1_2.GetLeft() + 20, floor1_2.GetTop());
-			background.SetTopLeft(background.GetLeft() + 20, background.GetTop());
-			element.SetTopLeft(element.GetLeft() + 20, element.GetTop());
+			floor1_2.SetTopLeft(floor1_2.GetLeft() + 15, floor1_2.GetTop());
+			background.SetTopLeft(background.GetLeft() + 15, background.GetTop());
+			for (int i = 0; i < 23; i++)
+			{
+				if (i == elementPoLeft || i == elementPoRight || i==elementPoUp)
+				{
+					continue;
+				}
+				else
+				{
+					stage[i]->SetTopLeft(stage[i]->GetLeft() + 15, stage[i]->GetTop());
+				}
+			}
+
+			if (elementPo == true)
+			{
+				stage[elementPoRight]->SetTopLeft(stage[elementPoRight]->GetLeft() + 15, stage[elementPoRight]->GetTop());
+				stage[elementPoLeft]->SetTopLeft(stage[elementPoLeft]->GetLeft() + 15, stage[elementPoLeft]->GetTop());
+			}
+			if (elementPo1_2 == true)
+			{
+				stage[elementPoUp]->SetTopLeft(stage[elementPoUp]->GetLeft() + 15, stage[elementPoUp]->GetTop());
+			}
+			/*element.SetTopLeft(element.GetLeft() + 20, element.GetTop());
 			elementGo.SetTopLeft(elementGo.GetLeft() + 20, elementGo.GetTop());
 			elementCloud.SetTopLeft(elementCloud.GetLeft() + 20, elementCloud.GetTop());
 			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() + 20, elementEmptyBlock.GetTop());
@@ -500,18 +603,8 @@ void backgroundTool::Move(characterTool *run_character)
 			elementBlockD2.SetTopLeft(elementBlockD2.GetLeft() + 20, elementBlockD2.GetTop());
 			elementDropFloor.SetTopLeft(elementDropFloor.GetLeft() + 20, elementDropFloor.GetTop());
 			elementLady.SetTopLeft(elementLady.GetLeft() + 20, elementLady.GetTop());
+			*/
 
-
-			if (elementPo == true)
-			{
-				elementPoRight.SetTopLeft(elementPoRight.GetLeft() + 20, elementPoRight.GetTop());
-				elementPoLeft.SetTopLeft(elementPoLeft.GetLeft() + 20, elementPoLeft.GetTop());
-			}
-
-			if (elementPo1_2 == true)
-			{
-				elementPoUp.SetTopLeft(elementPoUp.GetLeft() + 20, elementPoUp.GetTop());
-			}
 		}
 		
 
@@ -523,6 +616,28 @@ void backgroundTool::Move(characterTool *run_character)
 		{
 			floor1_2.SetTopLeft(floor1_2.GetLeft() - 20, floor1_2.GetTop());
 			background.SetTopLeft(background.GetLeft() - 20, background.GetTop());
+			for (int i = 0; i < 23; i++)
+			{
+				if (i == elementPoLeft || i == elementPoRight || i==elementPoUp)
+				{
+					continue;
+				}
+				else
+				{
+					stage[i]->SetTopLeft(stage[i]->GetLeft() - 20, stage[i]->GetTop());
+				}
+			}
+
+			if (elementPo == true)
+			{
+				stage[elementPoRight]->SetTopLeft(stage[elementPoRight]->GetLeft() - 20, stage[elementPoRight]->GetTop());
+				stage[elementPoLeft]->SetTopLeft(stage[elementPoLeft]->GetLeft() - 20, stage[elementPoLeft]->GetTop());
+			}
+			if (elementPo1_2 == true)
+			{
+				stage[elementPoUp]->SetTopLeft(stage[elementPoUp]->GetLeft() - 20, stage[elementPoUp]->GetTop());
+			}
+			/*
 			element.SetTopLeft(element.GetLeft() - 20, element.GetTop());
 			elementGo.SetTopLeft(elementGo.GetLeft() - 20, elementGo.GetTop());
 			elementCloud.SetTopLeft(elementCloud.GetLeft() - 20, elementCloud.GetTop());
@@ -555,11 +670,34 @@ void backgroundTool::Move(characterTool *run_character)
 			{
 				elementPoUp.SetTopLeft(elementPoUp.GetLeft() - 20, elementPoUp.GetTop());
 			}
+			*/
 		}
 		else //有跳躍的時候地圖要跑比較慢，因為有強制墬落
 		{
-			floor1_2.SetTopLeft(floor1_2.GetLeft() - 20, floor1_2.GetTop());
-			background.SetTopLeft(background.GetLeft() - 20, background.GetTop());
+			floor1_2.SetTopLeft(floor1_2.GetLeft() - 15, floor1_2.GetTop());
+			background.SetTopLeft(background.GetLeft() - 15, background.GetTop());
+			for (int i = 0; i < 23; i++)
+			{
+				if (i == elementPoLeft || i == elementPoRight || i==elementPoUp)
+				{
+					continue;
+				}
+				else
+				{
+					stage[i]->SetTopLeft(stage[i]->GetLeft() - 15, stage[i]->GetTop());
+				}
+			}
+
+			if (elementPo == true)
+			{
+				stage[elementPoRight]->SetTopLeft(stage[elementPoRight]->GetLeft() - 15, stage[elementPoRight]->GetTop());
+				stage[elementPoLeft]->SetTopLeft(stage[elementPoLeft]->GetLeft() - 15, stage[elementPoLeft]->GetTop());
+			}
+			if (elementPo1_2 == true)
+			{
+				stage[elementPoUp]->SetTopLeft(stage[elementPoUp]->GetLeft() - 15, stage[elementPoUp]->GetTop());
+			}
+			/*
 			element.SetTopLeft(element.GetLeft() - 20, element.GetTop());
 			elementGo.SetTopLeft(elementGo.GetLeft() - 20, elementGo.GetTop());
 			elementCloud.SetTopLeft(elementCloud.GetLeft() - 20, elementCloud.GetTop());
@@ -580,7 +718,7 @@ void backgroundTool::Move(characterTool *run_character)
 			elementBlockD2.SetTopLeft(elementBlockD2.GetLeft() - 20, elementBlockD2.GetTop());
 			elementDropFloor.SetTopLeft(elementDropFloor.GetLeft() - 20, elementDropFloor.GetTop());
 			elementLady.SetTopLeft(elementLady.GetLeft() - 20, elementLady.GetTop());
-
+			
 
 			if (elementPo == true)
 			{
@@ -591,7 +729,7 @@ void backgroundTool::Move(characterTool *run_character)
 			if (elementPo1_2 == true)
 			{
 				elementPoUp.SetTopLeft(elementPoUp.GetLeft() - 20, elementPoUp.GetTop());
-			}
+			}*/
 		}
 		
 	}

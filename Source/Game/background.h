@@ -9,6 +9,13 @@
 class backgroundTool
 {
 public:
+	~backgroundTool() 
+	{
+		for (int i = 0; i < int(stage.size()); i++)
+		{
+			delete stage[i];
+		}
+	}
 	void backgroundInit();
 	void selectInit();
 	void elementInit();
@@ -42,14 +49,19 @@ public:
 	MyCMovingBitmap *getElementPoLeftAddress();
 	MyCMovingBitmap *getElementPoUpAddress();
 	MyCMovingBitmap *getElementDropFloorAddress();
-
+	std::vector<MyCMovingBitmap *> *getStageAddress();
 
 	void Move(characterTool *run_character);
 	void KeyDown(UINT nChar);
 	void KeyUp(UINT nChar);
 
 protected:
-	MyCMovingBitmap element;
+	std::vector<MyCMovingBitmap *> stage;
+	std::vector<vector<string>> stage1LoadBitMap;
+	std::vector<vector<int>> stage1SetTopLeft;
+
+
+	/*MyCMovingBitmap element;
 	MyCMovingBitmap elementGo;
 	MyCMovingBitmap elementCloud;
 	MyCMovingBitmap elementEmptyBlock;
@@ -73,7 +85,8 @@ protected:
 	MyCMovingBitmap elementDropFloor;
 	MyCMovingBitmap floor1_2;
 	MyCMovingBitmap elementLady;
-
+	*/
+	MyCMovingBitmap floor1_2;
 	MyCMovingBitmap background;
 	MyCMovingBitmap select1;
 	MyCMovingBitmap select2;
@@ -89,5 +102,11 @@ protected:
 
 };
 
+enum stage1Id
+{
+	element, elementGo, elementCloud, elementEmptyBlock, elementGrass, elementLongBlock, elementShortBlock, elementPipe1, elementPipe2, elementKey,
+	elementPrick1, elementPrick2, elementEmptyBlock2, elementBlockU, elementBlockD, elementBlockI, elementBlockE, elementBlockD2, elementPoRight, elementPoLeft,
+	elementPoUp, elementDropFloor, elementLady
+};
 
 #endif

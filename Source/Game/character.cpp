@@ -233,103 +233,94 @@ bool characterTool::GetIsDroppingAddress()
 
 void characterTool::touchingElement(backgroundTool *backgroundElement)
 {
-	headHitfloor = character.touchUp(&character, backgroundElement->getElementAddress()) ||
-		character.touchUp(&character, backgroundElement->getElementGoAddress()) ||
-		character.touchUp(&character, backgroundElement->getElementEmptyBlockAddress()) ||
-		character.touchUp(&character, backgroundElement->getElementLongBlockAddress()) ||
-		character.touchUp(&character, backgroundElement->getElementShortBlockAddress()) ||
-		character.touchUp(&character, backgroundElement->getElementEmptyBlock2Address()) ||
-		character.touchUp(&character, backgroundElement->getElementBlockUAddress()) ||
-		character.touchUp(&character, backgroundElement->getElementBlockDAddress()) ||
-		character.touchUp(&character, backgroundElement->getElementBlockIAddress()) ||
-		character.touchUp(&character, backgroundElement->getElementBlockEAddress()) ||
-		character.touchUp(&character, backgroundElement->getElementBlockD2Address());
-	feetHitblock = character.touchDown(&character, backgroundElement->getElementAddress()) ||
-		character.touchDown(&character, backgroundElement->getElementGoAddress()) ||
-		character.touchDown(&character, backgroundElement->getElementLongBlockAddress())||
-		character.touchDown(&character, backgroundElement->getElementShortBlockAddress()) ||
-		character.touchDown(&character, backgroundElement->getElementPipe1Address()) ||
-		character.touchDown(&character, backgroundElement->getElementPipe2Address()) ||
-		((backgroundElement->getElementEmptyBlockAddress())->GetFrameIndexOfBitmap() == 1 && character.touchDown(&character, backgroundElement->getElementEmptyBlockAddress())) ||
-		((backgroundElement->getElementEmptyBlock2Address())->GetFrameIndexOfBitmap() == 1 && character.touchDown(&character, backgroundElement->getElementEmptyBlock2Address()));
+		std::vector<MyCMovingBitmap *> stage;
+		stage = *(backgroundElement->getStageAddress());
 		
-	faceHitblock = character.touchLeft(&character, backgroundElement->getElementAddress()) ||
-		character.touchLeft(&character, backgroundElement->getElementGoAddress()) ||
-		character.touchLeft(&character, backgroundElement->getElementLongBlockAddress())||
-		character.touchLeft(&character, backgroundElement->getElementShortBlockAddress()) ||
-		character.touchLeft(&character, backgroundElement->getElementPipe1Address()) ||
-		character.touchLeft(&character, backgroundElement->getElementPipe2Address()) ||
+		std::vector<int> intFloor = { element, elementGo, elementEmptyBlock, elementLongBlock, elementShortBlock,
+								 elementEmptyBlock2, elementBlockU, elementBlockD, elementBlockI, elementBlockE, elementBlockD2 };
+		std::vector<int> intFeet = { element, elementGo, elementEmptyBlock, elementLongBlock, elementShortBlock,
+								 elementEmptyBlock2, elementBlockU, elementBlockD, elementBlockI, elementBlockE, elementBlockD2 };
+		std::vector<int> intFace = { element, elementGo, elementEmptyBlock, elementLongBlock, elementShortBlock,
+								 elementEmptyBlock2, elementBlockU, elementBlockD, elementBlockI, elementBlockE, elementBlockD2 };
+		std::vector<int> intBack = { element, elementGo, elementEmptyBlock, elementLongBlock, elementShortBlock,
+								 elementEmptyBlock2, elementBlockU, elementBlockD, elementBlockI, elementBlockE, elementBlockD2 };
+		headHitfloor = false;
+		feetHitblock = false;
+		faceHitblock = false;
+		backHitblock = false;
+		
+		for (int i = 0; i < int(intFloor.size()); i++)
+		{
+			headHitfloor = headHitfloor || character.touchUp(&character, stage[intFloor[i]]);
+		}
+		/*
+		headHitfloor = character.touchUp(&character, stage[element]) ||
+		character.touchUp(&character, stage[elementGo]) ||
+		character.touchUp(&character, stage[elementEmptyBlock]) ||
+		character.touchUp(&character, stage[elementLongBlock]) ||
+		character.touchUp(&character, stage[elementShortBlock]) ||
+		character.touchUp(&character, stage[elementEmptyBlock2]) ||
+		character.touchUp(&character, stage[elementBlockU]) ||
+		character.touchUp(&character, stage[elementBlockD]) ||
+		character.touchUp(&character, stage[elementBlockI]) ||
+		character.touchUp(&character, stage[elementBlockE]) ||
+		character.touchUp(&character, stage[elementBlockD2]);
+		*/
+	feetHitblock = character.touchDown(&character, stage[element]) ||
+		character.touchDown(&character, stage[elementGo]) ||
+		character.touchDown(&character, stage[elementLongBlock])||
+		character.touchDown(&character, stage[elementShortBlock]) ||
+		character.touchDown(&character, stage[elementPipe1]) ||
+		character.touchDown(&character, stage[elementPipe2]) ||
+		(stage[elementEmptyBlock]->GetFrameIndexOfBitmap() == 1 && character.touchDown(&character, stage[elementEmptyBlock])) ||
+		(stage[elementEmptyBlock2]->GetFrameIndexOfBitmap() == 1 && character.touchDown(&character, stage[elementEmptyBlock2]));
+		
+	faceHitblock = character.touchLeft(&character, stage[element]) ||
+		character.touchLeft(&character, stage[elementGo]) ||
+		character.touchLeft(&character, stage[elementLongBlock])||
+		character.touchLeft(&character, stage[elementShortBlock]) ||
+		character.touchLeft(&character, stage[elementPipe1]) ||
+		character.touchLeft(&character, stage[elementPipe2]) ||
 		character.touchLeft(&character, backgroundElement->getFloor1_2Address()) ||
-		((backgroundElement->getElementEmptyBlockAddress())->GetFrameIndexOfBitmap() == 1 && character.touchLeft(&character, backgroundElement->getElementEmptyBlockAddress())) ||
-		((backgroundElement->getElementEmptyBlock2Address())->GetFrameIndexOfBitmap() == 1 && character.touchLeft(&character, backgroundElement->getElementEmptyBlock2Address()));
-	backHitblock = character.touchRight(&character, backgroundElement->getElementAddress()) ||
-		character.touchRight(&character, backgroundElement->getElementGoAddress()) ||
-		character.touchRight(&character, backgroundElement->getElementLongBlockAddress())||
-		character.touchRight(&character, backgroundElement->getElementShortBlockAddress()) ||
-		character.touchRight(&character, backgroundElement->getElementPipe1Address()) ||
-		character.touchRight(&character, backgroundElement->getElementPipe2Address()) ||
+		(stage[elementEmptyBlock]->GetFrameIndexOfBitmap() == 1 && character.touchLeft(&character, stage[elementEmptyBlock])) ||
+		(stage[elementEmptyBlock2]->GetFrameIndexOfBitmap() == 1 && character.touchLeft(&character, stage[elementEmptyBlock2]));
+	backHitblock = character.touchRight(&character, stage[element]) ||
+		character.touchRight(&character, stage[elementGo]) ||
+		character.touchRight(&character, stage[elementLongBlock])||
+		character.touchRight(&character, stage[elementShortBlock]) ||
+		character.touchRight(&character, stage[elementPipe1]) ||
+		character.touchRight(&character, stage[elementPipe2]) ||
 		character.touchRight(&character, backgroundElement->getFloor1_2Address()) ||
-		((backgroundElement->getElementEmptyBlockAddress())->GetFrameIndexOfBitmap() == 1 && character.touchRight(&character, backgroundElement->getElementEmptyBlockAddress())) ||
-		((backgroundElement->getElementEmptyBlock2Address())->GetFrameIndexOfBitmap() == 1 && character.touchRight(&character, backgroundElement->getElementEmptyBlock2Address()));
+		(stage[elementEmptyBlock]->GetFrameIndexOfBitmap() == 1 && character.touchRight(&character, stage[elementEmptyBlock])) ||
+		(stage[elementEmptyBlock2]->GetFrameIndexOfBitmap() == 1 && character.touchRight(&character, stage[elementEmptyBlock2]));
 		
-/*
-	if ((backgroundElement->getElementEmptyBlockAddress())->GetFrameIndexOfBitmap() == 1 || 
-		(backgroundElement->getElementEmptyBlock2Address())->GetFrameIndexOfBitmap() == 1)
-	{
-		feetHitblock = character.touchDown(&character, backgroundElement->getElementEmptyBlockAddress())||//隱形方塊碰到才讓他判斷
-			character.touchDown(&character, backgroundElement->getElementAddress()) ||
-			character.touchDown(&character, backgroundElement->getElementGoAddress()) ||
-			character.touchDown(&character, backgroundElement->getElementLongBlockAddress()) ||
-			character.touchDown(&character, backgroundElement->getElementShortBlockAddress()) ||
-			character.touchDown(&character, backgroundElement->getElementPipe1Address()) ||
-			character.touchDown(&character, backgroundElement->getElementPipe2Address()) ||
-			character.touchDown(&character, backgroundElement->getElementEmptyBlock2Address());
-		faceHitblock = character.touchLeft(&character, backgroundElement->getElementEmptyBlockAddress())||
-			character.touchLeft(&character, backgroundElement->getElementAddress()) ||
-			character.touchLeft(&character, backgroundElement->getElementGoAddress()) ||
-			character.touchLeft(&character, backgroundElement->getElementLongBlockAddress()) ||
-			character.touchLeft(&character, backgroundElement->getElementShortBlockAddress()) ||
-			character.touchLeft(&character, backgroundElement->getElementPipe1Address()) ||
-			character.touchLeft(&character, backgroundElement->getElementPipe2Address()) ||
-			character.touchLeft(&character, backgroundElement->getElementEmptyBlock2Address()) ||
-			character.touchLeft(&character, backgroundElement->getFloor1_2Address());
-		backHitblock = character.touchRight(&character, backgroundElement->getElementEmptyBlockAddress())||
-			character.touchRight(&character, backgroundElement->getElementAddress()) ||
-			character.touchRight(&character, backgroundElement->getElementGoAddress()) ||
-			character.touchRight(&character, backgroundElement->getElementLongBlockAddress()) ||
-			character.touchRight(&character, backgroundElement->getElementShortBlockAddress()) ||
-			character.touchRight(&character, backgroundElement->getElementPipe1Address()) ||
-			character.touchRight(&character, backgroundElement->getElementPipe2Address()) ||
-			character.touchRight(&character, backgroundElement->getElementEmptyBlock2Address()) ||
-			character.touchRight(&character, backgroundElement->getFloor1_2Address());
-	}
-	*/
-	if (character.touchUp(&character, backgroundElement->getElementGoAddress()))
+
+	if (character.touchUp(&character, stage[elementGo]))
 	{
 		backgroundElement->backgroundInit();
 		backgroundElement->elementInit();
 		characterInit();
 	}
 
-	if (character.IsOverlap(*(backgroundElement->getElementCloudAddress()), character))
+	if (character.IsOverlap(*stage[elementCloud], character))
 	{
 		backgroundElement->backgroundInit();
 		backgroundElement->elementInit();
 		characterInit();
 	}
 
-	if (character.IsOverlap(*(backgroundElement->getElementGrassAddress()), character))
+	if (character.IsOverlap(*stage[elementGrass], character))
 	{
 		backgroundElement->backgroundInit();
 		backgroundElement->elementInit();
 		characterInit();
 	}
 	
-	if (character.IsOverlap(*(backgroundElement->getElementPrick1Address()), character) || 
-		character.IsOverlap(*(backgroundElement->getElementPrick2Address()), character) ||
-		character.IsOverlap(*(backgroundElement->getElementPoRightAddress()), character) ||
-		character.IsOverlap(*(backgroundElement->getElementPoLeftAddress()), character) ||
-		character.IsOverlap(*(backgroundElement->getElementPoUpAddress()), character))
+	if (character.IsOverlap(*stage[elementPrick1], character) ||
+		character.IsOverlap(*stage[elementPrick2], character) ||
+		character.IsOverlap(*stage[elementPoRight], character) ||
+		character.IsOverlap(*stage[elementPoLeft], character) ||
+		character.IsOverlap(*stage[elementPoUp], character))
 	{
 		backgroundElement->backgroundInit();
 		backgroundElement->elementInit();
@@ -339,15 +330,17 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 
 void characterTool::drop(backgroundTool *background)
 {
+	std::vector<MyCMovingBitmap *> stage;
+	stage = *(background->getStageAddress());
 	MyCMovingBitmap tmp = *(background->getBackgroundAddress());
-	if (character.GetLeft() > tmp.GetLeft() + 1480 && character.GetLeft() < tmp.GetLeft() +1820 &&
+	if (character.GetLeft() +50 > tmp.GetLeft() + 1480 && character.GetLeft() -50 < tmp.GetLeft() + 1820 &&
 		character.GetTop() >= 733)
 	{
 		character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 	}
 
-	if (character.GetLeft() > tmp.GetLeft() + 5454 && character.GetLeft() < tmp.GetLeft() + 5604 &&
-		character.GetTop() >= 733 && character.touchDown(&character, background->getElementDropFloorAddress())==false)
+	if (character.GetLeft() + 50> tmp.GetLeft() + 5454 && character.GetLeft() - 50 < tmp.GetLeft() + 5604 &&
+		character.GetTop() >= 733 && character.touchDown(&character, stage[elementDropFloor]) == false)
 	{
 		character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 	}
