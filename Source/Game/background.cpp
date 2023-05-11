@@ -6,15 +6,15 @@
 #include "MyCMovingBitmap.h"
 #include "background.h"
 #include "character.h"
-
 using namespace game_framework;
 
 void backgroundTool::backgroundInit()
 {
 	background.LoadBitmapByString({
 		"resources/background3.bmp",
-		"resources/level1.bmp"
-		}, 0);
+		"resources/level1.bmp"},
+		0);
+	
 	background.SetTopLeft(0, 0);
 
 	floor1_2.LoadBitmapByString({
@@ -24,13 +24,25 @@ void backgroundTool::backgroundInit()
 	
 }
 
+void backgroundTool::selectInit()
+{
+	select1.LoadBitmapByString({ "resources/select1.bmp" }, RGB(255, 255, 255));
+	select1.SetTopLeft(600, 400);
+
+	select2.LoadBitmapByString({ "resources/select2.bmp" }, RGB(255, 255, 255));
+	select2.SetTopLeft(880, 400);
+
+	totalSelect.LoadBitmapByString({ "resources/select1_2.bmp", "resources/select2_2.bmp" }, RGB(255, 255, 255));
+	totalSelect.SetTopLeft(600, 400);
+}
+
 void backgroundTool::elementInit()
 {
 	element.LoadBitmapByString({ "resources/whiteBlock.bmp","resources/blackBlock.bmp" }, RGB(255, 255, 255));
 	element.SetTopLeft(427, 539);
 	element.SetFrameIndexOfBitmap(0);
 
-	elementGo.LoadBitmapByString({ "resources/nothing.bmp","resources/go.bmp","resources/godie.bmp" }, RGB(255, 255, 255));
+	elementGo.LoadBitmapByString({ "resources/nothing.bmp","resources/go.bmp","resources/godie_1.bmp" }, RGB(255, 255, 255));
 	elementGo.SetFrameIndexOfBitmap(0);
 	elementGo.SetTopLeft(0,0);
 	
@@ -108,18 +120,53 @@ void backgroundTool::elementInit()
 	elementDropFloor.SetFrameIndexOfBitmap(0);
 	elementDropFloor.SetTopLeft(5454, 863);
 
-	elementLady.LoadBitmapByString({ "resources/lady.bmp" }, RGB(255, 255, 255));
-	elementLady.SetFrameIndexOfBitmap(0);
-	elementLady.SetTopLeft(6054, 730);
-
 	elementPo = false;
 	elementPo1_2 = false;
+}
+
+void backgroundTool::backgroundKeyDown(UINT nChar)
+{
+	if ((nChar == VK_RIGHT || nChar == VK_LEFT) && playing == false)//向右選關鍵
+	{
+		if (sel < 1)
+			sel += 1;
+		else
+			sel = 0;
+		totalSelect.SetFrameIndexOfBitmap(sel);
+		if (sel == 0)
+			totalSelect.SetTopLeft(600, 400);
+		if (sel == 1)
+			totalSelect.SetTopLeft(880, 400);
+
+	}
+	if (nChar == VK_RETURN) // VK_RETURN = Enter
+	{
+		if (sel == 0)
+		{
+			playing = true;
+			background.SetFrameIndexOfBitmap(1); // background
+			for (int i = 0; i < 2; i++)
+			{
+				totalSelect.SetFrameIndexOfBitmap(i);
+				totalSelect.SetTopLeft(-600, -400);
+			}
+			select1.SetTopLeft(-600, -400);
+			select2.SetTopLeft(-600, -400);
+		}
+	}
 }
 
 void backgroundTool::backroundShowBitmap()
 {
 	background.ShowBitmap();
 	floor1_2.ShowBitmap();
+}
+
+void backgroundTool::selectShowBitmap()
+{
+	select1.ShowBitmap();
+	select2.ShowBitmap();
+	totalSelect.ShowBitmap();
 }
 
 void backgroundTool::elementShowBitmap()
@@ -146,13 +193,13 @@ void backgroundTool::elementShowBitmap()
 	elementPoRight.ShowBitmap();
 	elementPoLeft.ShowBitmap();
 	elementDropFloor.ShowBitmap();
-	elementLady.ShowBitmap();
 }
 
 MyCMovingBitmap *backgroundTool::getFloor1_2Address()
 {
 	return &floor1_2;
 }
+
 MyCMovingBitmap *backgroundTool::getBackgroundAddress()
 {
 	return &background;
@@ -378,171 +425,168 @@ void backgroundTool::touching(characterTool *character)
 	
 }
 
+
 bool backgroundTool::getPlaying()
 {
 	return playing;
 }
+
 
 void backgroundTool::Move(characterTool *run_character)
 {
 
 	if (buttonA && run_character->GetBackHitblock() == false)
 	{
-		if (buttonW == false) //沒有跳躍的時候地圖正常跑
-		{
-			floor1_2.SetTopLeft(floor1_2.GetLeft() + 20, floor1_2.GetTop());
-			background.SetTopLeft(background.GetLeft() + 20, background.GetTop());
-			element.SetTopLeft(element.GetLeft() + 20, element.GetTop());
-			elementGo.SetTopLeft(elementGo.GetLeft() + 20, elementGo.GetTop());
-			elementCloud.SetTopLeft(elementCloud.GetLeft() + 20, elementCloud.GetTop());
-			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() + 20, elementEmptyBlock.GetTop());
-			elementGrass.SetTopLeft(elementGrass.GetLeft() + 20, elementGrass.GetTop());
-			elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() + 20, elementLongBlock.GetTop());
-			elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() + 20, elementShortBlock.GetTop());
-			elementPipe1.SetTopLeft(elementPipe1.GetLeft() + 20, elementPipe1.GetTop());
-			elementPipe2.SetTopLeft(elementPipe2.GetLeft() + 20, elementPipe2.GetTop());
-			elementKey.SetTopLeft(elementKey.GetLeft() + 20, elementKey.GetTop());
-			elementPrick1.SetTopLeft(elementPrick1.GetLeft() + 20, elementPrick1.GetTop());
-			elementPrick2.SetTopLeft(elementPrick2.GetLeft() + 20, elementPrick2.GetTop());
-			elementEmptyBlock2.SetTopLeft(elementEmptyBlock2.GetLeft() + 20, elementEmptyBlock2.GetTop());
-			elementBlockU.SetTopLeft(elementBlockU.GetLeft() + 20, elementBlockU.GetTop());
-			elementBlockD.SetTopLeft(elementBlockD.GetLeft() + 20, elementBlockD.GetTop());
-			elementBlockI.SetTopLeft(elementBlockI.GetLeft() + 20, elementBlockI.GetTop());
-			elementBlockE.SetTopLeft(elementBlockE.GetLeft() + 20, elementBlockE.GetTop());
-			elementBlockD2.SetTopLeft(elementBlockD2.GetLeft() + 20, elementBlockD2.GetTop());
-			elementDropFloor.SetTopLeft(elementDropFloor.GetLeft() + 20, elementDropFloor.GetTop());
-			elementLady.SetTopLeft(elementLady.GetLeft() + 20, elementLady.GetTop());
+		if (playing){
+			if (buttonW == false) //沒有跳躍的時候地圖正常跑
+				{
+				floor1_2.SetTopLeft(floor1_2.GetLeft() + 20, floor1_2.GetTop());
+				background.SetTopLeft(background.GetLeft() + 20, background.GetTop());
+				element.SetTopLeft(element.GetLeft() + 20, element.GetTop());
+				elementGo.SetTopLeft(elementGo.GetLeft() + 20, elementGo.GetTop());
+				elementCloud.SetTopLeft(elementCloud.GetLeft() + 20, elementCloud.GetTop());
+				elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() + 20, elementEmptyBlock.GetTop());
+				elementGrass.SetTopLeft(elementGrass.GetLeft() + 20, elementGrass.GetTop());
+				elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() + 20, elementLongBlock.GetTop());
+				elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() + 20, elementShortBlock.GetTop());
+				elementPipe1.SetTopLeft(elementPipe1.GetLeft() + 20, elementPipe1.GetTop());
+				elementPipe2.SetTopLeft(elementPipe2.GetLeft() + 20, elementPipe2.GetTop());
+				elementKey.SetTopLeft(elementKey.GetLeft() + 20, elementKey.GetTop());
+				elementPrick1.SetTopLeft(elementPrick1.GetLeft() + 20, elementPrick1.GetTop());
+				elementPrick2.SetTopLeft(elementPrick2.GetLeft() + 20, elementPrick2.GetTop());
+				elementEmptyBlock2.SetTopLeft(elementEmptyBlock2.GetLeft() + 20, elementEmptyBlock2.GetTop());
+				elementBlockU.SetTopLeft(elementBlockU.GetLeft() + 20, elementBlockU.GetTop());
+				elementBlockD.SetTopLeft(elementBlockD.GetLeft() + 20, elementBlockD.GetTop());
+				elementBlockI.SetTopLeft(elementBlockI.GetLeft() + 20, elementBlockI.GetTop());
+				elementBlockE.SetTopLeft(elementBlockE.GetLeft() + 20, elementBlockE.GetTop());
+				elementBlockD2.SetTopLeft(elementBlockD2.GetLeft() + 20, elementBlockD2.GetTop());
+				elementDropFloor.SetTopLeft(elementDropFloor.GetLeft() + 20, elementDropFloor.GetTop());
 
+				if (elementPo == true)
+				{
+					elementPoRight.SetTopLeft(elementPoRight.GetLeft() + 20, elementPoRight.GetTop());
+					elementPoLeft.SetTopLeft(elementPoLeft.GetLeft() + 20, elementPoLeft.GetTop());
+				}
+				if (elementPo1_2 == true)
+				{
+					elementPoUp.SetTopLeft(elementPoUp.GetLeft() + 20, elementPoUp.GetTop());
+				}
 
-			if (elementPo == true)
-			{
-				elementPoRight.SetTopLeft(elementPoRight.GetLeft() + 20, elementPoRight.GetTop());
-				elementPoLeft.SetTopLeft(elementPoLeft.GetLeft() + 20, elementPoLeft.GetTop());
-			}
-			if (elementPo1_2 == true)
-			{
-				elementPoUp.SetTopLeft(elementPoUp.GetLeft() + 20, elementPoUp.GetTop());
-			}
+				}
+			else //有跳躍的時候地圖要跑比較慢，因為有強制墬落
+				{
+				floor1_2.SetTopLeft(floor1_2.GetLeft() + 20, floor1_2.GetTop());
+				background.SetTopLeft(background.GetLeft() + 20, background.GetTop());
+				element.SetTopLeft(element.GetLeft() + 20, element.GetTop());
+				elementGo.SetTopLeft(elementGo.GetLeft() + 20, elementGo.GetTop());
+				elementCloud.SetTopLeft(elementCloud.GetLeft() + 20, elementCloud.GetTop());
+				elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() + 20, elementEmptyBlock.GetTop());
+				elementGrass.SetTopLeft(elementGrass.GetLeft() + 20, elementGrass.GetTop());
+				elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() + 20, elementLongBlock.GetTop());
+				elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() + 20, elementShortBlock.GetTop());
+				elementPipe1.SetTopLeft(elementPipe1.GetLeft() + 20, elementPipe1.GetTop());
+				elementPipe2.SetTopLeft(elementPipe2.GetLeft() + 20, elementPipe2.GetTop());
+				elementKey.SetTopLeft(elementKey.GetLeft() + 20, elementKey.GetTop());
+				elementPrick1.SetTopLeft(elementPrick1.GetLeft() + 20, elementPrick1.GetTop());
+				elementPrick2.SetTopLeft(elementPrick2.GetLeft() + 20, elementPrick2.GetTop());
+				elementEmptyBlock2.SetTopLeft(elementEmptyBlock2.GetLeft() + 20, elementEmptyBlock2.GetTop());
+				elementBlockU.SetTopLeft(elementBlockU.GetLeft() + 20, elementBlockU.GetTop());
+				elementBlockD.SetTopLeft(elementBlockD.GetLeft() + 20, elementBlockD.GetTop());
+				elementBlockI.SetTopLeft(elementBlockI.GetLeft() + 20, elementBlockI.GetTop());
+				elementBlockE.SetTopLeft(elementBlockE.GetLeft() + 20, elementBlockE.GetTop());
+				elementBlockD2.SetTopLeft(elementBlockD2.GetLeft() + 20, elementBlockD2.GetTop());
+				elementDropFloor.SetTopLeft(elementDropFloor.GetLeft() + 20, elementDropFloor.GetTop());
 
-		}
-		else //有跳躍的時候地圖要跑比較慢，因為有強制墬落
-		{
-			floor1_2.SetTopLeft(floor1_2.GetLeft() + 20, floor1_2.GetTop());
-			background.SetTopLeft(background.GetLeft() + 20, background.GetTop());
-			element.SetTopLeft(element.GetLeft() + 20, element.GetTop());
-			elementGo.SetTopLeft(elementGo.GetLeft() + 20, elementGo.GetTop());
-			elementCloud.SetTopLeft(elementCloud.GetLeft() + 20, elementCloud.GetTop());
-			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() + 20, elementEmptyBlock.GetTop());
-			elementGrass.SetTopLeft(elementGrass.GetLeft() + 20, elementGrass.GetTop());
-			elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() + 20, elementLongBlock.GetTop());
-			elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() + 20, elementShortBlock.GetTop());
-			elementPipe1.SetTopLeft(elementPipe1.GetLeft() + 20, elementPipe1.GetTop());
-			elementPipe2.SetTopLeft(elementPipe2.GetLeft() + 20, elementPipe2.GetTop());
-			elementKey.SetTopLeft(elementKey.GetLeft() + 20, elementKey.GetTop());
-			elementPrick1.SetTopLeft(elementPrick1.GetLeft() + 20, elementPrick1.GetTop());
-			elementPrick2.SetTopLeft(elementPrick2.GetLeft() + 20, elementPrick2.GetTop());
-			elementEmptyBlock2.SetTopLeft(elementEmptyBlock2.GetLeft() + 20, elementEmptyBlock2.GetTop());
-			elementBlockU.SetTopLeft(elementBlockU.GetLeft() + 20, elementBlockU.GetTop());
-			elementBlockD.SetTopLeft(elementBlockD.GetLeft() + 20, elementBlockD.GetTop());
-			elementBlockI.SetTopLeft(elementBlockI.GetLeft() + 20, elementBlockI.GetTop());
-			elementBlockE.SetTopLeft(elementBlockE.GetLeft() + 20, elementBlockE.GetTop());
-			elementBlockD2.SetTopLeft(elementBlockD2.GetLeft() + 20, elementBlockD2.GetTop());
-			elementDropFloor.SetTopLeft(elementDropFloor.GetLeft() + 20, elementDropFloor.GetTop());
-			elementLady.SetTopLeft(elementLady.GetLeft() + 20, elementLady.GetTop());
+				if (elementPo == true)
+				{
+					elementPoRight.SetTopLeft(elementPoRight.GetLeft() + 20, elementPoRight.GetTop());
+					elementPoLeft.SetTopLeft(elementPoLeft.GetLeft() + 20, elementPoLeft.GetTop());
+				}
 
-
-			if (elementPo == true)
-			{
-				elementPoRight.SetTopLeft(elementPoRight.GetLeft() + 20, elementPoRight.GetTop());
-				elementPoLeft.SetTopLeft(elementPoLeft.GetLeft() + 20, elementPoLeft.GetTop());
-			}
-
-			if (elementPo1_2 == true)
-			{
-				elementPoUp.SetTopLeft(elementPoUp.GetLeft() + 20, elementPoUp.GetTop());
-			}
-		}
+				if (elementPo1_2 == true)
+				{
+					elementPoUp.SetTopLeft(elementPoUp.GetLeft() + 20, elementPoUp.GetTop());
+				}
+				}
 		
 
+		}
 	}
-
 	if (buttonD && run_character->GetFaceHitblock()  == false)
 	{
-		if (buttonW == false) //沒有跳躍的時候地圖正常跑
+		if (playing)
 		{
-			floor1_2.SetTopLeft(floor1_2.GetLeft() - 20, floor1_2.GetTop());
-			background.SetTopLeft(background.GetLeft() - 20, background.GetTop());
-			element.SetTopLeft(element.GetLeft() - 20, element.GetTop());
-			elementGo.SetTopLeft(elementGo.GetLeft() - 20, elementGo.GetTop());
-			elementCloud.SetTopLeft(elementCloud.GetLeft() - 20, elementCloud.GetTop());
-			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() - 20, elementEmptyBlock.GetTop());
-			elementGrass.SetTopLeft(elementGrass.GetLeft() - 20, elementGrass.GetTop());
-			elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() - 20, elementLongBlock.GetTop());
-			elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() - 20, elementShortBlock.GetTop());
-			elementPipe1.SetTopLeft(elementPipe1.GetLeft() - 20, elementPipe1.GetTop());
-			elementPipe2.SetTopLeft(elementPipe2.GetLeft() - 20, elementPipe2.GetTop());
-			elementKey.SetTopLeft(elementKey.GetLeft() - 20, elementKey.GetTop());
-			elementPrick1.SetTopLeft(elementPrick1.GetLeft() - 20, elementPrick1.GetTop());
-			elementPrick2.SetTopLeft(elementPrick2.GetLeft() - 20, elementPrick2.GetTop());
-			elementEmptyBlock2.SetTopLeft(elementEmptyBlock2.GetLeft() - 20, elementEmptyBlock2.GetTop());
-			elementBlockU.SetTopLeft(elementBlockU.GetLeft() - 20, elementBlockU.GetTop());
-			elementBlockD.SetTopLeft(elementBlockD.GetLeft() - 20, elementBlockD.GetTop());
-			elementBlockI.SetTopLeft(elementBlockI.GetLeft() - 20, elementBlockI.GetTop());
-			elementBlockE.SetTopLeft(elementBlockE.GetLeft() - 20, elementBlockE.GetTop());
-			elementBlockD2.SetTopLeft(elementBlockD2.GetLeft() - 20, elementBlockD2.GetTop());
-			elementDropFloor.SetTopLeft(elementDropFloor.GetLeft() - 20, elementDropFloor.GetTop());
-			elementLady.SetTopLeft(elementLady.GetLeft() - 20, elementLady.GetTop());
+			if (buttonW == false) //沒有跳躍的時候地圖正常跑
+				{
+				floor1_2.SetTopLeft(floor1_2.GetLeft() - 20, floor1_2.GetTop());
+				background.SetTopLeft(background.GetLeft() - 20, background.GetTop());
+				element.SetTopLeft(element.GetLeft() - 20, element.GetTop());
+				elementGo.SetTopLeft(elementGo.GetLeft() - 20, elementGo.GetTop());
+				elementCloud.SetTopLeft(elementCloud.GetLeft() - 20, elementCloud.GetTop());
+				elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() - 20, elementEmptyBlock.GetTop());
+				elementGrass.SetTopLeft(elementGrass.GetLeft() - 20, elementGrass.GetTop());
+				elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() - 20, elementLongBlock.GetTop());
+				elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() - 20, elementShortBlock.GetTop());
+				elementPipe1.SetTopLeft(elementPipe1.GetLeft() - 20, elementPipe1.GetTop());
+				elementPipe2.SetTopLeft(elementPipe2.GetLeft() - 20, elementPipe2.GetTop());
+				elementKey.SetTopLeft(elementKey.GetLeft() - 20, elementKey.GetTop());
+				elementPrick1.SetTopLeft(elementPrick1.GetLeft() - 20, elementPrick1.GetTop());
+				elementPrick2.SetTopLeft(elementPrick2.GetLeft() - 20, elementPrick2.GetTop());
+				elementEmptyBlock2.SetTopLeft(elementEmptyBlock2.GetLeft() - 20, elementEmptyBlock2.GetTop());
+				elementBlockU.SetTopLeft(elementBlockU.GetLeft() - 20, elementBlockU.GetTop());
+				elementBlockD.SetTopLeft(elementBlockD.GetLeft() - 20, elementBlockD.GetTop());
+				elementBlockI.SetTopLeft(elementBlockI.GetLeft() - 20, elementBlockI.GetTop());
+				elementBlockE.SetTopLeft(elementBlockE.GetLeft() - 20, elementBlockE.GetTop());
+				elementBlockD2.SetTopLeft(elementBlockD2.GetLeft() - 20, elementBlockD2.GetTop());
+				elementDropFloor.SetTopLeft(elementDropFloor.GetLeft() - 20, elementDropFloor.GetTop());
 
+				if(elementPo == true)
+				{
+					elementPoRight.SetTopLeft(elementPoRight.GetLeft() - 30, elementPoRight.GetTop());
+					elementPoLeft.SetTopLeft(elementPoLeft.GetLeft() - 30, elementPoLeft.GetTop());
+				}
 
-			if(elementPo == true)
-			{
-				elementPoRight.SetTopLeft(elementPoRight.GetLeft() - 20, elementPoRight.GetTop());
-				elementPoLeft.SetTopLeft(elementPoLeft.GetLeft() - 20, elementPoLeft.GetTop());
-			}
+				if (elementPo1_2 == true)
+				{
+					elementPoUp.SetTopLeft(elementPoUp.GetLeft() - 30, elementPoUp.GetTop());
+				}
+				}
+			else //有跳躍的時候地圖要跑比較慢，因為有強制墬落
+				{
+				floor1_2.SetTopLeft(floor1_2.GetLeft() - 20, floor1_2.GetTop());
+				background.SetTopLeft(background.GetLeft() - 20, background.GetTop());
+				element.SetTopLeft(element.GetLeft() - 20, element.GetTop());
+				elementGo.SetTopLeft(elementGo.GetLeft() - 20, elementGo.GetTop());
+				elementCloud.SetTopLeft(elementCloud.GetLeft() - 20, elementCloud.GetTop());
+				elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() - 20, elementEmptyBlock.GetTop());
+				elementGrass.SetTopLeft(elementGrass.GetLeft() - 20, elementGrass.GetTop());
+				elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() - 20, elementLongBlock.GetTop());
+				elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() - 20, elementShortBlock.GetTop());
+				elementPipe1.SetTopLeft(elementPipe1.GetLeft() - 20, elementPipe1.GetTop());
+				elementPipe2.SetTopLeft(elementPipe2.GetLeft() - 20, elementPipe2.GetTop());
+				elementKey.SetTopLeft(elementKey.GetLeft() - 20, elementKey.GetTop());
+				elementPrick1.SetTopLeft(elementPrick1.GetLeft() - 20, elementPrick1.GetTop());
+				elementPrick2.SetTopLeft(elementPrick2.GetLeft() - 20, elementPrick2.GetTop());
+				elementEmptyBlock2.SetTopLeft(elementEmptyBlock2.GetLeft() - 20, elementEmptyBlock2.GetTop());
+				elementBlockU.SetTopLeft(elementBlockU.GetLeft() - 20, elementBlockU.GetTop());
+				elementBlockD.SetTopLeft(elementBlockD.GetLeft() - 20, elementBlockD.GetTop());
+				elementBlockI.SetTopLeft(elementBlockI.GetLeft() - 20, elementBlockI.GetTop());
+				elementBlockE.SetTopLeft(elementBlockE.GetLeft() - 20, elementBlockE.GetTop());
+				elementBlockD2.SetTopLeft(elementBlockD2.GetLeft() - 20, elementBlockD2.GetTop());
+				elementDropFloor.SetTopLeft(elementDropFloor.GetLeft() - 20, elementDropFloor.GetTop());
 
-			if (elementPo1_2 == true)
-			{
-				elementPoUp.SetTopLeft(elementPoUp.GetLeft() - 20, elementPoUp.GetTop());
-			}
+				if (elementPo == true)
+				{
+					elementPoRight.SetTopLeft(elementPoRight.GetLeft() - 20, elementPoRight.GetTop());
+					elementPoLeft.SetTopLeft(elementPoLeft.GetLeft() - 20, elementPoLeft.GetTop());
+				}
+
+				if (elementPo1_2 == true)
+				{
+					elementPoUp.SetTopLeft(elementPoUp.GetLeft() - 20, elementPoUp.GetTop());
+				}
+				}
 		}
-		else //有跳躍的時候地圖要跑比較慢，因為有強制墬落
-		{
-			floor1_2.SetTopLeft(floor1_2.GetLeft() - 20, floor1_2.GetTop());
-			background.SetTopLeft(background.GetLeft() - 20, background.GetTop());
-			element.SetTopLeft(element.GetLeft() - 20, element.GetTop());
-			elementGo.SetTopLeft(elementGo.GetLeft() - 20, elementGo.GetTop());
-			elementCloud.SetTopLeft(elementCloud.GetLeft() - 20, elementCloud.GetTop());
-			elementEmptyBlock.SetTopLeft(elementEmptyBlock.GetLeft() - 20, elementEmptyBlock.GetTop());
-			elementGrass.SetTopLeft(elementGrass.GetLeft() - 20, elementGrass.GetTop());
-			elementLongBlock.SetTopLeft(elementLongBlock.GetLeft() - 20, elementLongBlock.GetTop());
-			elementShortBlock.SetTopLeft(elementShortBlock.GetLeft() - 20, elementShortBlock.GetTop());
-			elementPipe1.SetTopLeft(elementPipe1.GetLeft() - 20, elementPipe1.GetTop());
-			elementPipe2.SetTopLeft(elementPipe2.GetLeft() - 20, elementPipe2.GetTop());
-			elementKey.SetTopLeft(elementKey.GetLeft() - 20, elementKey.GetTop());
-			elementPrick1.SetTopLeft(elementPrick1.GetLeft() - 20, elementPrick1.GetTop());
-			elementPrick2.SetTopLeft(elementPrick2.GetLeft() - 20, elementPrick2.GetTop());
-			elementEmptyBlock2.SetTopLeft(elementEmptyBlock2.GetLeft() - 20, elementEmptyBlock2.GetTop());
-			elementBlockU.SetTopLeft(elementBlockU.GetLeft() - 20, elementBlockU.GetTop());
-			elementBlockD.SetTopLeft(elementBlockD.GetLeft() - 20, elementBlockD.GetTop());
-			elementBlockI.SetTopLeft(elementBlockI.GetLeft() - 20, elementBlockI.GetTop());
-			elementBlockE.SetTopLeft(elementBlockE.GetLeft() - 20, elementBlockE.GetTop());
-			elementBlockD2.SetTopLeft(elementBlockD2.GetLeft() - 20, elementBlockD2.GetTop());
-			elementDropFloor.SetTopLeft(elementDropFloor.GetLeft() - 20, elementDropFloor.GetTop());
-			elementLady.SetTopLeft(elementLady.GetLeft() - 20, elementLady.GetTop());
-
-
-			if (elementPo == true)
-			{
-				elementPoRight.SetTopLeft(elementPoRight.GetLeft() - 20, elementPoRight.GetTop());
-				elementPoLeft.SetTopLeft(elementPoLeft.GetLeft() - 20, elementPoLeft.GetTop());
-			}
-
-			if (elementPo1_2 == true)
-			{
-				elementPoUp.SetTopLeft(elementPoUp.GetLeft() - 20, elementPoUp.GetTop());
-			}
-		}
-		
 	}
 }
 
@@ -567,7 +611,6 @@ void backgroundTool::KeyDown(UINT nChar)
 		buttonD = true;
 	}
 }
-
 
 void backgroundTool::KeyUp(UINT nChar)
 {

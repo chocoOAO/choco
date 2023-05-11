@@ -7,7 +7,6 @@
 #include "character.h"
 #include "background.h"
 #include <vector>
-#include <experimental/filesystem>
 using namespace game_framework;
 
 
@@ -319,7 +318,7 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 		characterInit();
 	}
 
-	if (character.IsOverlap(static_cast<CMovingBitmap>(*backgroundElement->getElementGrassAddress()), static_cast<CMovingBitmap>(character)))
+	if (character.IsOverlap(*(backgroundElement->getElementGrassAddress()), character))
 	{
 		backgroundElement->backgroundInit();
 		backgroundElement->elementInit();
@@ -341,12 +340,13 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 void characterTool::drop(backgroundTool *background)
 {
 	MyCMovingBitmap tmp = *(background->getBackgroundAddress());
-	if (character.GetLeft() > tmp.GetLeft() + 1480 && character.GetLeft() < tmp.GetLeft() +1820 )
+	if (character.GetLeft() + 50> tmp.GetLeft() + 1480 && character.GetLeft() - 50 < tmp.GetLeft() +1820 &&
+		character.GetTop() >= 733)
 	{
 		character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 	}
 
-	if (character.GetLeft() > tmp.GetLeft() + 5454 && character.GetLeft() < tmp.GetLeft() + 5604 &&
+	if (character.GetLeft() + 50> tmp.GetLeft() + 5454 && character.GetLeft() - 50 < tmp.GetLeft() + 5604 &&
 		character.GetTop() >= 733 && character.touchDown(&character, background->getElementDropFloorAddress())==false)
 	{
 		character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);

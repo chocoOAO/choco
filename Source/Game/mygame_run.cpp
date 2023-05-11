@@ -49,7 +49,6 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	
 	character.characterKeyDown(nChar);
 	menu.backgroundKeyDown(nChar);
 	background.KeyDown(nChar);
@@ -98,7 +97,6 @@ void CGameStateRun::show_image_by_phase()
 		background.touching(&character);
 		character.characterShowBitmap();
 	}
-	
 
 }
 
