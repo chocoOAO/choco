@@ -71,8 +71,8 @@ protected:
 	MyCMovingBitmap elementPoLeft;
 	MyCMovingBitmap elementPoUp;
 	MyCMovingBitmap elementDropFloor;
-
 	MyCMovingBitmap floor1_2;
+	MyCMovingBitmap elementLady;
 
 	MyCMovingBitmap background;
 	MyCMovingBitmap select1;
