@@ -77,6 +77,7 @@ protected:
 	MyCMovingBitmap background;
 	MyCMovingBitmap select1;
 	MyCMovingBitmap select2;
+	MyCMovingBitmap select3; //test
 	MyCMovingBitmap totalSelect;
 	bool playing = false;
 	bool elementTrue = false;

@@ -32,7 +32,12 @@ void backgroundTool::selectInit()
 	select2.LoadBitmapByString({ "resources/select2.bmp" }, RGB(255, 255, 255));
 	select2.SetTopLeft(880, 400);
 
-	totalSelect.LoadBitmapByString({ "resources/select1_2.bmp", "resources/select2_2.bmp" }, RGB(255, 255, 255));
+	select3.LoadBitmapByString({ "resources/select3.bmp" }, RGB(255, 255, 255));
+	select3.SetTopLeft(1160, 400);
+
+	totalSelect.LoadBitmapByString({ "resources/select1_2.bmp", "resources/select2_2.bmp", 
+										"resources/select3_1.bmp"}, RGB(255, 255, 255));
+	
 	totalSelect.SetTopLeft(600, 400);
 }
 
@@ -128,10 +133,23 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 {
 	if ((nChar == VK_RIGHT || nChar == VK_LEFT) && playing == false)//向右選關鍵
 	{
+		/*
 		if (sel < 1)
 			sel += 1;
 		else
 			sel = 0;
+		*/
+		
+		if (nChar == VK_RIGHT && sel < 2) 
+			sel += 1;
+		else if (nChar == VK_RIGHT && sel == 2)
+			sel = 0;
+
+		if (nChar == VK_LEFT && sel > 0)
+			sel -= 1;
+		else if (nChar == VK_LEFT && sel == 0)
+			sel = 2;
+		
 		
 		totalSelect.SetFrameIndexOfBitmap(sel); // set level's image
 		
@@ -139,6 +157,8 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 			totalSelect.SetTopLeft(600, 400);
 		if (sel == 1)
 			totalSelect.SetTopLeft(880, 400);
+		if (sel == 2)
+			totalSelect.SetTopLeft(1160, 400);
 
 	}
 	
@@ -148,13 +168,14 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 		{
 			playing = true;
 			background.SetFrameIndexOfBitmap(1); // enter the level
-			for (int i = 0; i < 2; i++)
+			for (int i = 0; i < 3; i++) // origin i < 2
 			{
 				totalSelect.SetFrameIndexOfBitmap(i);
 				totalSelect.SetTopLeft(-600, -400);
 			}
 			select1.SetTopLeft(-600, -400);
 			select2.SetTopLeft(-600, -400);
+			select3.SetTopLeft(-600, -400);
 		}
 	}
 }
@@ -169,6 +190,7 @@ void backgroundTool::selectShowBitmap()
 {
 	select1.ShowBitmap();
 	select2.ShowBitmap();
+	select3.ShowBitmap();
 	totalSelect.ShowBitmap();
 }
 
