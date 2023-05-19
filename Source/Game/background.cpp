@@ -132,19 +132,22 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 			sel += 1;
 		else
 			sel = 0;
-		totalSelect.SetFrameIndexOfBitmap(sel);
+		
+		totalSelect.SetFrameIndexOfBitmap(sel); // set level's image
+		
 		if (sel == 0)
 			totalSelect.SetTopLeft(600, 400);
 		if (sel == 1)
 			totalSelect.SetTopLeft(880, 400);
 
 	}
+	
 	if (nChar == VK_RETURN) // VK_RETURN = Enter
 	{
 		if (sel == 0)
 		{
 			playing = true;
-			background.SetFrameIndexOfBitmap(1); // background
+			background.SetFrameIndexOfBitmap(1); // enter the level
 			for (int i = 0; i < 2; i++)
 			{
 				totalSelect.SetFrameIndexOfBitmap(i);

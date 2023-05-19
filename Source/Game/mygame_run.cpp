@@ -8,7 +8,6 @@
 #include "MyCMovingBitmap.h"
 #include "mygame.h"
 #include "character.h"
-#include "catalogue.h"
 #include <iostream>
 #include <string>
 
@@ -43,14 +42,14 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
 	character.characterInit();
 	background.backgroundInit();
-	menu.selectInit();
+	background.selectInit();
 	background.elementInit();
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	character.characterKeyDown(nChar);
-	menu.backgroundKeyDown(nChar);
+	background.backgroundKeyDown(nChar);
 	background.KeyDown(nChar);
 }
 
@@ -90,7 +89,7 @@ void CGameStateRun::show_image_by_phase()
 {
 	//background.SetFrameIndexOfBitmap((phase - 1) * 2 + (sub_phase - 1));
 	background.backroundShowBitmap();
-	menu.selectShowBitmap();
+	background.selectShowBitmap();
 	if (background.getPlaying())
 	{
 		
