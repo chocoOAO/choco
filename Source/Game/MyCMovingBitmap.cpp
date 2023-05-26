@@ -17,6 +17,28 @@ bool MyCMovingBitmap::GetFlagMove() const
     return flag_move;
 }
 
+void MyCMovingBitmap::SetElementPo(bool value)
+{
+	elementPo = value;
+}
+
+bool MyCMovingBitmap::GetElementPo() const
+{
+	return elementPo;
+}
+
+void MyCMovingBitmap::SetElementPo2(bool value)
+{
+	elementPo2 = value;
+}
+
+bool MyCMovingBitmap::GetElementPo2() const
+{
+	return elementPo2;
+}
+
+
+
 bool MyCMovingBitmap::touchUp(MyCMovingBitmap *character, MyCMovingBitmap *element)
 {
 	if ((character->GetTop() - 5 <= element->GetTop() + element->GetHeight()) && (character->GetTop()  > element->GetTop() + element->GetHeight() - 90) &&
