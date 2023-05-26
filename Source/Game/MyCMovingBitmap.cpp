@@ -17,6 +17,28 @@ bool MyCMovingBitmap::GetFlagMove() const
     return flag_move;
 }
 
+void MyCMovingBitmap::SetElementPo(bool value)
+{
+	elementPo = value;
+}
+
+bool MyCMovingBitmap::GetElementPo() const
+{
+	return elementPo;
+}
+
+void MyCMovingBitmap::SetElementPo2(bool value)
+{
+	elementPo2 = value;
+}
+
+bool MyCMovingBitmap::GetElementPo2() const
+{
+	return elementPo2;
+}
+
+
+
 bool MyCMovingBitmap::touchUp(MyCMovingBitmap *character, MyCMovingBitmap *element)
 {
 	if ((character->GetTop() - 5 <= element->GetTop() + element->GetHeight()) && (character->GetTop()  > element->GetTop() + element->GetHeight() - 90) &&
@@ -42,7 +64,7 @@ bool MyCMovingBitmap::touchDown(MyCMovingBitmap *character, MyCMovingBitmap *ele
 bool MyCMovingBitmap::touchLeft(MyCMovingBitmap *character, MyCMovingBitmap *element)
 {
 	if ((character->GetLeft() + character->GetWidth() + 5 >= element->GetLeft()) && (character->GetLeft() + character->GetWidth() <= element->GetLeft() + 20) &&
-		(character->GetTop() > element->GetTop() - 130) && character->GetTop() < element->GetTop() + element->GetHeight()
+		(character->GetTop() > element->GetTop() - 170) && character->GetTop() < element->GetTop() + element->GetHeight()
 		)
 	{
 		return true;
@@ -53,7 +75,7 @@ bool MyCMovingBitmap::touchLeft(MyCMovingBitmap *character, MyCMovingBitmap *ele
 bool MyCMovingBitmap::touchRight(MyCMovingBitmap *character, MyCMovingBitmap *element)
 {
 	if ((character->GetLeft() -5 <= element->GetLeft() +element->GetWidth()) && (character->GetLeft() >= element->GetLeft() + element->GetWidth() - 20) &&
-		(character->GetTop() > element->GetTop() - 130) && character->GetTop() < element->GetTop() + element->GetHeight()
+		(character->GetTop() > element->GetTop() - 170) && character->GetTop() < element->GetTop() + element->GetHeight()
 		)
 	{
 		return true;
