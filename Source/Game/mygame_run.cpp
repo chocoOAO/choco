@@ -86,7 +86,7 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動
 void CGameStateRun::OnShow()
 {
 	show_image_by_phase();
-	show_text_by_phase();
+	//show_text_by_phase();
 }
 
 void CGameStateRun::show_image_by_phase() 
@@ -107,6 +107,7 @@ void CGameStateRun::show_image_by_phase()
 
 void CGameStateRun::show_text_by_phase()
 {
+	/*
 	CDC *pDC = CDDraw::GetBackCDC();
 	//CFont* fp;
 	MyCMovingBitmap tmp = *(background.getBackgroundAddress());
@@ -120,4 +121,5 @@ void CGameStateRun::show_text_by_phase()
 	//CTextDraw::Print(pDC, 50, 50, "IQ:200");
 		
 	CDDraw::ReleaseBackCDC();
+	*/
 }
