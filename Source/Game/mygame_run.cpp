@@ -30,13 +30,18 @@ CGameStateRun::~CGameStateRun()
 
 void CGameStateRun::OnBeginState()
 {
+	/*
+private:
+	clock_t start;
+	start = clock();
+	8.0 - ((clock() - start) / (double)(CLOCKS_PER_SEC)) >= 0.0:*/
 }
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
 	character.touchingElement(&background);
 	character.drop(&background);
-	character.characterMove(background.getBackgroundAddress());	
+	character.characterMove(&background);
 	background.Move(&character);
 
 }
@@ -86,7 +91,7 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動
 void CGameStateRun::OnShow()
 {
 	show_image_by_phase();
-	//show_text_by_phase();
+	show_text_by_phase();
 }
 
 void CGameStateRun::show_image_by_phase() 
@@ -107,12 +112,12 @@ void CGameStateRun::show_image_by_phase()
 
 void CGameStateRun::show_text_by_phase()
 {
-	/*
+	
 	CDC *pDC = CDDraw::GetBackCDC();
 	//CFont* fp;
 	MyCMovingBitmap tmp = *(background.getBackgroundAddress());
 	MyCMovingBitmap tmp3 = *(character.getCharacterAddress());
-	string tmp2 = std::to_string(tmp.GetLeft());
+	string tmp2 = std::to_string(tmp.GetLeft() - tmp3.GetLeft());
 	string tmp4 = std::to_string(tmp3.GetTop());
 	CTextDraw::ChangeFontLog(pDC, 36, "微軟正黑體", RGB(0, 0, 0));
 	CTextDraw::Print(pDC, 50, 50, tmp2);
@@ -121,5 +126,5 @@ void CGameStateRun::show_text_by_phase()
 	//CTextDraw::Print(pDC, 50, 50, "IQ:200");
 		
 	CDDraw::ReleaseBackCDC();
-	*/
+	
 }

@@ -28,10 +28,12 @@ void characterTool::characterInit()
 			"resources/character1.bmp" }, RGB(255, 255, 255));
 	character.SetTopLeft(0, 733);
 	character_condition = { false, false, false, false };
+	feetHitblock = true;
 }
 
-void characterTool::characterMove(MyCMovingBitmap *background)
+void characterTool::characterMove(backgroundTool *element)
 {
+	std::vector<MyCMovingBitmap *> stage = *element->getStageAddress();
 	if (character_condition.at(0) && character.GetFlagMove() == true)
 	{
 		if (headHitfloor == true && character.GetTop() != 733 )//如果頭撞到方塊強制掉下去
@@ -39,6 +41,10 @@ void characterTool::characterMove(MyCMovingBitmap *background)
 			chieght = 2000; // Let "(character.GetTop() > chieght - 400)" be false
 			headHitfloor = false; // reset headHitfloor
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
+			if (*element->getSelAddress() == 1)
+			{
+				stage[elenentslime2_1]->SetTopLeft(stage[elenentslime2_1]->GetLeft(), stage[elenentslime2_1]->GetTop() + 30);
+			}
 			isJumping = false;
 			isDropping = true;
 		}
@@ -46,34 +52,58 @@ void characterTool::characterMove(MyCMovingBitmap *background)
 		else if (character.GetTop() > chieght - 400 )//按住持續W
 		{
 			character.SetTopLeft(character.GetLeft(), character.GetTop() - 30);
+			if (*element->getSelAddress() == 1)
+			{
+				stage[elenentslime2_1]->SetTopLeft(stage[elenentslime2_1]->GetLeft(), stage[elenentslime2_1]->GetTop() - 30);
+			}
 			isJumping = true;
 			isDropping = false;
-		}
+		}/*
 		else if (character.GetTop() < 733 && !feetHitblock)//掉到地板
 		{
 			chieght = 2000;
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
 			isJumping = false;
 			isDropping = true;
+		}*/
+		else if (!feetHitblock)//掉到地板
+		{
+			chieght = 2000;
+			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
+			if (stage[elenentslime2_1]->touchDown(stage[elenentslime2_1], stage[elementLongBlock2_2]) == false && *element->getSelAddress() == 1)
+			{
+				stage[elenentslime2_1]->SetTopLeft(stage[elenentslime2_1]->GetLeft(), stage[elenentslime2_1]->GetTop() + 30);
+			}
+			isJumping = false;
+			isDropping = true;
 		}
-
+		
 	}
-	if (!character_condition.at(0) == true && feetHitblock==false) 
+	
+	if (!character_condition.at(0) == true ) 
 	{
-		if (character.GetTop() < 733)
+		if (feetHitblock == false)//character.GetTop() <733 feetHitblock == false
 		{
 			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
+			if (stage[elenentslime2_1]->touchDown(stage[elenentslime2_1], stage[elementLongBlock2_2]) == false && * element->getSelAddress() == 1)
+			{
+				stage[elenentslime2_1]->SetTopLeft(stage[elenentslime2_1]->GetLeft(), stage[elenentslime2_1]->GetTop() + 30);
+			}
 			isJumping = false;
 			isDropping = true;
 		}
 		else
 		{
+			if (stage[elenentslime2_1]->touchDown(stage[elenentslime2_1], stage[elementLongBlock2_2]) == false && *element->getSelAddress() == 1)
+			{
+				stage[elenentslime2_1]->SetTopLeft(stage[elenentslime2_1]->GetLeft(), stage[elenentslime2_1]->GetTop() + 30);
+			}
 			isJumping = false;
 			isDropping = false;
 		}
 			
 	}
-
+	
 	if ((isJumping == true || isDropping == true) && feetHitblock == false)
 	{
 		dontRead = true;
@@ -88,15 +118,15 @@ void characterTool::characterMove(MyCMovingBitmap *background)
 		character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);//按住持續S
 	}*/
 
-	if (character_condition.at(2) && character.GetFlagMove() == true && (backHitblock == false))
+	if (character_condition.at(2)  && (backHitblock == false))//&& character.GetFlagMove() == true
 	{
 		character.SetTopLeft(character.GetLeft() - 2, character.GetTop());//按住持續A
 		character.SetAnimation(150, false);
 	}
 	
-	if (character_condition.at(3) && character.GetFlagMove() == true && (faceHitblock == false))
+	if (character_condition.at(3) && (faceHitblock == false))//&& character.GetFlagMove() == true
 	{
-		character.SetTopLeft(character.GetLeft() + 2, character.GetTop());//按住持續D
+		character.SetTopLeft(character.GetLeft() + 2, character.GetTop());//按住持續D 
 		character.SetAnimation(150, false);
 
 	}
@@ -172,18 +202,18 @@ void characterTool::characterKeyUp(UINT nChar)
 	}
 	if (nChar == 0x53)//S
 	{
-		character.SetFlagMove(false);
+		//character.SetFlagMove(false);
 		character_condition.at(1) = false;
 	}
 	if (nChar == 0x41)//A
 	{
-		character.SetFlagMove(false);
+		//character.SetFlagMove(false);
 		character_condition.at(2) = false;
 		character.SetAnimation(200, true);
 	}
 	if (nChar == 0x44)//D
 	{
-		character.SetFlagMove(false);
+		//character.SetFlagMove(false);
 		character.SetAnimation(200, true);
 		character_condition.at(3) = false;
 		character.SetFrameIndexOfBitmap(0);
@@ -235,15 +265,30 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 	std::vector<vector<int>> intFloor = {
 							{ element, elementGo, elementEmptyBlock, elementLongBlock, elementShortBlock,
 							 elementEmptyBlock2, elementBlockU, elementBlockD, elementBlockI, elementBlockE, elementBlockD2},
+							{elementQuestion, elementHit, elementLongBlock2_1, elementLongBlock2_2, elementVerticalLongBlock2_1, elementEmptyBlock2_1,
+						 	 elementEmptyBlock2_2, elementEmptyBlock2_3},//
 							{}
+	};
+	std::vector<vector<int>> intFeetFloor = {
+							{ element, elementGo, elementEmptyBlock, elementLongBlock, elementShortBlock, floor1_1, floor1_2, floor1_3,
+							elementEmptyBlock2,elementPipe1, elementPipe2},
+							{elementQuestion, elementFloor2_1, elementDropFloor2_1, elementFloor2_2, elementDropFloor2_2, elementFloor2_3,
+							 elementHit, elementLongBlock2_1, elementLongBlock2_2, elementVerticalLongBlock2_1, elementEmptyBlock2_1, elementEmptyBlock2_2,
+							 elementEmptyBlock2_3},
+							{}
+
 	};
 	std::vector<vector<int>> intFeetFaceBack = {
 							{ element, elementGo, elementEmptyBlock, elementLongBlock, elementShortBlock,
-							 elementEmptyBlock2,elementPipe1, elementPipe2, floor1_1, floor1_2, floor1_3},
+							 elementEmptyBlock2,elementPipe1, elementPipe2},
+							{elementQuestion, elementHit, elementLongBlock2_1, elementLongBlock2_2, elementVerticalLongBlock2_1, elementEmptyBlock2_1,
+							 elementEmptyBlock2_2, elementEmptyBlock2_3},//
 							{}
 	};
-	std::vector<vector<int>> empty = { { elementEmptyBlock, elementEmptyBlock2 },
-										{} };
+	std::vector<vector<int>> empty = {  { elementEmptyBlock, elementEmptyBlock2 },
+										{ elementEmptyBlock2_1, elementEmptyBlock2_2, elementEmptyBlock2_3},
+										{}
+	};
 
 	bool judge = false;
 	headHitfloor = false;
@@ -254,6 +299,27 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 	for (int i = 0; i < int(intFloor[sel].size()); i++)
 	{
 		headHitfloor = headHitfloor || character.touchUp(&character, stage[intFloor[sel][i]]);
+	}	
+
+	for (int i = 0; i < int(intFeetFloor[sel].size()); i++)
+	{
+		for (int j = 0; j < int(empty[sel].size()); j++)
+		{
+			if (intFeetFloor[sel][i] == empty[sel][j])
+			{
+				judge = true;
+			}
+		}
+		if (judge == false)
+		{
+			feetHitblock = feetHitblock || character.touchDown(&character, stage[intFeetFloor[sel][i]]);
+		}
+		else
+		{
+			feetHitblock = feetHitblock || (character.touchDown(&character, stage[intFeetFloor[sel][i]]) && stage[intFeetFloor[sel][i]]->GetFrameIndexOfBitmap() == 1);
+			
+		}
+		judge = false;
 	}
 
 	for (int i = 0; i < int(intFeetFaceBack[sel].size()); i++)
@@ -267,13 +333,11 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 		}
 		if (judge == false)
 		{
-			feetHitblock = feetHitblock || character.touchDown(&character, stage[intFeetFaceBack[sel][i]]);
 			faceHitblock = faceHitblock || character.touchLeft(&character, stage[intFeetFaceBack[sel][i]]);
 			backHitblock = backHitblock || character.touchRight(&character, stage[intFeetFaceBack[sel][i]]);
 		}
 		else
 		{
-			feetHitblock = feetHitblock || (character.touchDown(&character, stage[intFeetFaceBack[sel][i]]) && stage[intFeetFaceBack[sel][i]]->GetFrameIndexOfBitmap() == 1);
 			faceHitblock = faceHitblock || (character.touchLeft(&character, stage[intFeetFaceBack[sel][i]]) && stage[intFeetFaceBack[sel][i]]->GetFrameIndexOfBitmap() == 1);
 			backHitblock = backHitblock || (character.touchRight(&character, stage[intFeetFaceBack[sel][i]]) && stage[intFeetFaceBack[sel][i]]->GetFrameIndexOfBitmap() == 1);
 		}
@@ -282,9 +346,6 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 	switch (*(backgroundElement->getSelAddress()))
 	{
 	case 0:
-		
-
-
 		if (character.touchUp(&character, stage[elementGo]))
 		{
 			backgroundElement->backgroundInit();
@@ -328,6 +389,32 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 			characterInit();
 		}
 		break;
+	case 1:
+		if (character.touchUp(&character, stage[elementHit]))
+		{
+			backgroundElement->backgroundInit();
+			backgroundElement->elementInit();
+			characterInit();
+		}
+		if (character.touchUp(&character, stage[elementLongBlock2_1]))
+		{
+			backgroundElement->backgroundInit();
+			backgroundElement->elementInit();
+			characterInit();
+		}
+		if (character.IsOverlap(*stage[elementFlower2_1], character) || character.IsOverlap(*stage[elementDoublePoLeft], character))
+		{
+			backgroundElement->backgroundInit();
+			backgroundElement->elementInit();
+			characterInit();
+		}
+		if (character.IsOverlap(*stage[elenentslime2_1], character) || character.IsOverlap(*stage[elenentslime2_1], character))
+		{
+			backgroundElement->backgroundInit();
+			backgroundElement->elementInit();
+			characterInit();
+		}
+		break;
 	}
 		
 
@@ -338,22 +425,6 @@ void characterTool::drop(backgroundTool *background)
 	std::vector<MyCMovingBitmap *> stage;
 	stage = *(background->getStageAddress());
 	MyCMovingBitmap tmp = *(background->getBackgroundAddress());
-	switch (*(background->getSelAddress()))
-	{
-	case 0:
-		if (character.GetLeft() + 20 > tmp.GetLeft() + 1480 && character.GetLeft() - 20 < tmp.GetLeft() + 1820 &&
-			character.GetTop() >= 733)
-		{
-			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
-		}
-
-		if (character.GetLeft() + 20 > tmp.GetLeft() + 5454 && character.GetLeft() - 20 < tmp.GetLeft() + 5604 &&
-			character.GetTop() >= 733 && character.touchDown(&character, stage[elementDropFloor]) == false)
-		{
-			character.SetTopLeft(character.GetLeft(), character.GetTop() + 30);
-		}
-		break;
-	}
 	
 
 	if (character.GetTop() > 960)

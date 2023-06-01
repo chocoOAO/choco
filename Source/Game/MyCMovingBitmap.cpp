@@ -37,7 +37,14 @@ bool MyCMovingBitmap::GetElementPo2() const
 	return elementPo2;
 }
 
-
+void MyCMovingBitmap::SetJudge(bool value)
+{
+	judge = value;
+}
+bool MyCMovingBitmap::GetJudge() const
+{
+	return judge;
+}
 
 bool MyCMovingBitmap::touchUp(MyCMovingBitmap *character, MyCMovingBitmap *element)
 {

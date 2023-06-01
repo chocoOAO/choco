@@ -11,6 +11,8 @@ public:
 	bool GetElementPo2() const;
 	void SetElementPo2(bool value);
 	bool GetFlagMove() const;
+	void SetJudge(bool value);
+	bool GetJudge() const;
 	bool touchUp(MyCMovingBitmap *character, MyCMovingBitmap *element);
 	bool touchDown(MyCMovingBitmap *character, MyCMovingBitmap *element);
 	bool touchLeft(MyCMovingBitmap *character, MyCMovingBitmap *element);
@@ -21,5 +23,6 @@ protected:
 	bool elementPo = false;
 	bool elementPo2 = false;
 	bool flag_move;
+	bool judge = false;
 
 };
