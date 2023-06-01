@@ -28,6 +28,9 @@ void characterTool::characterInit()
 			"resources/character1.bmp" }, RGB(255, 255, 255));
 	character.SetTopLeft(0, 733);
 	character_condition = { false, false, false, false };
+	
+	popUp.LoadBitmapA("Resources/animation_after_died.bmp"); // image of animation after died
+	popUp.SetTopLeft(500, 150);
 }
 
 void characterTool::characterMove(MyCMovingBitmap *background)
@@ -104,96 +107,112 @@ void characterTool::characterMove(MyCMovingBitmap *background)
 
 void characterTool::characterKeyDown(UINT nChar)
 {
-	if (nChar == 0x57)//W
+	if (!popUpFlag) // using for animation after died
 	{
-		character.SetFlagMove(true);
-		character_condition.at(0) = TRUE;
-		if(dontRead == false)
-			chieght = int(character.GetTop());
+		if (nChar == 0x57)//W
+			{
+			character.SetFlagMove(true);
+			character_condition.at(0) = TRUE;
+			if(dontRead == false)
+				chieght = int(character.GetTop());
 
-	}
-	if (nChar == 0x53)//S
-	{
-		character.SetFlagMove(true);
-		character_condition.at(1) = TRUE;
-	}
-	if (nChar == 0x41)//A
-	{
-		character.SetFlagMove(true);
-		character_condition.at(2) = TRUE;
-		/*cleanBitMap(&character, {
-		"resources/character1.bmp",
-		"resources/character6.bmp",
-		"resources/character1.bmp",
-		"resources/character7.bmp",
-		"resources/character1.bmp" });
-		int x = character.GetLeft();
-		int y = character.GetTop();		
-		character.LoadBitmapByString({
-		"resources/character1.bmp",
-		"resources/character6.bmp",
-		"resources/character1.bmp",
-		"resources/character7.bmp",
-		"resources/character1.bmp" },  RGB(255, 255, 255));
-		character.SetTopLeft(x, y);*/
-	}
+			}
+	
+		if (nChar == 0x53)//S
+			{
+			character.SetFlagMove(true);
+			character_condition.at(1) = TRUE;
+			}
+	
+		if (nChar == 0x41)//A
+			{
+			character.SetFlagMove(true);
+			character_condition.at(2) = TRUE;
+			/*cleanBitMap(&character, {
+			"resources/character1.bmp",
+			"resources/character6.bmp",
+			"resources/character1.bmp",
+			"resources/character7.bmp",
+			"resources/character1.bmp" });
+			int x = character.GetLeft();
+			int y = character.GetTop();		
+			character.LoadBitmapByString({
+			"resources/character1.bmp",
+			"resources/character6.bmp",
+			"resources/character1.bmp",
+			"resources/character7.bmp",
+			"resources/character1.bmp" },  RGB(255, 255, 255));
+			character.SetTopLeft(x, y);*/
+			}
 
-
-	if (nChar == 0x44)//D
-	{
-		character.SetFlagMove(true);
-		character_condition.at(3) = TRUE;
-		/*cleanBitMap(&character, {
-		"resources/character1.bmp",
-		"resources/character2.bmp",
-		"resources/character1.bmp",
-		"resources/character3.bmp",
-		"resources/character1.bmp" });
-		int x = character.GetLeft();
-		int y = character.GetTop();
-		character.LoadBitmapByString({
-		"resources/character1.bmp",
-		"resources/character2.bmp",
-		"resources/character1.bmp",
-		"resources/character3.bmp",
-		"resources/character1.bmp" }, RGB(255, 255, 255));
-		character.SetTopLeft(x, y);*/
+		if (nChar == 0x44)//D
+			{
+			character.SetFlagMove(true);
+			character_condition.at(3) = TRUE;
+			/*cleanBitMap(&character, {
+			"resources/character1.bmp",
+			"resources/character2.bmp",
+			"resources/character1.bmp",
+			"resources/character3.bmp",
+			"resources/character1.bmp" });
+			int x = character.GetLeft();
+			int y = character.GetTop();
+			character.LoadBitmapByString({
+			"resources/character1.bmp",
+			"resources/character2.bmp",
+			"resources/character1.bmp",
+			"resources/character3.bmp",
+			"resources/character1.bmp" }, RGB(255, 255, 255));
+			character.SetTopLeft(x, y);*/
+			}
 	}
 }
 
 
 void characterTool::characterKeyUp(UINT nChar)
 {
-	if (nChar == 0x57)//W
+	if (!popUpFlag) // using for animation after died
 	{
-		character.SetFlagMove(false);
-		character_condition.at(0) = false;
+		if (nChar == 0x57)//W
+			{
+			character.SetFlagMove(false);
+			character_condition.at(0) = false;
 		
+			}
+		if (nChar == 0x53)//S
+			{
+			character.SetFlagMove(false);
+			character_condition.at(1) = false;
+			}
+		if (nChar == 0x41)//A
+			{
+			character.SetFlagMove(false);
+			character_condition.at(2) = false;
+			character.SetAnimation(200, true);
+			}
+		if (nChar == 0x44)//D
+			{
+			character.SetFlagMove(false);
+			character.SetAnimation(200, true);
+			character_condition.at(3) = false;
+			character.SetFrameIndexOfBitmap(0);
+			}
 	}
-	if (nChar == 0x53)//S
+	else
 	{
-		character.SetFlagMove(false);
-		character_condition.at(1) = false;
-	}
-	if (nChar == 0x41)//A
-	{
-		character.SetFlagMove(false);
-		character_condition.at(2) = false;
-		character.SetAnimation(200, true);
-	}
-	if (nChar == 0x44)//D
-	{
-		character.SetFlagMove(false);
-		character.SetAnimation(200, true);
-		character_condition.at(3) = false;
-		character.SetFrameIndexOfBitmap(0);
-
+		if (nChar == 0x27) // ESC to return beginning state
+		{
+			popUpFlag = false;
+		}
 	}
 }
 void characterTool::characterShowBitmap()
 {
 	character.ShowBitmap();
-
+	if (popUpFlag) // to show the animation after died
+	{
+		popUp.ShowBitmap();
+	}
 }
 
 void characterTool::SetFlagMove(bool value)
@@ -230,11 +249,12 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 {
 
 	std::vector<MyCMovingBitmap *> stage;
-	stage = *(backgroundElement->getStageAddress());
+	stage = *(backgroundElement->getStageAddress()); // show what stage is it now
 
 	std::vector<vector<int>> intFloor = {
 							{ element, elementGo, elementEmptyBlock, elementLongBlock, elementShortBlock,
-							 elementEmptyBlock2, elementBlockU, elementBlockD, elementBlockI, elementBlockE, elementBlockD2},
+								elementEmptyBlock2, elementBlockU, elementBlockD, elementBlockI, elementBlockE,
+								elementBlockD2},
 							{}
 	};
 	std::vector<vector<int>> intFeetFaceBack = {
@@ -250,12 +270,15 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 	feetHitblock = false;
 	faceHitblock = false;
 	backHitblock = false;
-	int sel = *backgroundElement->getSelAddress();
+	int sel = *backgroundElement -> getSelAddress();
+
+	
 	for (int i = 0; i < int(intFloor[sel].size()); i++)
 	{
 		headHitfloor = headHitfloor || character.touchUp(&character, stage[intFloor[sel][i]]);
 	}
 
+	
 	for (int i = 0; i < int(intFeetFaceBack[sel].size()); i++)
 	{
 		for (int j = 0; j < int(empty[sel].size()); j++)
@@ -265,6 +288,7 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 				judge = true;
 			}
 		}
+		
 		if (judge == false)
 		{
 			feetHitblock = feetHitblock || character.touchDown(&character, stage[intFeetFaceBack[sel][i]]);
@@ -277,33 +301,52 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 			faceHitblock = faceHitblock || (character.touchLeft(&character, stage[intFeetFaceBack[sel][i]]) && stage[intFeetFaceBack[sel][i]]->GetFrameIndexOfBitmap() == 1);
 			backHitblock = backHitblock || (character.touchRight(&character, stage[intFeetFaceBack[sel][i]]) && stage[intFeetFaceBack[sel][i]]->GetFrameIndexOfBitmap() == 1);
 		}
+		
 		judge = false;
 	}
+
+	
 	switch (*(backgroundElement->getSelAddress()))
 	{
 	case 0:
-		
-
 
 		if (character.touchUp(&character, stage[elementGo]))
 		{
+			/*
 			backgroundElement->backgroundInit();
 			backgroundElement->elementInit();
 			characterInit();
+			*/
+			if (!popUpFlag && !needToReInit) {
+				popUpFlag = true;
+				needToReInit = true;
+			}
 		}
 
 		if (character.IsOverlap(*stage[elementCloud], character))
 		{
+			/*
 			backgroundElement->backgroundInit();
 			backgroundElement->elementInit();
 			characterInit();
+			*/
+			if (!popUpFlag && !needToReInit) {
+				popUpFlag = true;
+				needToReInit = true;
+			}
 		}
 
 		if (character.IsOverlap(*stage[elementGrass], character))
 		{
+			/*
 			backgroundElement->backgroundInit();
 			backgroundElement->elementInit();
 			characterInit();
+			*/
+			if (!popUpFlag && !needToReInit) {
+				popUpFlag = true;
+				needToReInit = true;
+			}
 		}
 
 		if (character.IsOverlap(*stage[elementPrick1], character) ||
@@ -312,9 +355,15 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 			character.IsOverlap(*stage[elementPoLeft], character) ||
 			character.IsOverlap(*stage[elementPoUp], character))
 		{
+			/*
 			backgroundElement->backgroundInit();
 			backgroundElement->elementInit();
 			characterInit();
+			*/
+			if (!popUpFlag && !needToReInit) {
+				popUpFlag = true;
+				needToReInit = true;
+			}
 		}
 
 		if (character.IsOverlap(*stage[elementLady], character))
@@ -323,14 +372,19 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 			backgroundElement->setBackground(2);
 			backgroundElement->setClearStage();
 			backgroundElement->setInit(true);
+			/*
 			backgroundElement->backgroundInit();
 			backgroundElement->elementInit();
 			characterInit();
+			*/
+			if (!popUpFlag && !needToReInit) {
+				popUpFlag = true;
+				needToReInit = true;
+			}
 		}
 		break;
 	}
-		
-
+	
 }
 
 void characterTool::drop(backgroundTool *background)
@@ -360,7 +414,9 @@ void characterTool::drop(backgroundTool *background)
 	{
 		background->backgroundInit();
 		background->elementInit();
-		characterInit();
+		//characterInit();
+		needToReInit = true;
+		needToReInit = true;
 	}
 }
 

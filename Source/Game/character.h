@@ -22,6 +22,11 @@ public:
 	void touchingElement(backgroundTool *element);
 	void drop(backgroundTool *background);
 	//void cleanBitMap(MyCMovingBitmap *item,vector<string> load);
+
+	bool popUpFlag = false; // using for animation after died
+	bool needToReInit = false; // using to ReInit after died
+	game_framework::CMovingBitmap popUp; // pop up image after died 
+	
 protected:
 	MyCMovingBitmap character;
 	MyCMovingBitmap characterleft;

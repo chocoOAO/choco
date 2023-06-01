@@ -6,6 +6,7 @@
 #include "MyCMovingBitmap.h"
 #include "background.h"
 #include "character.h"
+
 using namespace game_framework;
 
 void backgroundTool::backgroundInit()
@@ -25,9 +26,8 @@ void backgroundTool::backgroundInit()
 		"resources/level1.bmp",
 		"resources/level2.bmp"
 		}, 0);
-	background.SetTopLeft(0, 0);
-
 	
+	background.SetTopLeft(0, 0);
 }
 
 void backgroundTool::selectInit()
@@ -115,14 +115,8 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 {
 	if ((nChar == VK_RIGHT || nChar == VK_LEFT) && playing == false)//向右選關鍵
 	{
-		/*
-		if (sel < 1)
-			sel += 1;
-		else
-			sel = 0;
-		*/
 		
-		if (nChar == VK_RIGHT && sel < 2) 
+		if (nChar == VK_RIGHT && sel < 2) // 2 stands for how many stage there are
 			sel += 1;
 		else if (nChar == VK_RIGHT && sel == 2)
 			sel = 0;
@@ -131,17 +125,16 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 			sel -= 1;
 		else if (nChar == VK_LEFT && sel == 0)
 			sel = 2;
-		
+
 		
 		totalSelect.SetFrameIndexOfBitmap(sel); // set level's image
 		
-		if (sel == 0)
-			totalSelect.SetTopLeft(600, 400);
-		if (sel == 1)
-			totalSelect.SetTopLeft(880, 400);
-		if (sel == 2)
-			totalSelect.SetTopLeft(1160, 400);
 
+		for (int i = 0; i < 3; i++) // there are 3 stages
+		{
+			if (sel == i)
+				totalSelect.SetTopLeft(600 + 280 * i, 400);
+		}
 	}
 	
 	if (nChar == VK_RETURN) // VK_RETURN = Enter
@@ -150,6 +143,7 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 		{
 			playing = true;
 			background.SetFrameIndexOfBitmap(1); // enter the level
+			
 			for (int i = 0; i < 3; i++) // origin i < 2
 			{
 				totalSelect.SetFrameIndexOfBitmap(i);
@@ -215,15 +209,6 @@ void backgroundTool::setBackground(int value)
 	background.SetFrameIndexOfBitmap(value);
 }
 
-void backgroundTool::setClearStage()
-{
-	for (int i = 0; i < int(stage.size()); i++)
-	{
-		delete stage[i];
-	}
-	stage.clear();
-}
-
 void backgroundTool::setPlaying(bool value)
 {
 	playing = value;
@@ -232,6 +217,15 @@ void backgroundTool::setPlaying(bool value)
 void backgroundTool::setInit(bool value)
 {
 	init = value;
+}
+
+void backgroundTool::setClearStage()
+{
+	for (int i = 0; i < int(stage.size()); i++)
+	{
+		delete stage[i];
+	}
+	stage.clear();
 }
 
 void backgroundTool::touching(characterTool *character)
@@ -249,7 +243,6 @@ void backgroundTool::touching(characterTool *character)
 	switch (sel)
 	{
 	case 0:
-		
 		for (int j = 0; j < int(stageTouchUpElement[sel].size()); j++)
 		{
 			if (stage[stageTouchUpElement[sel][j]]->touchUp(character->getCharacterAddress(), stage[stageTouchUpElement[sel][j]]) )
@@ -262,7 +255,6 @@ void backgroundTool::touching(characterTool *character)
 				stage[stageTouchUpEmpty[sel][j]]->SetFrameIndexOfBitmap(1);
 		}
 		
-
 		if (stage[element]->touchUp(character->getCharacterAddress(), stage[element]))
 		{
 			stage[element]->SetFrameIndexOfBitmap(1);
@@ -304,9 +296,7 @@ void backgroundTool::touching(characterTool *character)
 			{
 				stage[elementPoLeft]->SetTopLeft(stage[elementPoLeft]->GetLeft() - 2, stage[elementPoLeft]->GetTop());
 				stage[elementPoRight]->SetTopLeft(stage[elementPoRight]->GetLeft() + 2, stage[elementPoRight]->GetTop());
-
 			}
-
 		}
 
 		if (stage[elementPipe2]->touchDown(character->getCharacterAddress(), stage[elementPipe2]))
@@ -336,9 +326,7 @@ void backgroundTool::touching(characterTool *character)
 		}
 		break;
 	}
-
 	
-
 	elementShowBitmap();
 	
 }
@@ -347,7 +335,6 @@ bool backgroundTool::getPlaying()
 {
 	return playing;
 }
-
 
 void backgroundTool::Move(characterTool *run_character)
 {
@@ -361,7 +348,10 @@ void backgroundTool::Move(characterTool *run_character)
 		if (buttonA && run_character->GetBackHitblock() == false)
 		{			
 			//floor1_2.SetTopLeft(floor1_2.GetLeft() + 20 - buttonD * 2, floor1_2.GetTop());
-			background.SetTopLeft(background.GetLeft() + 20 - buttonD * 2, background.GetTop());
+			if(!run_character->popUpFlag) // stop everything after died
+			{
+				background.SetTopLeft(background.GetLeft() + 20 - buttonD * 2, background.GetTop());
+			}
 			for (int i = 0; i < int(stage.size()); i++)
 			{
 				for (int j = 0; j < int(stageJudgeMove[sel].size()); j++)
@@ -401,7 +391,10 @@ void backgroundTool::Move(characterTool *run_character)
 		if (buttonD && run_character->GetFaceHitblock() == false)
 		{			
 			//floor1_2.SetTopLeft(floor1_2.GetLeft() - 20 + buttonD * 2, floor1_2.GetTop());
-			background.SetTopLeft(background.GetLeft() - 20 + buttonD * 2, background.GetTop());
+			if(!run_character->popUpFlag) // stop everything after died
+			{
+				background.SetTopLeft(background.GetLeft() - 20 + buttonD * 2, background.GetTop());
+			}
 			for (int i = 0; i < int(stage.size()); i++)
 			{
 				for (int j = 0; j < int(stageJudgeMove[sel].size()); j++)

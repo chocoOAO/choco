@@ -33,8 +33,18 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 {
 	character.touchingElement(&background);
 	character.drop(&background);
-	character.characterMove(background.getBackgroundAddress());	
-	background.Move(&character);
+	if (!character.popUpFlag)
+	{
+		character.characterMove(background.getBackgroundAddress());	
+		background.Move(&character);
+		if (character.needToReInit)
+		{
+			character.characterInit();
+			background.backgroundInit();
+			background.elementInit();
+			character.needToReInit = false;
+		}
+	}
 
 }
 

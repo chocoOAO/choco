@@ -33,9 +33,9 @@ public:
 
 	void setSel(int value);
 	void setBackground(int value);
-	void setClearStage();
 	void setPlaying(bool value);
 	void setInit(bool value);
+	void setClearStage();
 
 	void Move(characterTool *run_character);
 	void KeyDown(UINT nChar);
@@ -54,8 +54,10 @@ protected:
 	MyCMovingBitmap background;
 	MyCMovingBitmap select1;
 	MyCMovingBitmap select2;
-	MyCMovingBitmap select3; //test
+	MyCMovingBitmap select3;
 	MyCMovingBitmap totalSelect;
+
+	
 	bool playing = false;
 	bool init = false;
 	bool elementTrue = false;
@@ -80,4 +82,5 @@ enum stage2Id
 {
 	elementQuestion 
 };
+
 #endif
