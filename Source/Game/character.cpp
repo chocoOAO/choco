@@ -29,6 +29,8 @@ void characterTool::characterInit()
 	character.SetTopLeft(0, 733);
 	character_condition = { false, false, false, false };
 	feetHitblock = true;
+	popUp.LoadBitmapA("Resources/animation_after_died.bmp"); // image of animation after died
+	popUp.SetTopLeft(500, 150);
 }
 
 void characterTool::characterMove(backgroundTool *element)
@@ -118,13 +120,13 @@ void characterTool::characterMove(backgroundTool *element)
 		character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);//按住持續S
 	}*/
 
-	if (character_condition.at(2)  && (backHitblock == false))//&& character.GetFlagMove() == true
+	if (character_condition.at(2)  && (backHitblock == false) && !popUpFlag)//&& character.GetFlagMove() == true
 	{
 		character.SetTopLeft(character.GetLeft() - 2, character.GetTop());//按住持續A
 		character.SetAnimation(150, false);
 	}
 	
-	if (character_condition.at(3) && (faceHitblock == false))//&& character.GetFlagMove() == true
+	if (character_condition.at(3) && (faceHitblock == false) && !popUpFlag)//&& character.GetFlagMove() == true
 	{
 		character.SetTopLeft(character.GetLeft() + 2, character.GetTop());//按住持續D 
 		character.SetAnimation(150, false);
@@ -134,7 +136,7 @@ void characterTool::characterMove(backgroundTool *element)
 
 void characterTool::characterKeyDown(UINT nChar)
 {
-	if (nChar == 0x57)//W
+	if (nChar == 0x57 && !popUpFlag)//W
 	{
 		character.SetFlagMove(true);
 		character_condition.at(0) = TRUE;
@@ -142,12 +144,12 @@ void characterTool::characterKeyDown(UINT nChar)
 			chieght = int(character.GetTop());
 
 	}
-	if (nChar == 0x53)//S
+	if (nChar == 0x53 && !popUpFlag)//S
 	{
 		character.SetFlagMove(true);
 		character_condition.at(1) = TRUE;
 	}
-	if (nChar == 0x41)//A
+	if (nChar == 0x41 && !popUpFlag)//A
 	{
 		character.SetFlagMove(true);
 		character_condition.at(2) = TRUE;
@@ -169,7 +171,7 @@ void characterTool::characterKeyDown(UINT nChar)
 	}
 
 
-	if (nChar == 0x44)//D
+	if (nChar == 0x44 && !popUpFlag)//D
 	{
 		character.SetFlagMove(true);
 		character_condition.at(3) = TRUE;
@@ -192,26 +194,26 @@ void characterTool::characterKeyDown(UINT nChar)
 }
 
 
-void characterTool::characterKeyUp(UINT nChar)
+void characterTool::characterKeyUp(UINT nChar, backgroundTool *background)
 {
-	if (nChar == 0x57)//W
+	if (nChar == 0x57 && !popUpFlag)//W
 	{
 		character.SetFlagMove(false);
 		character_condition.at(0) = false;
 		
 	}
-	if (nChar == 0x53)//S
+	if (nChar == 0x53 && !popUpFlag)//S
 	{
 		//character.SetFlagMove(false);
 		character_condition.at(1) = false;
 	}
-	if (nChar == 0x41)//A
+	if (nChar == 0x41 && !popUpFlag)//A
 	{
 		//character.SetFlagMove(false);
 		character_condition.at(2) = false;
 		character.SetAnimation(200, true);
 	}
-	if (nChar == 0x44)//D
+	if (nChar == 0x44 && !popUpFlag)//D
 	{
 		//character.SetFlagMove(false);
 		character.SetAnimation(200, true);
@@ -219,9 +221,26 @@ void characterTool::characterKeyUp(UINT nChar)
 		character.SetFrameIndexOfBitmap(0);
 
 	}
+
+	if (nChar == 0x52 && popUpFlag == true) // ESC to return beginning state
+	{
+		popUpFlag = false;
+		
+		if (needToReInit == true)
+		{
+			background->backgroundInit();
+			background->elementInit();
+			characterInit();
+			needToReInit = false;
+		}
+	}
 }
 void characterTool::characterShowBitmap()
 {
+	if (popUpFlag == true) // to show the animation after died
+	{
+		popUp.ShowBitmap();
+	}
 	character.ShowBitmap();
 
 }
@@ -231,10 +250,21 @@ void characterTool::SetFlagMove(bool value)
 	character.SetFlagMove(value);
 }
 
+void characterTool::SetPopUpFlag(bool value)
+{
+	popUpFlag = value;
+}
+
 bool characterTool::GetFlagMove() const
 {
 	return character.GetFlagMove();
 }
+
+bool characterTool::GetpopUpFlag() const
+{
+	return popUpFlag;
+}
+
 
 bool characterTool::GetFaceHitblock() const
 {
@@ -348,23 +378,28 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 	case 0:
 		if (character.touchUp(&character, stage[elementGo]))
 		{
-			backgroundElement->backgroundInit();
-			backgroundElement->elementInit();
-			characterInit();
+			if (!popUpFlag && !needToReInit) 
+			{
+				popUpFlag = true;
+				needToReInit = true;
+			}
 		}
 
 		if (character.IsOverlap(*stage[elementCloud], character))
 		{
-			backgroundElement->backgroundInit();
-			backgroundElement->elementInit();
-			characterInit();
+			if (!popUpFlag && !needToReInit)
+			{
+				popUpFlag = true;
+				needToReInit = true;
+			}
 		}
 
 		if (character.IsOverlap(*stage[elementGrass], character))
 		{
-			backgroundElement->backgroundInit();
-			backgroundElement->elementInit();
-			characterInit();
+			if (!popUpFlag && !needToReInit) {
+				popUpFlag = true;
+				needToReInit = true;
+			}
 		}
 
 		if (character.IsOverlap(*stage[elementPrick1], character) ||
@@ -373,9 +408,11 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 			character.IsOverlap(*stage[elementPoLeft], character) ||
 			character.IsOverlap(*stage[elementPoUp], character))
 		{
-			backgroundElement->backgroundInit();
-			backgroundElement->elementInit();
-			characterInit();
+			if (!popUpFlag && !needToReInit) 
+			{
+				popUpFlag = true;
+				needToReInit = true;
+			}
 		}
 
 		if (character.IsOverlap(*stage[elementLady], character))
@@ -429,9 +466,12 @@ void characterTool::drop(backgroundTool *background)
 
 	if (character.GetTop() > 960)
 	{
+		/*
 		background->backgroundInit();
 		background->elementInit();
-		characterInit();
+		characterInit();*/
+		popUpFlag = true;
+		needToReInit = true;
 	}
 }
 

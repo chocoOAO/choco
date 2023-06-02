@@ -64,7 +64,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	character.characterKeyUp(nChar);
+	character.characterKeyUp(nChar, &background);
 	background.KeyUp(nChar);
 }
 

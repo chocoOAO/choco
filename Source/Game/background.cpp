@@ -150,13 +150,7 @@ void backgroundTool::elementInit()
 void backgroundTool::backgroundKeyDown(UINT nChar)
 {
 	if ((nChar == VK_RIGHT || nChar == VK_LEFT) && playing == false)//向右選關鍵
-	{
-		/*
-		if (sel < 1)
-			sel += 1;
-		else
-			sel = 0;
-		*/
+	{		
 
 		if (nChar == VK_RIGHT && sel < 2)
 			sel += 1;
@@ -171,16 +165,14 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 
 		totalSelect.SetFrameIndexOfBitmap(sel); // set level's image
 
-		if (sel == 0)
-			totalSelect.SetTopLeft(600, 400);
-		if (sel == 1)
-			totalSelect.SetTopLeft(880, 400);
-		if (sel == 2)
-			totalSelect.SetTopLeft(1160, 400);
-
+		for (int i = 0; i < 3; i++) // there are 3 stages
+		{
+			if (sel == i)
+				totalSelect.SetTopLeft(600 + 280 * i, 400);
+		}
 	}
 
-	if (nChar == VK_RETURN) // VK_RETURN = Enter
+	if (nChar == VK_RETURN && playing == false) // VK_RETURN = Enter
 	{
 		if (sel == 0)
 		{
@@ -289,7 +281,7 @@ void backgroundTool::touching(characterTool *character)
 	
 	stageTouchUpElement = 
 	{
-		{elementGo},
+		{},
 		{},
 		{}
 	};
@@ -493,7 +485,7 @@ void backgroundTool::Move(characterTool *run_character)
 	};
 	if (playing)
 	{
-		if (buttonA && run_character->GetBackHitblock() == false)
+		if (buttonA && run_character->GetBackHitblock() == false && run_character->GetpopUpFlag() == false)
 		{			
 			background.SetTopLeft(background.GetLeft() + 20 - buttonW * 2, background.GetTop());
 			for (int i = 0; i < int(stage.size()); i++)
@@ -532,7 +524,7 @@ void backgroundTool::Move(characterTool *run_character)
 
 		
 
-		if (buttonD && run_character->GetFaceHitblock() == false)
+		if (buttonD && run_character->GetFaceHitblock() == false && run_character->GetpopUpFlag() == false)
 		{			
 			//floor1_2.SetTopLeft(floor1_2.GetLeft() - 20 + buttonD * 2, floor1_2.GetTop());
 			background.SetTopLeft(background.GetLeft() - 20 + buttonW * 2, background.GetTop());
