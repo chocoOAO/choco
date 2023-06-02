@@ -29,8 +29,8 @@ void characterTool::characterInit()
 	character.SetTopLeft(0, 733);
 	character_condition = { false, false, false, false };
 	
-	popUp.LoadBitmapA("Resources/animation_after_died.bmp"); // image of animation after died
-	popUp.SetTopLeft(500, 150);
+	popUp.LoadBitmapA("Resources/animation_after_died.bmp",RGB(14,209,69)); // image of animation after died
+	popUp.SetTopLeft(500, 150);												// RGB(14,209,69) using for green background
 }
 
 void characterTool::characterMove(MyCMovingBitmap *background)
@@ -200,7 +200,7 @@ void characterTool::characterKeyUp(UINT nChar)
 	}
 	else
 	{
-		if (nChar == 0x27) // ESC to return beginning state
+		if (nChar == 0x52) // R to return beginning state
 		{
 			popUpFlag = false;
 		}
@@ -412,10 +412,10 @@ void characterTool::drop(backgroundTool *background)
 
 	if (character.GetTop() > 960)
 	{
-		background->backgroundInit();
-		background->elementInit();
+		//background->backgroundInit();
+		//background->elementInit();
 		//characterInit();
-		needToReInit = true;
+		popUpFlag = true;
 		needToReInit = true;
 	}
 }
