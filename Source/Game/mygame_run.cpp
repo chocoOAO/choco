@@ -58,7 +58,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	
 	character.characterKeyDown(nChar);
-	background.backgroundKeyDown(nChar);
+	background.backgroundKeyDown(nChar, &character);
 	background.KeyDown(nChar);
 }
 
@@ -100,8 +100,7 @@ void CGameStateRun::show_image_by_phase()
 	background.backroundShowBitmap();
 	background.selectShowBitmap();
 	if (background.getPlaying())
-	{
-		
+	{		
 		background.touching(&character);
 		character.characterShowBitmap();
 	}
@@ -119,10 +118,20 @@ void CGameStateRun::show_text_by_phase()
 	MyCMovingBitmap tmp3 = *(character.getCharacterAddress());
 	string tmp2 = std::to_string(tmp.GetLeft() - tmp3.GetLeft());
 	string tmp4 = std::to_string(tmp3.GetTop());
+	string time3 = std::to_string(character.GetTime());
+	string leftEnemy = std::to_string(character.GetLeftEnmy());
 	CTextDraw::ChangeFontLog(pDC, 36, "微軟正黑體", RGB(0, 0, 0));
 	CTextDraw::Print(pDC, 50, 50, tmp2);
 	CTextDraw::ChangeFontLog(pDC, 36, "微軟正黑體", RGB(0, 0, 0));
 	CTextDraw::Print(pDC, 50, 100, tmp4);
+	CTextDraw::ChangeFontLog(pDC, 90, "微軟正黑體", RGB(0, 0, 0));
+	if (*background.getSelAddress() == 2 && background.getPlaying() == true)
+	{
+		CTextDraw::Print(pDC, 1695, 430, time3);
+		CTextDraw::Print(pDC, 114, 615, leftEnemy);
+
+	}	
+
 	//CTextDraw::Print(pDC, 50, 50, "IQ:200");
 		
 	CDDraw::ReleaseBackCDC();

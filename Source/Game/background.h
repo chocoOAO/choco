@@ -20,12 +20,14 @@ public:
 	void backgroundInit();
 	void selectInit();
 	void elementInit();
-	void backgroundKeyDown(UINT nChar);
+	void goBackContent();
+	void backgroundKeyDown(UINT nChar, characterTool *characterAddress);
 	void backroundShowBitmap();
 	void selectShowBitmap();
 	void elementShowBitmap();
 	void touching(characterTool *characterAddress);
 	bool getPlaying();
+	bool getInit();
 	int* getSelAddress();
 
 	MyCMovingBitmap *getBackgroundAddress();	
@@ -83,6 +85,11 @@ enum stage1Id
 enum stage2Id
 {
 	elementFlower2_1, elementFloor2_1, elementDropFloor2_1, elementFloor2_2, elementDropFloor2_2, elementFloor2_3, brick, elementHit, elementLongBlock2_1, elementLongBlock2_2,
-	elementVerticalLongBlock2_1, elementPrick2_1, elementEmptyBlock2_1, elementQuestion, elementDoublePoLeft, elementEmptyBlock2_2, elementEmptyBlock2_3, elenentslime2_1
+	elementVerticalLongBlock2_1, elementPrick2_1, elementEmptyBlock2_1, elementQuestion, elementDoublePoLeft, elementEmptyBlock2_2, elementEmptyBlock2_3, elenentslime2_1, elementLady2_1
+};
+
+enum stage3Id
+{
+	elementClock3_1
 };
 #endif

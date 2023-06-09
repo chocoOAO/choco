@@ -23,7 +23,8 @@ void backgroundTool::backgroundInit()
 	background.LoadBitmapByString({
 		"resources/background3.bmp",
 		"resources/level1.bmp",
-		"resources/level2.bmp"
+		"resources/level2.bmp",
+		"resources/level3.bmp"
 		}, 0);
 	background.SetTopLeft(0, 0);
 	start = clock();
@@ -71,11 +72,13 @@ void backgroundTool::elementInit()
 			{ "resources/brickChip/chip1.bmp","resources/brickChip/chip2.bmp","resources/brickChip/chip3.bmp","resources/brickChip/chip4.bmp","resources/brickChip/chip5.bmp","resources/brickChip/chip6.bmp","resources/brickChip/chip7.bmp" }, { "resources/hit.bmp","resources/hitDie.bmp"},
 			{ "resources/longBlock2_1.bmp" }, { "resources/longBlock2_2.bmp" },
 			{ "resources/verticalLongBlock2_1.bmp" }, { "resources/prick2_1.bmp" },
-			{ "resources/seeEmptyBlock.bmp", "resources/blackBlock.bmp"}, { "resources/whiteBlock.bmp","resources/blackBlock.bmp" },
-			{ "resources/doublePoLeft.bmp" }, { "resources/seeEmptyBlock.bmp", "resources/blackBlock.bmp"},
-			{ "resources/seeEmptyBlock.bmp", "resources/blackBlock.bmp"}, { "resources/slime2_1.bmp", "resources/slime2_1.bmp"}
+			{ "resources/emptyBlock.bmp", "resources/blackBlock.bmp"}, { "resources/whiteBlock.bmp","resources/blackBlock.bmp" },
+			{ "resources/doublePoLeft.bmp" }, { "resources/emptyBlock.bmp", "resources/blackBlock.bmp"},
+			{ "resources/emptyBlock.bmp", "resources/blackBlock.bmp"}, { "resources/slime2_1.bmp", "resources/slime2_1.bmp"},
+			{ "resources/lady.bmp" }
 		},
 		{
+			{ "resources/clock3_1.bmp", "resources/clock3_2.bmp", "resources/clock3_3.bmp"}, { "resources/stagePicture3_1.bmp" }
 		}
 	};
 	stage1SetTopLeft =
@@ -87,9 +90,10 @@ void backgroundTool::elementInit()
 		},
 		{
 			{-1000, -1000}, {0, 860}, {794, 862}, {1740, 862}, {4595, 860}, {5716, 860}, {-1000, -1000}, {870, 384}, {1660, 236}, {3097, 540},
-			{4755, 51}, {2696, 830}, {2947, 236}, {558,539}, {-1000, -1000}, {4599, 533}, {4429, 179}, {3907, 459}//
+			{4755, 51}, {2696, 830}, {2947, 236}, {558,539}, {-1000, -1000}, {4599, 533}, {4429, 179}, {3907, 459}, {5725, 730}//
 		},
 		{
+			{1600, 160}, {0, 0}
 		}
 	};
 	std::vector<vector<int>> takeOutWite = 
@@ -104,9 +108,10 @@ void backgroundTool::elementInit()
 
 	for (int i = 0; i < int(stage1LoadBitMap[sel].size()); i++)
 	{
-		MyCMovingBitmap *x = new MyCMovingBitmap;
+		
 		if (playing == false || init == true)
 		{
+			MyCMovingBitmap *x = new MyCMovingBitmap;
 			for (int j = 0; j < int(takeOutWite[sel].size()); j++)
 			{
 				if (i == takeOutWite[sel][j])
@@ -134,6 +139,8 @@ void backgroundTool::elementInit()
 				stage[i]->SetTopLeft(stage1SetTopLeft[sel][i][0], stage1SetTopLeft[sel][i][1]);
 				stage[i]->SetFrameIndexOfBitmap(0);
 				stage[i]->SetJudge(false);
+				stage[i]->SetElementPo(false);
+				stage[i]->SetJudge(false);
 			}
 			
 		}
@@ -147,8 +154,37 @@ void backgroundTool::elementInit()
 
 }
 
-void backgroundTool::backgroundKeyDown(UINT nChar)
+void backgroundTool::goBackContent()
 {
+	playing = false;
+	init = false;
+	elementTrue = false;
+	elementPo = false;
+	elementPo1_2 = false;
+	sel = 0;
+	buttonW = false;
+	buttonA = false;
+	buttonD = false;
+	judgeMove = false;
+	first = false;
+	elementFlower = false;
+	longblock = false;
+	setClearStage();
+	elementInit();
+	selectInit();
+	totalSelect.SetFrameIndexOfBitmap(0);
+	background.SetTopLeft(0, 0);
+	background.SetFrameIndexOfBitmap(0);
+}
+
+
+void backgroundTool::backgroundKeyDown(UINT nChar, characterTool *characterAddress)
+{
+	MyCMovingBitmap *character = characterAddress->getCharacterAddress();
+	if ((nChar == 0x50) && playing == true)
+	{
+		goBackContent();
+	}
 	if ((nChar == VK_RIGHT || nChar == VK_LEFT) && playing == false)//向右選關鍵
 	{		
 
@@ -180,6 +216,7 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 			init = true;
 			playing = true;
 			elementInit();
+			characterAddress->characterInit();
 			background.SetFrameIndexOfBitmap(1); // enter the level
 			for (int i = 0; i < 3; i++) // origin i < 2
 			{
@@ -196,7 +233,26 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 			init = true;
 			playing = true;
 			elementInit();
+			characterAddress->characterInit();
 			background.SetFrameIndexOfBitmap(2); // enter the level
+			for (int i = 0; i < 3; i++) // origin i < 2
+			{
+				totalSelect.SetFrameIndexOfBitmap(i);
+				totalSelect.SetTopLeft(-600, -400);
+			}
+			select1.SetTopLeft(-600, -400);
+			select2.SetTopLeft(-600, -400);
+			select3.SetTopLeft(-600, -400);
+		}
+		if (sel == 2)
+		{
+			characterAddress->characterInit();
+			character->SetTopLeft(-2000, -2000);
+			setClearStage();
+			init = true;
+			playing = true;
+			elementInit();
+			background.SetFrameIndexOfBitmap(3); // enter the level
 			for (int i = 0; i < 3; i++) // origin i < 2
 			{
 				totalSelect.SetFrameIndexOfBitmap(i);
@@ -457,7 +513,6 @@ void backgroundTool::touching(characterTool *character)
 		if (stage[elementLongBlock2_2]->GetJudge() == true)
 		{
 			stage[elenentslime2_1]->SetTopLeft(stage[elenentslime2_1]->GetLeft() - 5, stage[elenentslime2_1]->GetTop());
-
 		}
 		
 		break;	
@@ -474,16 +529,21 @@ bool backgroundTool::getPlaying()
 	return playing;
 }
 
+bool backgroundTool::getInit()
+{
+	return init;
+}
 
 void backgroundTool::Move(characterTool *run_character)
 {
+	MyCMovingBitmap *character = run_character->getCharacterAddress();
 	stageJudgeMove =
 	{
 		{elementPoLeft, elementPoRight, elementPoUp},
 		{},
 		{}
 	};
-	if (playing)
+	if (playing && sel != 2)
 	{
 		if (buttonA && run_character->GetBackHitblock() == false && run_character->GetpopUpFlag() == false)
 		{			
