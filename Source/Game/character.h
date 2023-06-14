@@ -37,6 +37,7 @@ public:
 	void touchingElement(backgroundTool *element);
 	void drop(backgroundTool *background);
 	void creatAmmo();
+	void dieChange();
 	//void cleanBitMap(MyCMovingBitmap *item,vector<string> load);
 
 	
@@ -45,6 +46,7 @@ protected:
 	std::vector<MyCMovingBitmap *> ammo;
 	std::vector<MyCMovingBitmap *> erraseAmmo;
 	MyCMovingBitmap character;
+	MyCMovingBitmap characterCry;
 	MyCMovingBitmap aircraft;
 	MyCMovingBitmap characterleft;
 	std::vector<bool> character_condition;
@@ -59,8 +61,10 @@ protected:
 	bool popUpFlag = false; // using for animation after died
 	bool needToReInit = false; // using to ReInit after died
 	game_framework::CMovingBitmap popUp; // pop up image after died 
+	
 	clock_t start;
 	clock_t start3_1;
+	clock_t die;
 
 	bool first = false;
 

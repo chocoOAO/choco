@@ -543,11 +543,19 @@ void backgroundTool::Move(characterTool *run_character)
 		{},
 		{}
 	};
+	std::vector<vector<int>> map;
+	map=
+	{
+		{-4400},
+		{-3950},
+		{0}
+	};
+	
 	if (playing && sel != 2)
 	{
-		if (buttonA && run_character->GetBackHitblock() == false && run_character->GetpopUpFlag() == false)
+		if (buttonA && run_character->GetBackHitblock() == false && run_character->GetpopUpFlag() == false && character->GetLeft() > 900 && character->GetLeft() < 960)
 		{			
-			background.SetTopLeft(background.GetLeft() + 20 - buttonW * 2, background.GetTop());
+			background.SetTopLeft(background.GetLeft() + 20 - buttonW * 2, background.GetTop());//
 			for (int i = 0; i < int(stage.size()); i++)
 			{
 				for (int j = 0; j < int(stageJudgeMove[sel].size()); j++)
@@ -584,7 +592,7 @@ void backgroundTool::Move(characterTool *run_character)
 
 		
 
-		if (buttonD && run_character->GetFaceHitblock() == false && run_character->GetpopUpFlag() == false)
+		if (buttonD && run_character->GetFaceHitblock() == false && run_character->GetpopUpFlag() == false && (character->GetLeft() > 900 && character->GetLeft() < 960) && background.GetLeft() > map[sel][0])// 
 		{			
 			//floor1_2.SetTopLeft(floor1_2.GetLeft() - 20 + buttonD * 2, floor1_2.GetTop());
 			background.SetTopLeft(background.GetLeft() - 20 + buttonW * 2, background.GetTop());

@@ -24,10 +24,15 @@ void characterTool::characterInit()
 
 		aircraft.LoadBitmapByString({
 			"resources/aircraftNormal3_1.bmp",
+			"resources/aircraftNormal3_1Cry.bmp"
 			}, RGB(255, 255, 255));
 		//aircraft.SetTopLeft(922, 753);
 
-		popUp.LoadBitmapA("Resources/animation_after_died.bmp"); // image of animation after died
+		popUp.LoadBitmapA({"Resources/animation_after_died.bmp"}, RGB(14, 209, 69)); // image of animation after died
+
+		characterCry.LoadBitmapByString({
+			"resources/characterCry.bmp",
+			}, RGB(255, 255, 255));
 
 		for (int i = 0; i < 5; i++)
 		{
@@ -51,7 +56,8 @@ void characterTool::characterInit()
 		}
 
 	}
-	
+	aircraft.SetFrameIndexOfBitmap(0);
+	characterCry.SetTopLeft(-2000, -2000);
 	character.SetTopLeft(0, 733);
 	aircraft.SetTopLeft(922, 753);		
 	character_condition = { false, false, false, false };
@@ -90,6 +96,7 @@ void characterTool::characterInit()
 
 void characterTool::characterMove(backgroundTool *element)
 {
+	MyCMovingBitmap background = *element->getBackgroundAddress();
 	std::vector<MyCMovingBitmap *> stage = *element->getStageAddress();
 	if (character_condition.at(0) && character.GetFlagMove() == true && *element->getSelAddress() != 2 && element->getPlaying() == true)
 	{
@@ -195,18 +202,34 @@ void characterTool::characterMove(backgroundTool *element)
 	{
 		character.SetTopLeft(character.GetLeft(), character.GetTop() + 20);//按住持續S
 	}*/
+	std::vector<vector<int>> map;
+	map =
+	{
+		{-4400},
+		{-3950},
+		{0}
+	};
 
-	if (character_condition.at(2)  && (backHitblock == false) && !popUpFlag)//&& character.GetFlagMove() == true
+	if (character_condition.at(2)  && (backHitblock == false) && !popUpFlag && (character.GetLeft() < 910 || (background.GetLeft() >= 0) || (background.GetLeft() <= map[*element->getSelAddress()][0])))//&& character.GetFlagMove() == true 
 	{
-		character.SetTopLeft(character.GetLeft() - 2, character.GetTop());//按住持續A
-		aircraft.SetTopLeft(aircraft.GetLeft() - 10, aircraft.GetTop());
+		if(character.GetLeft() >= 0)//卡邊界
+		{
+			character.SetTopLeft(character.GetLeft() - 14, character.GetTop());//按住持續A
+		}	
+		if (aircraft.GetLeft() >= 0)
+		{
+			aircraft.SetTopLeft(aircraft.GetLeft() - 10, aircraft.GetTop());
+		}		
 		character.SetAnimation(150, false);
-	}
-	
-	if (character_condition.at(3) && (faceHitblock == false) && !popUpFlag)//&& character.GetFlagMove() == true
+	}	
+
+	if (character_condition.at(3) && (faceHitblock == false) && !popUpFlag && (character.GetLeft() < 910  || background.GetLeft() <= map[*element->getSelAddress()][0]))//&& character.GetFlagMove() == true
 	{
-		character.SetTopLeft(character.GetLeft() + 2, character.GetTop());//按住持續D 
-		aircraft.SetTopLeft(aircraft.GetLeft() + 10, aircraft.GetTop());
+		character.SetTopLeft(character.GetLeft() + 14, character.GetTop());//按住持續D 
+		if (aircraft.GetLeft() <= 1790)
+		{
+			aircraft.SetTopLeft(aircraft.GetLeft() + 10, aircraft.GetTop());
+		}
 		character.SetAnimation(150, false);
 
 	}
@@ -322,14 +345,32 @@ void characterTool::characterKeyUp(UINT nChar, backgroundTool *background)
 void characterTool::characterShowBitmap()
 {
 	if (popUpFlag == true) // to show the animation after died
-	{
-		popUp.ShowBitmap();
+	{				
+		if (((clock() - die) / (double)(CLOCKS_PER_SEC)) >= 0.7)
+		{
+			popUp.ShowBitmap();
+		}
+		else
+		{
+			characterCry.SetTopLeft(character.GetLeft(), character.GetTop());
+			characterCry.ShowBitmap();
+			if (allSel == 2)
+			{
+				aircraft.ShowBitmap();
+			}
+		}
 	}
-	character.ShowBitmap();	
+	else
+	{
+		character.ShowBitmap();		
+		if (allSel == 2)
+		{
+			aircraft.ShowBitmap();
+		}
+	}	
 
 	if (allSel == 2)
-	{
-		aircraft.ShowBitmap();
+	{		
 		for (int i = 0; i < int(ammo.size()); i++)
 		{
 			ammo[i]->ShowBitmap();
@@ -340,6 +381,7 @@ void characterTool::characterShowBitmap()
 			slime[i]->ShowBitmap();
 		}
 	}
+	
 	
 }
 
@@ -491,8 +533,7 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 			{
 				if (!popUpFlag && !needToReInit)
 				{
-					popUpFlag = true;
-					needToReInit = true;
+					dieChange();
 				}
 			}
 
@@ -500,16 +541,14 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 			{
 				if (!popUpFlag && !needToReInit)
 				{
-					popUpFlag = true;
-					needToReInit = true;
+					dieChange();
 				}
 			}
 
 			if (character.IsOverlap(*stage[elementGrass], character))
 			{
 				if (!popUpFlag && !needToReInit) {
-					popUpFlag = true;
-					needToReInit = true;
+					dieChange();
 				}
 			}
 
@@ -521,8 +560,7 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 			{
 				if (!popUpFlag && !needToReInit)
 				{
-					popUpFlag = true;
-					needToReInit = true;
+					dieChange();
 				}
 			}
 
@@ -540,28 +578,23 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 		case 1:
 			if (character.touchUp(&character, stage[elementHit]))
 			{
-				popUpFlag = true;
-				needToReInit = true;
+				dieChange();
 			}
 			if (character.touchUp(&character, stage[elementLongBlock2_1]))
 			{
-				popUpFlag = true;
-				needToReInit = true;
+				dieChange();
 			}
 			if (character.IsOverlap(*stage[elementFlower2_1], character) || character.IsOverlap(*stage[elementDoublePoLeft], character))
 			{
-				popUpFlag = true;
-				needToReInit = true;
+				dieChange();
 			}
 			if (character.IsOverlap(*stage[elenentslime2_1], character) || character.IsOverlap(*stage[elenentslime2_1], character))
 			{
-				popUpFlag = true;
-				needToReInit = true;
+				dieChange();
 			}
 			if (stage[elementPrick2_1]->IsOverlap(*stage[elementPrick2_1], character))
 			{
-				popUpFlag = true;
-				needToReInit = true;
+				dieChange();
 			}
 			if (character.IsOverlap(*stage[elementLady2_1], character))
 			{
@@ -623,8 +656,7 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 			}
 			if (tmpCaculate == true)
 			{
-				popUpFlag = true;
-				needToReInit = true;
+				dieChange();
 			}
 
 			if (((clock() - start3_1) / (double)(CLOCKS_PER_SEC)) >= 1)
@@ -666,8 +698,12 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 				{
 					ammo[i]->SetTopLeft(0, -20);
 				}
-				popUpFlag = true;
-				needToReInit = true;
+				if (popUpFlag == false)
+				{
+					aircraft.SetFrameIndexOfBitmap(1);
+					dieChange();
+				}
+				
 			}
 
 		}
@@ -685,14 +721,13 @@ void characterTool::drop(backgroundTool *background)
 	MyCMovingBitmap tmp = *(background->getBackgroundAddress());
 	
 
-	if (character.GetTop() > 960)
+	if (character.GetTop() > 960 && popUpFlag == false)
 	{
 		/*
 		background->backgroundInit();
 		background->elementInit();
 		characterInit();*/
-		popUpFlag = true;
-		needToReInit = true;
+		dieChange();
 	}
 }
 
@@ -703,7 +738,12 @@ void characterTool::creatAmmo()
 	x->SetTopLeft(aircraft.GetLeft() + 42, aircraft.GetTop());
 	ammo.push_back(x);
 }
-
+void characterTool::dieChange()
+{
+	die = clock();
+	popUpFlag = true;
+	needToReInit = true;
+}
 
 /*
 void characterTool::cleanBitMap(MyCMovingBitmap *item,vector<string> load)
