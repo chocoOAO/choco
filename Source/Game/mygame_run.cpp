@@ -121,9 +121,9 @@ void CGameStateRun::show_text_by_phase()
 	string time3 = std::to_string(character.GetTime());
 	string leftEnemy = std::to_string(character.GetLeftEnmy());
 	CTextDraw::ChangeFontLog(pDC, 36, "微軟正黑體", RGB(0, 0, 0));
-	CTextDraw::Print(pDC, 50, 50, tmp2);
+	//CTextDraw::Print(pDC, 50, 50, tmp2);
 	CTextDraw::ChangeFontLog(pDC, 36, "微軟正黑體", RGB(0, 0, 0));
-	CTextDraw::Print(pDC, 50, 100, tmp4);
+	//CTextDraw::Print(pDC, 50, 100, tmp4);
 	CTextDraw::ChangeFontLog(pDC, 90, "微軟正黑體", RGB(0, 0, 0));
 	if (*background.getSelAddress() == 2 && background.getPlaying() == true)
 	{
