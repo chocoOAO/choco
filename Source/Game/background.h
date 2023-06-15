@@ -4,7 +4,7 @@
 
 #include "MyCMovingBitmap.h"
 #include "character.h"
-
+#include "../Library/audio.h"
 
 class backgroundTool //:public MyCMovingBitmap
 {
@@ -73,6 +73,7 @@ protected:
 	bool first = false;
 	bool elementFlower = false;
 	bool longblock = false;
+
 };
 
 enum stage1Id

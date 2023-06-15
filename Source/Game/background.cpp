@@ -6,11 +6,12 @@
 #include "MyCMovingBitmap.h"
 #include "background.h"
 #include "character.h"
+#include "../Library/audio.h"
+
 using namespace game_framework;
 
 void backgroundTool::backgroundInit()
 {
-
 	switch (sel)		
 	{
 	case 0:
@@ -28,6 +29,15 @@ void backgroundTool::backgroundInit()
 		}, 0);
 	background.SetTopLeft(0, 0);
 	start = clock();
+	CAudio *home = CAudio::Instance();
+
+	if (playing == false || init == true)
+	{
+		//home->Load(1, "resources/Audio_bgm_home.MP3");
+		//home->Play(1, true);
+	}
+	
+	
 	
 }
 

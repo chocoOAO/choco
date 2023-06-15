@@ -49,6 +49,7 @@ protected:
 	MyCMovingBitmap characterCry;
 	MyCMovingBitmap aircraft;
 	MyCMovingBitmap characterleft;
+	MyCMovingBitmap dieCry;
 	std::vector<bool> character_condition;
 	int chieght = 0;
 	bool headHitfloor=false;

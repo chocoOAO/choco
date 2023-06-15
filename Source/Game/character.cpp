@@ -29,6 +29,10 @@ void characterTool::characterInit()
 		//aircraft.SetTopLeft(922, 753);
 
 		popUp.LoadBitmapA({"Resources/animation_after_died.bmp"}, RGB(14, 209, 69)); // image of animation after died
+		dieCry.LoadBitmapA({ "Resources/dieCry_1.bmp",
+						  	 "Resources/dieCry_2.bmp",
+							 "Resources/dieCry_3.bmp"
+							}, RGB(255, 255, 254)); // image of animation after died
 
 		characterCry.LoadBitmapByString({
 			"resources/characterCry.bmp",
@@ -56,6 +60,8 @@ void characterTool::characterInit()
 		}
 
 	}
+	dieCry.SetTopLeft(605, 450);
+	dieCry.SetAnimation(500, 0);
 	aircraft.SetFrameIndexOfBitmap(0);
 	characterCry.SetTopLeft(-2000, -2000);
 	character.SetTopLeft(0, 733);
@@ -349,6 +355,7 @@ void characterTool::characterShowBitmap()
 		if (((clock() - die) / (double)(CLOCKS_PER_SEC)) >= 0.7)
 		{
 			popUp.ShowBitmap();
+			dieCry.ShowBitmap();
 		}
 		else
 		{
