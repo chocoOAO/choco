@@ -93,4 +93,9 @@ enum stage3Id
 {
 	elementClock3_1
 };
+
+enum finish
+{
+	WinPrincess, WinBoy, WinLove
+};
 #endif

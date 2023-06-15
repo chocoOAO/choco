@@ -20,13 +20,11 @@ void characterTool::characterInit()
 			"resources/character1.bmp",
 			"resources/character3.bmp",
 			"resources/character1.bmp" }, RGB(255, 255, 255));
-		//character.SetTopLeft(0, 733);
 
 		aircraft.LoadBitmapByString({
 			"resources/aircraftNormal3_1.bmp",
 			"resources/aircraftNormal3_1Cry.bmp"
 			}, RGB(255, 255, 255));
-		//aircraft.SetTopLeft(922, 753);
 
 		popUp.LoadBitmapA({"Resources/animation_after_died.bmp"}, RGB(14, 209, 69)); // image of animation after died
 		dieCry.LoadBitmapA({ "Resources/dieCry_1.bmp",
@@ -69,6 +67,8 @@ void characterTool::characterInit()
 	character_condition = { false, false, false, false };
 	feetHitblock = true;
 	popUp.SetTopLeft(500, 150);
+	popUp.SetJudge(false);
+	wode = false;
 	int tmp = 0;
 	for (int i = 0; i < 5; i++)
 	{
@@ -104,6 +104,7 @@ void characterTool::characterMove(backgroundTool *element)
 {
 	MyCMovingBitmap background = *element->getBackgroundAddress();
 	std::vector<MyCMovingBitmap *> stage = *element->getStageAddress();
+	
 	if (character_condition.at(0) && character.GetFlagMove() == true && *element->getSelAddress() != 2 && element->getPlaying() == true)
 	{
 		if (headHitfloor == true && character.GetTop() != 733 )//如果頭撞到方塊強制掉下去
@@ -143,7 +144,7 @@ void characterTool::characterMove(backgroundTool *element)
 		
 	}
 	
-	if (!character_condition.at(0) == true && *element->getSelAddress() != 2 && element->getPlaying() == true)
+	if (!character_condition.at(0) == true && *element->getSelAddress() < 2 && element->getPlaying() == true)
 	{
 		if (feetHitblock == false)//character.GetTop() <733 feetHitblock == false
 		{
@@ -216,7 +217,7 @@ void characterTool::characterMove(backgroundTool *element)
 		{0}
 	};
 
-	if (character_condition.at(2)  && (backHitblock == false) && !popUpFlag && (character.GetLeft() < 910 || (background.GetLeft() >= 0) || (background.GetLeft() <= map[*element->getSelAddress()][0])))//&& character.GetFlagMove() == true 
+	if (character_condition.at(2)  && (backHitblock == false) && (!popUpFlag || wode == true) && (character.GetLeft() < 910 || (background.GetLeft() >= 0) || (background.GetLeft() <= map[*element->getSelAddress()][0])))//&& character.GetFlagMove() == true 
 	{
 		if(character.GetLeft() >= 0)//卡邊界
 		{
@@ -229,7 +230,7 @@ void characterTool::characterMove(backgroundTool *element)
 		character.SetAnimation(150, false);
 	}	
 
-	if (character_condition.at(3) && (faceHitblock == false) && !popUpFlag && (character.GetLeft() < 910  || background.GetLeft() <= map[*element->getSelAddress()][0]))//&& character.GetFlagMove() == true
+	if (character_condition.at(3) && (faceHitblock == false) && (!popUpFlag || wode == true) && (character.GetLeft() < 910  || background.GetLeft() <= map[*element->getSelAddress()][0]))//&& character.GetFlagMove() == true
 	{
 		character.SetTopLeft(character.GetLeft() + 14, character.GetTop());//按住持續D 
 		if (aircraft.GetLeft() <= 1790)
@@ -243,40 +244,41 @@ void characterTool::characterMove(backgroundTool *element)
 	allSel = *element->getSelAddress();
 }
 
-void characterTool::characterKeyDown(UINT nChar)
+void characterTool::characterKeyDown(UINT nChar, backgroundTool *background)
 {
-	if (nChar == 0x57 && !popUpFlag)//W
+	if (feetHitblock == true)
 	{
+		noTwoJump = false;
+	}
+
+	if (nChar == 0x57 && !popUpFlag && (noTwoJump == false || allSel==2))//W
+	{
+		if (allSel < 2 && background->getPlaying() == true)
+		{
+			CAudio::Instance()->Play(6, true);
+			CAudio::Instance()->Play(6, false);
+		}
+		
+		
 		character.SetFlagMove(true);
 		character_condition.at(0) = TRUE;
 		if(dontRead == false)
 			chieght = int(character.GetTop());
+		noTwoJump = true;
 
 	}
 	if (nChar == 0x53 && !popUpFlag)//S
 	{
 		character.SetFlagMove(true);
 		character_condition.at(1) = TRUE;
+		noTwoJump = true;
 	}
 	if (nChar == 0x41 && !popUpFlag)//A
 	{
 		character.SetFlagMove(true);
 		character_condition.at(2) = TRUE;
-		/*cleanBitMap(&character, {
-		"resources/character1.bmp",
-		"resources/character6.bmp",
-		"resources/character1.bmp",
-		"resources/character7.bmp",
-		"resources/character1.bmp" });
-		int x = character.GetLeft();
-		int y = character.GetTop();		
-		character.LoadBitmapByString({
-		"resources/character1.bmp",
-		"resources/character6.bmp",
-		"resources/character1.bmp",
-		"resources/character7.bmp",
-		"resources/character1.bmp" },  RGB(255, 255, 255));
-		character.SetTopLeft(x, y);*/
+		noTwoJump = true;
+	
 	}
 
 
@@ -284,27 +286,20 @@ void characterTool::characterKeyDown(UINT nChar)
 	{
 		character.SetFlagMove(true);
 		character_condition.at(3) = TRUE;
-		/*cleanBitMap(&character, {
-		"resources/character1.bmp",
-		"resources/character2.bmp",
-		"resources/character1.bmp",
-		"resources/character3.bmp",
-		"resources/character1.bmp" });
-		int x = character.GetLeft();
-		int y = character.GetTop();
-		character.LoadBitmapByString({
-		"resources/character1.bmp",
-		"resources/character2.bmp",
-		"resources/character1.bmp",
-		"resources/character3.bmp",
-		"resources/character1.bmp" }, RGB(255, 255, 255));
-		character.SetTopLeft(x, y);*/
+		noTwoJump = true;
+	
 	}
+
 }
 
 
 void characterTool::characterKeyUp(UINT nChar, backgroundTool *background)
 {
+	if (wode == true)
+	{
+		popUpFlag = false;
+		needToReInit = false;
+	}
 	if (nChar == 0x57 && !popUpFlag)//W
 	{
 		character.SetFlagMove(false);
@@ -330,12 +325,16 @@ void characterTool::characterKeyUp(UINT nChar, backgroundTool *background)
 		character.SetFrameIndexOfBitmap(0);
 
 	}
+	if (nChar == 0x4F)//O
+	{
+		wode = true;		
+	}	
 
 	if (nChar == 0x52 && popUpFlag == true) // R to return beginning state
 	{
 		popUpFlag = false;
 		
-		if (needToReInit == true)
+		if (needToReInit == true && wode == false)
 		{
 			background->backgroundInit();
 			background->elementInit();
@@ -350,12 +349,14 @@ void characterTool::characterKeyUp(UINT nChar, backgroundTool *background)
 }
 void characterTool::characterShowBitmap()
 {
-	if (popUpFlag == true) // to show the animation after died
+	if (popUpFlag == true && wode == false) // to show the animation after died
 	{				
 		if (((clock() - die) / (double)(CLOCKS_PER_SEC)) >= 0.7)
 		{
+			popUp.SetJudge(true);
 			popUp.ShowBitmap();
 			dieCry.ShowBitmap();
+			
 		}
 		else
 		{
@@ -439,6 +440,11 @@ MyCMovingBitmap *characterTool::getCharacterAddress()
 	return &character;
 }
 
+MyCMovingBitmap *characterTool::getPopUpFlagAddress()
+{
+	return &popUp;
+}
+
 bool characterTool::GetIsDroppingAddress()
 {
 	return isDropping;
@@ -455,6 +461,7 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 							 elementEmptyBlock2, elementBlockU, elementBlockD, elementBlockI, elementBlockE, elementBlockD2},
 							{elementQuestion, elementHit, elementLongBlock2_1, elementLongBlock2_2, elementVerticalLongBlock2_1, elementEmptyBlock2_1,
 						 	 elementEmptyBlock2_2, elementEmptyBlock2_3},//
+							{},
 							{}
 	};
 	std::vector<vector<int>> intFeetFloor = {
@@ -463,6 +470,7 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 							{elementQuestion, elementFloor2_1, elementDropFloor2_1, elementFloor2_2, elementDropFloor2_2, elementFloor2_3,
 							 elementHit, elementLongBlock2_1, elementLongBlock2_2, elementVerticalLongBlock2_1, elementEmptyBlock2_1, elementEmptyBlock2_2,
 							 elementEmptyBlock2_3},
+							{},
 							{}
 
 	};
@@ -471,10 +479,12 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 							 elementEmptyBlock2,elementPipe1, elementPipe2, floor1_1, floor1_2, floor1_3},
 							{elementQuestion, elementHit, elementLongBlock2_1, elementLongBlock2_2, elementVerticalLongBlock2_1, elementEmptyBlock2_1,
 							 elementEmptyBlock2_2, elementEmptyBlock2_3},//
+							{},
 							{}
 	};
 	std::vector<vector<int>> empty = {  { elementEmptyBlock, elementEmptyBlock2 },
 										{ elementEmptyBlock2_1, elementEmptyBlock2_2, elementEmptyBlock2_3},
+										{},
 										{}
 	};
 
@@ -580,6 +590,8 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 				backgroundElement->backgroundInit();
 				backgroundElement->elementInit();
 				characterInit();
+				CAudio::Instance()->Pause();
+				CAudio::Instance()->Play(3, true);
 			}
 			break;
 		case 1:
@@ -593,15 +605,24 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 			}
 			if (character.IsOverlap(*stage[elementFlower2_1], character) || character.IsOverlap(*stage[elementDoublePoLeft], character))
 			{
-				dieChange();
+				if (!popUpFlag && !needToReInit)
+				{
+					dieChange();
+				}
 			}
 			if (character.IsOverlap(*stage[elenentslime2_1], character) || character.IsOverlap(*stage[elenentslime2_1], character))
 			{
-				dieChange();
+				if (!popUpFlag && !needToReInit)
+				{
+					dieChange();
+				}
 			}
 			if (stage[elementPrick2_1]->IsOverlap(*stage[elementPrick2_1], character))
 			{
-				dieChange();
+				if (!popUpFlag && !needToReInit)
+				{
+					dieChange();
+				}
 			}
 			if (character.IsOverlap(*stage[elementLady2_1], character))
 			{
@@ -613,6 +634,8 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 				backgroundElement->setInit(true);
 				backgroundElement->backgroundInit();
 				backgroundElement->elementInit();
+				CAudio::Instance()->Pause();
+				CAudio::Instance()->Play(4, true);
 				
 			}
 
@@ -663,7 +686,19 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 			}
 			if (tmpCaculate == true)
 			{
-				dieChange();
+				backgroundElement->getBackgroundAddress()->SetFrameIndexOfBitmap(4);
+				backgroundElement->setSel(3);
+				backgroundElement->setClearStage();
+				backgroundElement->setInit(true);
+				backgroundElement->backgroundInit();
+				backgroundElement->elementInit();
+				characterInit();			
+				character.SetTopLeft(-2000, -2000);
+				aircraft.SetTopLeft(-2000, -2000);				
+				needToReInit = false;
+				CAudio::Instance()->Pause();
+				CAudio::Instance()->Play(5, true);
+
 			}
 
 			if (((clock() - start3_1) / (double)(CLOCKS_PER_SEC)) >= 1)
@@ -701,14 +736,19 @@ void characterTool::touchingElement(backgroundTool *backgroundElement)
 
 			if (time3 <= 0)
 			{
-				for (int i = 0; i < int(ammo.size()); i++)
+				if (wode == false)
 				{
-					ammo[i]->SetTopLeft(0, -20);
+					for (int i = 0; i < int(ammo.size()); i++)
+					{
+						ammo[i]->SetTopLeft(0, -20);
+					}
 				}
+				
 				if (popUpFlag == false)
-				{
+				{					
 					aircraft.SetFrameIndexOfBitmap(1);
 					dieChange();
+					
 				}
 				
 			}
@@ -729,12 +769,9 @@ void characterTool::drop(backgroundTool *background)
 	
 
 	if (character.GetTop() > 960 && popUpFlag == false)
-	{
-		/*
-		background->backgroundInit();
-		background->elementInit();
-		characterInit();*/
+	{		
 		dieChange();
+		wode = false;
 	}
 }
 
@@ -743,23 +780,23 @@ void characterTool::creatAmmo()
 	MyCMovingBitmap *x = new MyCMovingBitmap;
 	x->LoadBitmapByString({ "resources/ammo.bmp" },RGB(255, 255, 255));
 	x->SetTopLeft(aircraft.GetLeft() + 42, aircraft.GetTop());
-	ammo.push_back(x);
+	ammo.push_back(x);	
+	CAudio::Instance()->Play(7, true);
+	CAudio::Instance()->Play(7, false);
+		
 }
 void characterTool::dieChange()
 {
 	die = clock();
-	popUpFlag = true;
-	needToReInit = true;
+	if (wode == false)
+	{
+		popUpFlag = true;
+		needToReInit = true;
+	}
+	CAudio::Instance()->Play(8, true);
+	CAudio::Instance()->Play(8, false);
+	
 }
 
-/*
-void characterTool::cleanBitMap(MyCMovingBitmap *item,vector<string> load)
-{
-	MyCMovingBitmap tmp;
-	tmp.LoadBitmapByString(load,  RGB(255, 255, 255));
-	tmp.SetTopLeft(item->GetLeft(),item->GetTop());
-	*item = tmp;
 
-}
-*/
 
