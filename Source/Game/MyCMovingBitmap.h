@@ -13,6 +13,8 @@ public:
 	bool GetFlagMove() const;
 	void SetJudge(bool value);
 	bool GetJudge() const;
+	void SetJudgeMusic(bool value);
+	bool GetJudgeMusic() const;
 	bool touchUp(MyCMovingBitmap *character, MyCMovingBitmap *element);
 	bool touchDown(MyCMovingBitmap *character, MyCMovingBitmap *element);
 	bool touchLeft(MyCMovingBitmap *character, MyCMovingBitmap *element);
@@ -24,5 +26,6 @@ protected:
 	bool elementPo2 = false;
 	bool flag_move;
 	bool judge = false;
+	bool judgeMusic = false;
 
 };

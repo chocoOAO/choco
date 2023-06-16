@@ -84,34 +84,62 @@ namespace game_framework
     // 這個class為遊戲的遊戲執行物件，主要的遊戲程式都在這裡
     // 每個Member function的Implementation都要弄懂
     /////////////////////////////////////////////////////////////////////////////
-
+    
+    enum class states
+    {
+        menu,
+        in_game
+    };
+    
     class CGameStateRun : public CGameState
     {
+        
+
     public:
         CGameStateRun(CGame* g);
+
         ~CGameStateRun();
+
         void OnBeginState(); // 設定每次重玩所需的變數
+
         void OnInit(); // 遊戲的初值及圖形設定
+
         void OnKeyDown(UINT, UINT, UINT);
+
         void OnKeyUp(UINT, UINT, UINT);
+
         void OnLButtonDown(UINT nFlags, CPoint point); // 處理滑鼠的動作
+
         void OnLButtonUp(UINT nFlags, CPoint point); // 處理滑鼠的動作
+
         void OnMouseMove(UINT nFlags, CPoint point); // 處理滑鼠的動作 
+
         void OnRButtonDown(UINT nFlags, CPoint point); // 處理滑鼠的動作
+
         void OnRButtonUp(UINT nFlags, CPoint point); // 處理滑鼠的動作
 
+
         //自己加的
+
         void show_text_by_phase(); //顯示文字
+
     protected:
         void OnMove(); // 移動遊戲元素
+
         void OnShow(); // 顯示這個狀態的遊戲畫面
+
     private:
         void show_image_by_phase();
+
         //std::vector<bool> character_condition;
+
         backgroundTool background;
-		characterTool character;
+
+        characterTool character;
+
         MyCMovingBitmap characterleft;
 
+        states m_states = states::menu;
     };
 
     /////////////////////////////////////////////////////////////////////////////

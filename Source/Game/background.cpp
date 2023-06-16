@@ -6,27 +6,51 @@
 #include "MyCMovingBitmap.h"
 #include "background.h"
 #include "character.h"
+#include "../Library/audio.h"
+
 using namespace game_framework;
 
 void backgroundTool::backgroundInit()
 {
-
 	switch (sel)		
 	{
 	case 0:
-		
+		if (playing == false || init == true)
+		{
+			CAudio::Instance()->Load(1, "resources/Audio_bgm_home.MP3");
+			CAudio::Instance()->Load(2, "resources/Audio_bgm_1.MP3");
+			CAudio::Instance()->Load(3, "resources/Audio_bgm_3.MP3");
+			CAudio::Instance()->Load(4, "resources/Audio_bgm_4.MP3");
+			CAudio::Instance()->Load(5, "resources/Audio_bgm_end.MP3"); 
+			CAudio::Instance()->Load(6, "resources/Audio_jump.MP3");//jump
+			CAudio::Instance()->Load(7, "resources/Audio_lazer.MP3");//shoot
+			CAudio::Instance()->Load(8, "resources/Audio_boos.MP3");//lose
+			CAudio::Instance()->Load(9, "resources/Audio_gold.MP3");//gold
+
+			
+		}		
 		break;
 	case 1:
-
+		
 		break;
 	}
 	background.LoadBitmapByString({
 		"resources/background3.bmp",
 		"resources/level1.bmp",
-		"resources/level2.bmp"
+		"resources/level2.bmp",
+		"resources/level3.bmp",
+		"resources/congratulation.bmp"
 		}, 0);
 	background.SetTopLeft(0, 0);
 	start = clock();
+	if (playing == false)
+	{
+		CAudio::Instance()->Play(1, true);
+	}
+
+	
+	
+	
 	
 }
 
@@ -71,11 +95,17 @@ void backgroundTool::elementInit()
 			{ "resources/brickChip/chip1.bmp","resources/brickChip/chip2.bmp","resources/brickChip/chip3.bmp","resources/brickChip/chip4.bmp","resources/brickChip/chip5.bmp","resources/brickChip/chip6.bmp","resources/brickChip/chip7.bmp" }, { "resources/hit.bmp","resources/hitDie.bmp"},
 			{ "resources/longBlock2_1.bmp" }, { "resources/longBlock2_2.bmp" },
 			{ "resources/verticalLongBlock2_1.bmp" }, { "resources/prick2_1.bmp" },
-			{ "resources/seeEmptyBlock.bmp", "resources/blackBlock.bmp"}, { "resources/whiteBlock.bmp","resources/blackBlock.bmp" },
-			{ "resources/doublePoLeft.bmp" }, { "resources/seeEmptyBlock.bmp", "resources/blackBlock.bmp"},
-			{ "resources/seeEmptyBlock.bmp", "resources/blackBlock.bmp"}, { "resources/slime2_1.bmp", "resources/slime2_1.bmp"}
+			{ "resources/emptyBlock.bmp", "resources/blackBlock.bmp"}, { "resources/whiteBlock.bmp","resources/blackBlock.bmp" },
+			{ "resources/doublePoLeft.bmp" }, { "resources/emptyBlock.bmp", "resources/blackBlock.bmp"},
+			{ "resources/emptyBlock.bmp", "resources/blackBlock.bmp"}, { "resources/slime2_1.bmp", "resources/slime2_1.bmp"},
+			{ "resources/lady.bmp" }
 		},
 		{
+			{ "resources/clock3_1.bmp", "resources/clock3_2.bmp", "resources/clock3_3.bmp"}, { "resources/stagePicture3_1.bmp" }
+		},
+		{
+			{ "resources/winPrincess.bmp"}, { "resources/winBoy.bmp"}, 
+			{ "resources/winLove_1.bmp", "resources/winLove_2.bmp", "resources/winLove_3.bmp"}
 		}
 	};
 	stage1SetTopLeft =
@@ -87,16 +117,21 @@ void backgroundTool::elementInit()
 		},
 		{
 			{-1000, -1000}, {0, 860}, {794, 862}, {1740, 862}, {4595, 860}, {5716, 860}, {-1000, -1000}, {870, 384}, {1660, 236}, {3097, 540},
-			{4755, 51}, {2696, 830}, {2947, 236}, {558,539}, {-1000, -1000}, {4599, 533}, {4429, 179}, {3907, 459}//
+			{4755, 51}, {2696, 830}, {2947, 236}, {558,539}, {-1000, -1000}, {4599, 533}, {4429, 179}, {3907, 459}, {5725, 730}//
 		},
 		{
+			{1600, 160}, {0, 0}
+		},
+		{
+			{1600, 380}, {100, 250}, {-1000, -1000}
 		}
 	};
 	std::vector<vector<int>> takeOutWite = 
 	{ 
 		{elementPoUp, elementPoRight, elementPoLeft},
 		{},
-		{}
+		{},
+		{WinBoy, WinPrincess, WinLove}
 	};
 
 	bool judge = false;
@@ -104,9 +139,10 @@ void backgroundTool::elementInit()
 
 	for (int i = 0; i < int(stage1LoadBitMap[sel].size()); i++)
 	{
-		MyCMovingBitmap *x = new MyCMovingBitmap;
+		
 		if (playing == false || init == true)
 		{
+			MyCMovingBitmap *x = new MyCMovingBitmap;
 			for (int j = 0; j < int(takeOutWite[sel].size()); j++)
 			{
 				if (i == takeOutWite[sel][j])
@@ -134,6 +170,9 @@ void backgroundTool::elementInit()
 				stage[i]->SetTopLeft(stage1SetTopLeft[sel][i][0], stage1SetTopLeft[sel][i][1]);
 				stage[i]->SetFrameIndexOfBitmap(0);
 				stage[i]->SetJudge(false);
+				stage[i]->SetElementPo(false);
+				stage[i]->SetJudge(false);
+				stage[i]->SetJudgeMusic(false);
 			}
 			
 		}
@@ -147,8 +186,39 @@ void backgroundTool::elementInit()
 
 }
 
-void backgroundTool::backgroundKeyDown(UINT nChar)
+void backgroundTool::goBackContent()
 {
+	playing = false;
+	init = false;
+	elementTrue = false;
+	elementPo = false;
+	elementPo1_2 = false;
+	sel = 0;
+	buttonW = false;
+	buttonA = false;
+	buttonD = false;
+	judgeMove = false;
+	first = false;
+	elementFlower = false;
+	longblock = false;
+	setClearStage();
+	elementInit();
+	selectInit();
+	totalSelect.SetFrameIndexOfBitmap(0);
+	background.SetTopLeft(0, 0);
+	background.SetFrameIndexOfBitmap(0);
+}
+
+
+void backgroundTool::backgroundKeyDown(UINT nChar, characterTool *characterAddress)
+{
+	MyCMovingBitmap *character = characterAddress->getCharacterAddress();
+	if ((nChar == 0x50) && playing == true)
+	{
+		CAudio::Instance()->Pause();
+		CAudio::Instance()->Play(1, true);
+		goBackContent();
+	}
 	if ((nChar == VK_RIGHT || nChar == VK_LEFT) && playing == false)//向右選關鍵
 	{		
 
@@ -180,6 +250,7 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 			init = true;
 			playing = true;
 			elementInit();
+			characterAddress->characterInit();
 			background.SetFrameIndexOfBitmap(1); // enter the level
 			for (int i = 0; i < 3; i++) // origin i < 2
 			{
@@ -188,7 +259,9 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 			}
 			select1.SetTopLeft(-600, -400);
 			select2.SetTopLeft(-600, -400);
-			select3.SetTopLeft(-600, -400);
+			select3.SetTopLeft(-600, -400);			
+			CAudio::Instance()->Pause();
+			CAudio::Instance()->Play(2, true);
 		}
 		if (sel == 1)
 		{
@@ -196,6 +269,7 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 			init = true;
 			playing = true;
 			elementInit();
+			characterAddress->characterInit();
 			background.SetFrameIndexOfBitmap(2); // enter the level
 			for (int i = 0; i < 3; i++) // origin i < 2
 			{
@@ -205,6 +279,28 @@ void backgroundTool::backgroundKeyDown(UINT nChar)
 			select1.SetTopLeft(-600, -400);
 			select2.SetTopLeft(-600, -400);
 			select3.SetTopLeft(-600, -400);
+			CAudio::Instance()->Pause();
+			CAudio::Instance()->Play(3, true);
+		}
+		if (sel == 2)
+		{
+			characterAddress->characterInit();
+			character->SetTopLeft(-2000, -2000);
+			setClearStage();
+			init = true;
+			playing = true;
+			elementInit();
+			background.SetFrameIndexOfBitmap(3); // enter the level
+			for (int i = 0; i < 3; i++) // origin i < 2
+			{
+				totalSelect.SetFrameIndexOfBitmap(i);
+				totalSelect.SetTopLeft(-600, -400);
+			}
+			select1.SetTopLeft(-600, -400);
+			select2.SetTopLeft(-600, -400);
+			select3.SetTopLeft(-600, -400);
+			CAudio::Instance()->Pause();
+			CAudio::Instance()->Play(4, true);
 		}
 	}
 }
@@ -279,28 +375,29 @@ void backgroundTool::setInit(bool value)
 void backgroundTool::touching(characterTool *character)
 {
 	
-	stageTouchUpElement = 
-	{
-		{},
-		{},
-		{}
-	};
+	
 	stageTouchUpEmpty =
 	{
 		{elementEmptyBlock, elementEmptyBlock2, elementBlockU, elementBlockD, elementBlockI, elementBlockE, elementBlockD2},
 		{elementEmptyBlock2_1, elementEmptyBlock2_2, elementEmptyBlock2_3},
+		{},
 		{}
 	};
-	for (int j = 0; j < int(stageTouchUpElement[sel].size()); j++)
-	{
-		if (stage[stageTouchUpElement[sel][j]]->touchUp(character->getCharacterAddress(), stage[stageTouchUpElement[sel][j]]))
-			stage[stageTouchUpElement[sel][j]]->SetFrameIndexOfBitmap(1);
-	}
+	
 
 	for (int j = 0; j < int(stageTouchUpEmpty[sel].size()); j++)
 	{
 		if (stage[stageTouchUpEmpty[sel][j]]->touchUp(character->getCharacterAddress(), stage[stageTouchUpEmpty[sel][j]]) && character->GetIsDroppingAddress() == false)
+		{
+			if (stage[stageTouchUpEmpty[sel][j]]->GetJudgeMusic() == false)
+			{
+				CAudio::Instance()->Play(9, true);
+				CAudio::Instance()->Play(9, false);
+				stage[stageTouchUpEmpty[sel][j]]->SetJudgeMusic(true);
+			}
 			stage[stageTouchUpEmpty[sel][j]]->SetFrameIndexOfBitmap(1);
+		}
+			
 	}
 	switch (sel)
 	{
@@ -308,6 +405,13 @@ void backgroundTool::touching(characterTool *character)
 
 		if (stage[element]->touchUp(character->getCharacterAddress(), stage[element]))
 		{
+			if (stage[element]->GetJudgeMusic() == false)
+			{
+				CAudio::Instance()->Play(9, true);
+				CAudio::Instance()->Play(9, false);
+				stage[element]->SetJudgeMusic(true);
+			}
+			
 			stage[element]->SetFrameIndexOfBitmap(1);
 			stage[elementGo]->SetFrameIndexOfBitmap(1);
 			stage[elementGo]->SetTopLeft(background.GetLeft() + 617, background.GetTop() + 359);//300
@@ -396,6 +500,7 @@ void backgroundTool::touching(characterTool *character)
 				stage[elementQuestion]->SetTopLeft(-1000, -1000);
 				stage[brick]->SetAnimation(100, false);
 				stage[brick]->SetAnimation(100, true);
+				stage[elementFlower2_1]->SetTopLeft(-2000, -2000);
 				first = false;
 			}
 		}
@@ -407,6 +512,12 @@ void backgroundTool::touching(characterTool *character)
 		
 		if (stage[elementQuestion]->touchUp(character->getCharacterAddress(), stage[elementQuestion]) && stage[elementQuestion]->GetFrameIndexOfBitmap() == 0)
 		{
+			if (stage[elementQuestion]->GetJudgeMusic() == false)
+			{
+				CAudio::Instance()->Play(9, true);
+				CAudio::Instance()->Play(9, false);
+				stage[elementQuestion]->SetJudgeMusic(true);
+			}
 			stage[elementQuestion]->SetFrameIndexOfBitmap(1);
 			elementFlower = true;			 
 			stage[elementFlower2_1]->SetTopLeft(background.GetLeft() + 585, background.GetTop() + 536);
@@ -457,11 +568,24 @@ void backgroundTool::touching(characterTool *character)
 		if (stage[elementLongBlock2_2]->GetJudge() == true)
 		{
 			stage[elenentslime2_1]->SetTopLeft(stage[elenentslime2_1]->GetLeft() - 5, stage[elenentslime2_1]->GetTop());
-
 		}
 		
 		break;	
-
+	case 3:
+		if (stage[WinBoy]->GetLeft() < 500)
+		{
+			stage[WinBoy]->SetTopLeft(stage[WinBoy]->GetLeft() + 4, stage[WinBoy]->GetTop());
+		}
+		if (stage[WinPrincess]->GetLeft() > 770)
+		{
+			stage[WinPrincess]->SetTopLeft(stage[WinPrincess]->GetLeft() - 7, stage[WinPrincess]->GetTop());
+		}
+		else
+		{
+			stage[WinLove]->SetTopLeft(790, 300);
+			stage[WinLove]->SetAnimation(500, false);
+		}
+		break;
 		
 	}
 	
@@ -474,20 +598,35 @@ bool backgroundTool::getPlaying()
 	return playing;
 }
 
+bool backgroundTool::getInit()
+{
+	return init;
+}
 
 void backgroundTool::Move(characterTool *run_character)
 {
+	MyCMovingBitmap *character = run_character->getCharacterAddress();
 	stageJudgeMove =
 	{
 		{elementPoLeft, elementPoRight, elementPoUp},
 		{},
+		{},
 		{}
 	};
-	if (playing)
+	std::vector<vector<int>> map;
+	map=
 	{
-		if (buttonA && run_character->GetBackHitblock() == false && run_character->GetpopUpFlag() == false)
+		{-4400},
+		{-3950},
+		{0},
+		{}
+	};
+	
+	if (playing && sel != 2)
+	{
+		if (buttonA && run_character->GetBackHitblock() == false && run_character->GetpopUpFlag() == false && character->GetLeft() > 900 && character->GetLeft() < 960)
 		{			
-			background.SetTopLeft(background.GetLeft() + 20 - buttonW * 2, background.GetTop());
+			background.SetTopLeft(background.GetLeft() + 20 - buttonW * 2, background.GetTop());//
 			for (int i = 0; i < int(stage.size()); i++)
 			{
 				for (int j = 0; j < int(stageJudgeMove[sel].size()); j++)
@@ -524,7 +663,7 @@ void backgroundTool::Move(characterTool *run_character)
 
 		
 
-		if (buttonD && run_character->GetFaceHitblock() == false && run_character->GetpopUpFlag() == false)
+		if (buttonD && run_character->GetFaceHitblock() == false && run_character->GetpopUpFlag() == false && (character->GetLeft() > 900 && character->GetLeft() < 960) && background.GetLeft() > map[sel][0])// 
 		{			
 			//floor1_2.SetTopLeft(floor1_2.GetLeft() - 20 + buttonD * 2, floor1_2.GetTop());
 			background.SetTopLeft(background.GetLeft() - 20 + buttonW * 2, background.GetTop());
@@ -567,8 +706,8 @@ void backgroundTool::Move(characterTool *run_character)
 }
 
 void backgroundTool::KeyDown(UINT nChar)
-{
-	
+{	
+
 	if (nChar == 0x57)//W
 	{		
 		buttonW = true;		
