@@ -349,8 +349,21 @@ void characterTool::characterKeyUp(UINT nChar, backgroundTool *background)
 }
 void characterTool::characterShowBitmap()
 {
+	if (allSel == 2)
+	{
+		for (int i = 0; i < int(ammo.size()); i++)
+		{
+			ammo[i]->ShowBitmap();
+		}
+
+		for (int i = 0; i < int(slime.size()); i++)
+		{
+			slime[i]->ShowBitmap();
+		}
+	}
 	if (popUpFlag == true && wode == false) // to show the animation after died
-	{				
+	{		
+		
 		if (((clock() - die) / (double)(CLOCKS_PER_SEC)) >= 0.7)
 		{
 			popUp.SetJudge(true);
@@ -375,20 +388,7 @@ void characterTool::characterShowBitmap()
 		{
 			aircraft.ShowBitmap();
 		}
-	}	
-
-	if (allSel == 2)
-	{		
-		for (int i = 0; i < int(ammo.size()); i++)
-		{
-			ammo[i]->ShowBitmap();
-		}
-
-		for (int i = 0; i < int(slime.size()); i++)
-		{
-			slime[i]->ShowBitmap();
-		}
-	}
+	}		
 	
 	
 }
