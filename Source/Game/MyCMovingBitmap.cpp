@@ -46,6 +46,15 @@ bool MyCMovingBitmap::GetJudge() const
 	return judge;
 }
 
+void MyCMovingBitmap::SetJudgeMusic(bool value)
+{
+	judgeMusic = value;
+}
+bool MyCMovingBitmap::GetJudgeMusic() const
+{
+	return judgeMusic;
+}
+
 bool MyCMovingBitmap::touchUp(MyCMovingBitmap *character, MyCMovingBitmap *element)
 {
 	if ((character->GetTop() - 5 <= element->GetTop() + element->GetHeight()) && (character->GetTop()  > element->GetTop() + element->GetHeight() - 90) &&
